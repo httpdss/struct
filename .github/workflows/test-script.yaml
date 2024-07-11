@@ -39,7 +39,7 @@ jobs:
       shell: bash
       run: |
         echo "REPORT_FILE=${REPORT_OUTPUT}" >> "$GITHUB_ENV"
-        pytest -v --md-report --md-report-flavor gfm --md-report-exclude-outcomes passed skipped xpassed --md-report-output "$REPORT_OUTPUT"
+        pytest -v --md-report --md-report-flavor gfm --md-report-exclude-outcomes passed skipped xpassed --md-report-output "$REPORT_OUTPUT" --pyargs tests
 
     - name: Output reports to the job summary when tests fail
       if: failure()
