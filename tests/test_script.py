@@ -4,7 +4,7 @@ import tempfile
 import shutil
 import requests
 from unittest.mock import patch
-from script import fetch_remote_content, apply_template_variables, validate_configuration, create_structure
+from ..script import fetch_remote_content, apply_template_variables, validate_configuration, create_structure
 
 # Test for fetch_remote_content
 def test_fetch_remote_content():
