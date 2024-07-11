@@ -1,4 +1,8 @@
-# struct: Automated Project Structure Generator
+# Struct: Automated Project Structure Generator
+
+![Struct Banner](extras/banner.png)
+
+> ⚠️ **Warning:** This project is still in development and may contain bugs. Use it at your own risk.
 
 Struct is a powerful and flexible script designed to automate the creation of project structures based on YAML configurations. It supports template variables, custom file permissions, remote content fetching, and multiple file handling strategies to streamline your development setup process.
 
@@ -12,3 +16,61 @@ Struct is a powerful and flexible script designed to automate the creation of pr
 - **Dry Run**: Preview the actions without making any changes to your file system.
 - **Configuration Validation**: Ensure your YAML configuration is valid before executing the script.
 - **Verbose Logging**: Get detailed logs of the script's actions for easy debugging and monitoring.
+
+## Usage
+
+Run the script with the following command:
+
+-  First argument is the file where project structure is defined
+-  Second argument is the path where the project structure will be created
+-  And finally, the OPTIONS which are optional
+
+```sh
+struct path/to/project_structure.yaml /path/to/your/project [OPTIONS]
+```
+
+### Options
+
+- `--log`: Set the logging level (DEBUG, INFO, WARNING, ERROR, CRITICAL). Default is INFO.
+- `--dry-run`: Perform a dry run without creating any files or directories.
+- `--vars`: Template variables in the format `KEY1=value1,KEY2=value2`.
+- `--backup`: Path to the backup folder.
+- `--file-strategy`: Strategy for handling existing files (overwrite, skip, append, rename, backup). Default is overwrite.
+- `--log-file`: Path to a log file.
+
+### Example
+
+```sh
+struct path/to/project_structure.yaml /path/to/your/project --log=DEBUG --dry-run --vars="project_name=MyProject,author_name=JohnDoe" --backup=/path/to/backup --file-strategy=rename --log-file=/path/to/logfile.log
+```
+
+## YAML Configuration
+
+Here is an example of a YAML configuration file:
+
+```yaml
+structure:
+  - README.md:
+      content: |
+        # {project_name}
+        This is a template repository.
+  - script.sh:
+      permissions: '0777'
+      content: |
+        #!/bin/bash
+        echo "Hello, {author_name}!"
+  - LICENSE:
+      file: https://raw.githubusercontent.com/nishanths/license/master/LICENSE
+```
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## Contributing
+
+Contributions are welcome! Please open an issue or submit a pull request.
+
+## Acknowledgments
+
+Special thanks to all the contributors who helped make this project possible.
