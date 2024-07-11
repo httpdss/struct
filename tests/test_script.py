@@ -3,8 +3,11 @@ import os
 import tempfile
 import shutil
 import requests
+import sys
 from unittest.mock import patch
-from ..script import fetch_remote_content, apply_template_variables, validate_configuration, create_structure
+from script import fetch_remote_content, apply_template_variables, validate_configuration, create_structure
+
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 # Test for fetch_remote_content
 def test_fetch_remote_content():
