@@ -21,16 +21,17 @@ Struct is a powerful and flexible script designed to automate the creation of pr
 
 Run the script with the following command:
 
--  First argument is the file where project structure is defined
--  Second argument is the path where the project structure will be created
--  And finally, the OPTIONS which are optional
+- OPTIONS which are optional
+- First argument is the file where project structure is defined
+- Second argument is the path where the project structure will be created
 
 ```sh
-struct path/to/project_structure.yaml /path/to/your/project [OPTIONS]
+usage: struct [-h] [--log LOG] [--dry-run] [--vars VARS] [--backup BACKUP] [--file-strategy {overwrite,skip,append,rename,backup}] [--log-file LOG_FILE] yaml_file base_path
 ```
 
 ### Options
 
+- `-h` or `--help`: Show help and exit
 - `--log`: Set the logging level (DEBUG, INFO, WARNING, ERROR, CRITICAL). Default is INFO.
 - `--dry-run`: Perform a dry run without creating any files or directories.
 - `--vars`: Template variables in the format `KEY1=value1,KEY2=value2`.
@@ -41,7 +42,7 @@ struct path/to/project_structure.yaml /path/to/your/project [OPTIONS]
 ### Example
 
 ```sh
-struct path/to/project_structure.yaml /path/to/your/project --log=DEBUG --dry-run --vars="project_name=MyProject,author_name=JohnDoe" --backup=/path/to/backup --file-strategy=rename --log-file=/path/to/logfile.log
+struct --log=DEBUG --dry-run --vars="project_name=MyProject,author_name=JohnDoe" --backup=/path/to/backup --file-strategy=rename --log-file=/path/to/logfile.log path/to/project_structure.yaml /path/to/your/project
 ```
 
 ## YAML Configuration
@@ -66,6 +67,10 @@ structure:
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## Funding
+
+If you find this project helpful, please consider supporting it through donations: [patreon/structproject](https://patreon.com/structproject)
 
 ## Contributing
 
