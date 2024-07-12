@@ -1,18 +1,16 @@
-import os
-import yaml
-import time
-import logging
-import argparse
-import shutil
 import requests
+import os
+import shutil
+import logging
 from string import Template
+import time
 
 class FileItem:
-    def __init__(self, name, content=None, remote_location=None, permissions=None):
-        self.name = name
-        self.content = content
-        self.remote_location = remote_location
-        self.permissions = permissions
+    def __init__(self, properties):
+        self.name = properties.get("name")
+        self.content = properties.get("content")
+        self.remote_location = properties.get("file")
+        self.permissions = properties.get("permissions")
 
     def fetch_content(self):
         if self.remote_location:
@@ -83,18 +81,18 @@ def create_structure(base_path, structure, dry_run=False, template_vars=None, ba
         for name, content in item.items():
             logging.debug(f"Processing name: {name}, content: {content}")
             if isinstance(content, dict):
-                if 'file' in content:
-                    file_item = FileItem(name, remote_location=content['file'], permissions=content.get('permissions'))
-                    file_item.fetch_content()
-                else:
-                    file_item = FileItem(name, content=content.get('content'), permissions=content.get('permissions'))
+                content["name"] = name
+                file_item = FileItem(content)
+                file_item.fetch_content()
             elif isinstance(content, str):
-                file_item = FileItem(name, content=content)
+                file_item = FileItem({"name": name, "content": content})
 
             file_item.apply_template_variables(template_vars)
             file_item.create(base_path, dry_run, backup_path, file_strategy)
 
 def main():
+    import argparse
+
     parser = argparse.ArgumentParser(description="Generate project structure from YAML configuration.")
     parser.add_argument('yaml_file', type=str, help='Path to the YAML configuration file')
     parser.add_argument('base_path', type=str, help='Base path where the structure will be created')
@@ -114,6 +112,7 @@ def main():
     if backup_path and not os.path.exists(backup_path):
         os.makedirs(backup_path)
 
+    logging.basicConfig(level=logging_level, filename=args.log_file)
     logging.info(f"Starting to create project structure from {args.yaml_file} in {args.base_path}")
     logging.debug(f"YAML file path: {args.yaml_file}, Base path: {args.base_path}, Dry run: {args.dry_run}, Template vars: {template_vars}, Backup path: {backup_path}")
 

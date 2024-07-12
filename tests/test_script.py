@@ -1,12 +1,11 @@
 import pytest
-import logging
 import os
 import tempfile
+import time
 import shutil
 import requests
-import time
+import logging
 from unittest.mock import patch, MagicMock
-
 from struct_module.main import FileItem, validate_configuration, create_structure
 
 # Test for FileItem.fetch_content
@@ -15,7 +14,7 @@ def test_fetch_remote_content(mock_get):
     mock_get.return_value.status_code = 200
     mock_get.return_value.text = "Mocked content"
 
-    file_item = FileItem(name="LICENSE", remote_location="https://example.com/mock")
+    file_item = FileItem({"name": "LICENSE", "file": "https://example.com/mock"})
     file_item.fetch_content()
 
     assert file_item.content == "Mocked content"
@@ -23,7 +22,7 @@ def test_fetch_remote_content(mock_get):
 
 # Test for FileItem.apply_template_variables
 def test_apply_template_variables():
-    file_item = FileItem(name="README.md", content="Hello, ${name}!")
+    file_item = FileItem({"name": "README.md", "content": "Hello, ${name}!"})
     template_vars = {"name": "World"}
 
     file_item.apply_template_variables(template_vars)
@@ -84,7 +83,7 @@ def test_create_file():
             assert f.read() == "#!/bin/bash\necho 'Hello, World!'"
         assert oct(os.stat(script_path).st_mode)[-3:] == '777'
 
-# # Test for dry run
+# Test for dry run
 def test_dry_run(caplog):
     structure = [
         {
@@ -208,4 +207,3 @@ def test_rename_strategy():
         assert os.path.exists(new_name)
         with open(readme_path, 'r') as f:
             assert f.read() == "This is a new README file."
-
