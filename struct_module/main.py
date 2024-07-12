@@ -7,16 +7,55 @@ import shutil
 import requests
 from string import Template
 
-def fetch_remote_content(url):
-    response = requests.get(url)
-    response.raise_for_status()
-    return response.text
+class FileItem:
+    def __init__(self, name, content=None, remote_location=None, permissions=None):
+        self.name = name
+        self.content = content
+        self.remote_location = remote_location
+        self.permissions = permissions
 
-def apply_template_variables(content, template_vars):
-    if template_vars:
-        template = Template(content)
-        content = template.substitute(template_vars)
-    return content
+    def fetch_content(self):
+        if self.remote_location:
+            response = requests.get(self.remote_location)
+            response.raise_for_status()
+            self.content = response.text
+
+    def apply_template_variables(self, template_vars):
+        if self.content and template_vars:
+            template = Template(self.content)
+            self.content = template.substitute(template_vars)
+
+    def create(self, base_path, dry_run=False, backup_path=None, file_strategy='overwrite'):
+        file_path = os.path.join(base_path, self.name)
+        if dry_run:
+            logging.info(f"[DRY RUN] Would create file: {file_path} with content: {self.content}")
+            return
+
+        if os.path.exists(file_path):
+            if file_strategy == 'backup' and backup_path:
+                backup_file_path = os.path.join(backup_path, os.path.basename(file_path))
+                shutil.copy2(file_path, backup_file_path)
+                logging.info(f"Backed up existing file: {file_path} to {backup_file_path}")
+            elif file_strategy == 'skip':
+                logging.info(f"Skipped existing file: {file_path}")
+                return
+            elif file_strategy == 'append':
+                with open(file_path, 'a') as f:
+                    f.write(self.content)
+                logging.info(f"Appended to existing file: {file_path}")
+                return
+            elif file_strategy == 'rename':
+                new_name = f"{file_path}.{int(time.time())}"
+                os.rename(file_path, new_name)
+                logging.info(f"Renamed existing file: {file_path} to {new_name}")
+
+        with open(file_path, 'w') as f:
+            f.write(self.content)
+        logging.info(f"Created file: {file_path} with content: {self.content}")
+
+        if self.permissions:
+            os.chmod(file_path, int(self.permissions, 8))
+            logging.info(f"Set permissions {self.permissions} for file: {file_path}")
 
 def validate_configuration(structure):
     if not isinstance(structure, list):
@@ -45,56 +84,15 @@ def create_structure(base_path, structure, dry_run=False, template_vars=None, ba
             logging.debug(f"Processing name: {name}, content: {content}")
             if isinstance(content, dict):
                 if 'file' in content:
-                    # Fetch content from a remote file
-                    remote_content = fetch_remote_content(content['file'])
-                    remote_content = apply_template_variables(remote_content, template_vars)
-                    file_path = os.path.join(base_path, name)
-                    handle_file_creation(file_path, remote_content, content, dry_run, backup_path, file_strategy)
+                    file_item = FileItem(name, remote_location=content['file'], permissions=content.get('permissions'))
+                    file_item.fetch_content()
                 else:
-                    # It's a directory
-                    dir_path = os.path.join(base_path, name)
-                    if dry_run:
-                        logging.info(f"[DRY RUN] Would create directory: {dir_path}")
-                    else:
-                        os.makedirs(dir_path, exist_ok=True)
-                        logging.info(f"Created directory: {dir_path}")
-                    create_structure(dir_path, content.values(), dry_run, template_vars, backup_path, file_strategy)
+                    file_item = FileItem(name, content=content.get('content'), permissions=content.get('permissions'))
             elif isinstance(content, str):
-                # It's a file with inline content
-                file_path = os.path.join(base_path, name)
-                content = apply_template_variables(content, template_vars)
-                handle_file_creation(file_path, content, content, dry_run, backup_path, file_strategy)
+                file_item = FileItem(name, content=content)
 
-def handle_file_creation(file_path, content, file_config, dry_run, backup_path, file_strategy):
-    if dry_run:
-        logging.info(f"[DRY RUN] Would create file: {file_path} with content: {content}")
-    else:
-        if os.path.exists(file_path):
-            if file_strategy == 'backup' and backup_path:
-                backup_file_path = os.path.join(backup_path, os.path.basename(file_path))
-                shutil.copy2(file_path, backup_file_path)
-                logging.info(f"Backed up existing file: {file_path} to {backup_file_path}")
-            elif file_strategy == 'skip':
-                logging.info(f"Skipped existing file: {file_path}")
-                return
-            elif file_strategy == 'append':
-                with open(file_path, 'a') as f:
-                    f.write(content)
-                logging.info(f"Appended to existing file: {file_path}")
-                return
-            elif file_strategy == 'rename':
-                new_name = f"{file_path}.{int(time.time())}"
-                os.rename(file_path, new_name)
-                logging.info(f"Renamed existing file: {file_path} to {new_name}")
-
-        with open(file_path, 'w') as f:
-            f.write(content)
-        logging.info(f"Created file: {file_path} with content: {content}")
-
-        if isinstance(file_config, dict) and 'permissions' in file_config:
-            permissions = file_config['permissions']
-            os.chmod(file_path, int(permissions, 8))
-            logging.info(f"Set permissions {permissions} for file: {file_path}")
+            file_item.apply_template_variables(template_vars)
+            file_item.create(base_path, dry_run, backup_path, file_strategy)
 
 def main():
     parser = argparse.ArgumentParser(description="Generate project structure from YAML configuration.")
@@ -118,7 +116,13 @@ def main():
 
     logging.info(f"Starting to create project structure from {args.yaml_file} in {args.base_path}")
     logging.debug(f"YAML file path: {args.yaml_file}, Base path: {args.base_path}, Dry run: {args.dry_run}, Template vars: {template_vars}, Backup path: {backup_path}")
-    main(args.yaml_file, args.base_path, logging_level, args.dry_run, template_vars, backup_path, args.file_strategy, args.log_file)
+
+    with open(args.yaml_file, 'r') as f:
+        config = yaml.safe_load(f)
+
+    validate_configuration(config.get('structure', []))
+    create_structure(args.base_path, config.get('structure', []), args.dry_run, template_vars, backup_path, args.file_strategy)
+
     logging.info("Finished creating project structure")
 
 if __name__ == "__main__":
