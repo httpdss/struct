@@ -8,6 +8,12 @@ import logging
 from unittest.mock import patch, MagicMock
 from struct_module.main import FileItem, validate_configuration, create_structure
 
+# Mock the environment variables for OpenAI
+@pytest.fixture(autouse=True)
+def mock_env_vars(monkeypatch):
+    monkeypatch.setenv("OPENAI_API_KEY", "test-api-key")
+    monkeypatch.setenv("OPENAI_MODEL", "gpt-3.5-turbo")
+
 # Test for FileItem.fetch_content
 @patch('struct_module.requests.get')
 def test_fetch_remote_content(mock_get):

@@ -11,5 +11,5 @@ structure:
   - LICENSE:
       file: https://raw.githubusercontent.com/nishanths/license/master/LICENSE
   - .gitignore:
-      prompt: |
+      user_prompt: |
         Generate the content for a .gitignore file that is appropriate for a Python project. Include common directories and file types that should be ignored.
