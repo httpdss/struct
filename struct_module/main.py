@@ -4,6 +4,18 @@ import shutil
 import logging
 from string import Template
 import time
+import yaml
+import openai
+from dotenv import load_dotenv
+
+load_dotenv()
+
+openai_api_key = os.getenv("OPENAI_API_KEY")
+
+if not openai_api_key:
+    raise ValueError("OpenAI API key not found. Please set it in the .env file.")
+
+openai.api_key = openai_api_key
 
 class FileItem:
     def __init__(self, properties):
@@ -11,15 +23,31 @@ class FileItem:
         self.content = properties.get("content")
         self.remote_location = properties.get("file")
         self.permissions = properties.get("permissions")
+        self.prompt = properties.get("prompt")
+
+    def process_prompt(self):
+        if self.prompt:
+            logging.debug(f"Processing prompt: {self.prompt}")
+            response = openai.Completion.create(
+                engine="davinci",
+                prompt=self.prompt,
+                max_tokens=100
+            )
+            self.content = response.choices[0].text
+            logging.debug(f"Generated content: {self.content}")
 
     def fetch_content(self):
         if self.remote_location:
+            logging.debug(f"Fetching content from: {self.remote_location}")
             response = requests.get(self.remote_location)
+            logging.debug(f"Response status code: {response.status_code}")
             response.raise_for_status()
             self.content = response.text
+            logging.debug(f"Fetched content: {self.content}")
 
     def apply_template_variables(self, template_vars):
         if self.content and template_vars:
+            logging.debug(f"Applying template variables: {template_vars}")
             template = Template(self.content)
             self.content = template.substitute(template_vars)
 
@@ -65,12 +93,21 @@ def validate_configuration(structure):
             if not isinstance(name, str):
                 raise ValueError("Each name in the 'structure' item must be a string.")
             if isinstance(content, dict):
-                if 'content' not in content and 'file' not in content:
-                    raise ValueError(f"Dictionary item '{name}' must contain either 'content' or 'file' key.")
+                # Check that any of the keys 'content', 'file' or 'prompt' is present
+                if 'content' not in content and 'file' not in content and 'prompt' not in content:
+                    raise ValueError(f"Dictionary item '{name}' must contain either 'content' or 'file' or 'prompt' key.")
+                # Check if 'file' key is present and its value is a string
                 if 'file' in content and not isinstance(content['file'], str):
                     raise ValueError(f"The 'file' value for '{name}' must be a string.")
+                # Check if 'permissions' key is present and its value is a string
                 if 'permissions' in content and not isinstance(content['permissions'], str):
                     raise ValueError(f"The 'permissions' value for '{name}' must be a string.")
+                # Check if 'prompt' key is present and its value is a string
+                if 'prompt' in content and not isinstance(content['prompt'], str):
+                    raise ValueError(f"The 'prompt' value for '{name}' must be a string.")
+                # Check if 'prompt' key is present but no OpenAI API key is found
+                if 'prompt' in content and not openai_api_key:
+                    raise ValueError("Using prompt property and no OpenAI API key was found. Please set it in the .env file.")
             elif not isinstance(content, str):
                 raise ValueError(f"The content of '{name}' must be a string or dictionary.")
     logging.info("Configuration validation passed.")
@@ -88,6 +125,7 @@ def create_structure(base_path, structure, dry_run=False, template_vars=None, ba
                 file_item = FileItem({"name": name, "content": content})
 
             file_item.apply_template_variables(template_vars)
+            file_item.process_prompt()
             file_item.create(base_path, dry_run, backup_path, file_strategy)
 
 def main():
