@@ -179,7 +179,11 @@ def main():
     if backup_path and not os.path.exists(backup_path):
         os.makedirs(backup_path)
 
-    logging.basicConfig(level=logging_level, filename=args.log_file)
+    logging.basicConfig(
+        level=logging_level,
+        filename=args.log_file,
+        format='%(levelname)s:struct:%(message)s',
+    )
     logging.info(f"Starting to create project structure from {args.yaml_file} in {args.base_path}")
     logging.debug(f"YAML file path: {args.yaml_file}, Base path: {args.base_path}, Dry run: {args.dry_run}, Template vars: {template_vars}, Backup path: {backup_path}")
 
