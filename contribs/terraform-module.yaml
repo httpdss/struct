@@ -1,0 +1,7 @@
+structure:
+  - .devops/module/mymodule/main.tf:
+      content: "# This is the main Terraform module file."
+  - .devops/module/mymodule/variables.tf:
+      content: "# This is the Terraform variables file for this module."
+  - .devops/module/mymodule/outputs.tf:
+      content: "# This is the Terraform outputs file for this module."

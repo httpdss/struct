@@ -1,0 +1,9 @@
+structure:
+  - .devops/apps/init/main.tf:
+      content: "# This is the main Terraform configuration file."
+  - .devops/apps/init/variables.tf:
+      content: "# This is the Terraform variables file."
+  - .devops/apps/init/outputs.tf:
+      content: "# This is the Terraform outputs file."
+  - .devops/apps/init/providers.tf:
+      content: "# This is the Terraform providers file."
