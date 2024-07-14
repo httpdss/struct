@@ -4,6 +4,17 @@ import shutil
 import logging
 from string import Template
 import time
+import yaml
+from openai import OpenAI
+from dotenv import load_dotenv
+
+load_dotenv()
+
+openai_api_key = os.getenv("OPENAI_API_KEY")
+openai_model = os.getenv("OPENAI_MODEL")
+
+if not openai_api_key:
+    logging.warning("OpenAI API key not found. Skipping processing prompt.")
 
 class FileItem:
     def __init__(self, properties):
@@ -12,14 +23,60 @@ class FileItem:
         self.remote_location = properties.get("file")
         self.permissions = properties.get("permissions")
 
+        self.system_prompt = properties.get("system_prompt")
+        self.user_prompt = properties.get("user_prompt")
+        self.openai_client = OpenAI(
+            api_key=openai_api_key
+        )
+
+        if not openai_model:
+            logging.info("OpenAI model not found. Using default model.")
+            self.openai_model = "gpt-3.5-turbo"
+        else:
+            logging.debug(f"Using OpenAI model: {openai_model}")
+            self.openai_model = openai_model
+
+    def process_prompt(self, dry_run=False):
+        if self.user_prompt:
+            logging.debug(f"Using user prompt: {self.user_prompt}")
+
+            if not openai_api_key:
+                logging.warning("Skipping processing prompt as OpenAI API key is not set.")
+                return
+
+            if not self.system_prompt:
+                system_prompt = "You are a software developer working on a project. You need to create a file with the following content:"
+            else:
+                system_prompt = self.system_prompt
+
+            if dry_run:
+                logging.info("[DRY RUN] Would generate content using OpenAI API.")
+                self.content = "[DRY RUN] Generating content using OpenAI"
+                return
+
+            completion = self.openai_client.chat.completions.create(
+                model=self.openai_model,
+                messages=[
+                    {"role": "system", "content": system_prompt},
+                    {"role": "user", "content": self.user_prompt}
+                ]
+            )
+
+            self.content = completion.choices[0].message.content
+            logging.debug(f"Generated content: {self.content}")
+
     def fetch_content(self):
         if self.remote_location:
+            logging.debug(f"Fetching content from: {self.remote_location}")
             response = requests.get(self.remote_location)
+            logging.debug(f"Response status code: {response.status_code}")
             response.raise_for_status()
             self.content = response.text
+            logging.debug(f"Fetched content: {self.content}")
 
     def apply_template_variables(self, template_vars):
         if self.content and template_vars:
+            logging.debug(f"Applying template variables: {template_vars}")
             template = Template(self.content)
             self.content = template.substitute(template_vars)
 
@@ -65,12 +122,21 @@ def validate_configuration(structure):
             if not isinstance(name, str):
                 raise ValueError("Each name in the 'structure' item must be a string.")
             if isinstance(content, dict):
-                if 'content' not in content and 'file' not in content:
-                    raise ValueError(f"Dictionary item '{name}' must contain either 'content' or 'file' key.")
+                # Check that any of the keys 'content', 'file' or 'prompt' is present
+                if 'content' not in content and 'file' not in content and 'user_prompt' not in content:
+                    raise ValueError(f"Dictionary item '{name}' must contain either 'content' or 'file' or 'user_prompt' key.")
+                # Check if 'file' key is present and its value is a string
                 if 'file' in content and not isinstance(content['file'], str):
                     raise ValueError(f"The 'file' value for '{name}' must be a string.")
+                # Check if 'permissions' key is present and its value is a string
                 if 'permissions' in content and not isinstance(content['permissions'], str):
                     raise ValueError(f"The 'permissions' value for '{name}' must be a string.")
+                # Check if 'prompt' key is present and its value is a string
+                if 'prompt' in content and not isinstance(content['prompt'], str):
+                    raise ValueError(f"The 'prompt' value for '{name}' must be a string.")
+                # Check if 'prompt' key is present but no OpenAI API key is found
+                if 'prompt' in content and not openai_api_key:
+                    raise ValueError("Using prompt property and no OpenAI API key was found. Please set it in the .env file.")
             elif not isinstance(content, str):
                 raise ValueError(f"The content of '{name}' must be a string or dictionary.")
     logging.info("Configuration validation passed.")
@@ -88,6 +154,7 @@ def create_structure(base_path, structure, dry_run=False, template_vars=None, ba
                 file_item = FileItem({"name": name, "content": content})
 
             file_item.apply_template_variables(template_vars)
+            file_item.process_prompt(dry_run)
             file_item.create(base_path, dry_run, backup_path, file_strategy)
 
 def main():
@@ -112,7 +179,15 @@ def main():
     if backup_path and not os.path.exists(backup_path):
         os.makedirs(backup_path)
 
-    logging.basicConfig(level=logging_level, filename=args.log_file)
+    if args.base_path and not os.path.exists(args.base_path):
+        logging.info(f"Creating base path: {args.base_path}")
+        os.makedirs(args.base_path)
+
+    logging.basicConfig(
+        level=logging_level,
+        filename=args.log_file,
+        format='%(levelname)s:struct:%(message)s',
+    )
     logging.info(f"Starting to create project structure from {args.yaml_file} in {args.base_path}")
     logging.debug(f"YAML file path: {args.yaml_file}, Base path: {args.base_path}, Dry run: {args.dry_run}, Template vars: {template_vars}, Backup path: {backup_path}")
 
