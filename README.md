@@ -1,10 +1,10 @@
-# Struct: Automated Project Structure Generator
+# STRUCT: Automated Project Structure Generator
 
 ![Struct Banner](extras/banner.png)
 
 > ⚠️ **Warning:** This project is still in development and may contain bugs. Use it at your own risk.
 
-Struct is a powerful and flexible script designed to automate the creation of project structures based on YAML configurations. It supports template variables, custom file permissions, remote content fetching, and multiple file handling strategies to streamline your development setup process.
+STRUCT is a powerful and flexible script designed to automate the creation of project structures based on YAML configurations. It supports template variables, custom file permissions, remote content fetching, and multiple file handling strategies to streamline your development setup process.
 
 ## Features
 
