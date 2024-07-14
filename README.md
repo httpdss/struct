@@ -72,15 +72,15 @@ structure:
 
 To get started with development, follow these steps:
 
-1. Clone the repository
-2. Create a virtual environment
+- Clone the repository
+- Create a virtual environment
 
 ```sh
 python3 -m venv .venv
 source .venv/bin/activate
 ```
 
-3. Install the dependencies
+- Install the dependencies
 
 ```sh
 pip install -r requirements.txt
