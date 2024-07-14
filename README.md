@@ -64,6 +64,25 @@ structure:
       file: https://raw.githubusercontent.com/nishanths/license/master/LICENSE
 ```
 
+## Development
+
+To get started with development, follow these steps:
+
+1. Clone the repository
+2. Create a virtual environment
+
+```sh
+python3 -m venv .venv
+source .venv/bin/activate
+```
+
+3. Install the dependencies
+
+```sh
+pip install -r requirements.txt
+pip install -r requirements.dev.txt
+```
+
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
