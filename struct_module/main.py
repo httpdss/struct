@@ -78,6 +78,7 @@ class FileItem:
         if self.content and template_vars:
             logging.debug(f"Applying template variables: {template_vars}")
             template = Template(self.content)
+            print(template.substitute(template_vars))
             self.content = template.substitute(template_vars)
 
     def create(self, base_path, dry_run=False, backup_path=None, file_strategy='overwrite'):
