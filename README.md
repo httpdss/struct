@@ -53,13 +53,13 @@ Here is an example of a YAML configuration file:
 structure:
   - README.md:
       content: |
-        # {project_name}
+        # ${project_name}
         This is a template repository.
   - script.sh:
       permissions: '0777'
       content: |
         #!/bin/bash
-        echo "Hello, {author_name}!"
+        echo "Hello, ${author_name}!"
   - LICENSE:
       file: https://raw.githubusercontent.com/nishanths/license/master/LICENSE
 ```

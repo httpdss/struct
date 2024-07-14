@@ -78,7 +78,6 @@ class FileItem:
         if self.content and template_vars:
             logging.debug(f"Applying template variables: {template_vars}")
             template = Template(self.content)
-            print(template.substitute(template_vars))
             self.content = template.substitute(template_vars)
 
     def create(self, base_path, dry_run=False, backup_path=None, file_strategy='overwrite'):
@@ -179,6 +178,10 @@ def main():
 
     if backup_path and not os.path.exists(backup_path):
         os.makedirs(backup_path)
+
+    if args.base_path and not os.path.exists(args.base_path):
+        logging.info(f"Creating base path: {args.base_path}")
+        os.makedirs(args.base_path)
 
     logging.basicConfig(
         level=logging_level,
