@@ -13,3 +13,14 @@ structure:
   - .gitignore:
       user_prompt: |
         Generate the content for a .gitignore file that is appropriate for a Python project. Include common directories and file types that should be ignored.
+  - .github/workflows/ci.yml:
+      content: |
+        name: CI
+        on: [push]
+        jobs:
+          test:
+            runs-on: ubuntu-latest
+            steps:
+              - uses: actions/checkout@v2
+              - name: Run a one-line script
+                run: echo Hello, world!
