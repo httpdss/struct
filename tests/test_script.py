@@ -213,3 +213,22 @@ def test_rename_strategy():
         assert os.path.exists(new_name)
         with open(readme_path, 'r') as f:
             assert f.read() == "This is a new README file."
+
+# Test for directory creation
+def test_create_structure_creates_directory():
+    structure = [
+        {
+            "dir1/dir2/file.txt": {
+                "content": "This is a nested file."
+            }
+        }
+    ]
+
+    with tempfile.TemporaryDirectory() as tmpdirname:
+        create_structure(tmpdirname, structure)
+
+        nested_file_path = os.path.join(tmpdirname, "dir1/dir2/file.txt")
+        assert os.path.exists(nested_file_path)
+        assert os.path.isdir(os.path.dirname(nested_file_path))
+        with open(nested_file_path, 'r') as f:
+            assert f.read() == "This is a nested file."

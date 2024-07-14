@@ -86,6 +86,9 @@ class FileItem:
             logging.info(f"[DRY RUN] Would create file: {file_path} with content: {self.content}")
             return
 
+        # Create the directory if it does not exist
+        os.makedirs(os.path.dirname(file_path), exist_ok=True)
+
         if os.path.exists(file_path):
             if file_strategy == 'backup' and backup_path:
                 backup_file_path = os.path.join(backup_path, os.path.basename(file_path))
