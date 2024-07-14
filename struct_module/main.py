@@ -83,7 +83,7 @@ class FileItem:
     def create(self, base_path, dry_run=False, backup_path=None, file_strategy='overwrite'):
         file_path = os.path.join(base_path, self.name)
         if dry_run:
-            logging.info(f"[DRY RUN] Would create file: {file_path} with content: {self.content}")
+            logging.info(f"[DRY RUN] Would create file: {file_path} with content: \n\n{self.content}")
             return
 
         # Create the directory if it does not exist
@@ -161,22 +161,43 @@ def create_structure(base_path, structure, dry_run=False, template_vars=None, ba
             file_item.process_prompt(dry_run)
             file_item.create(base_path, dry_run, backup_path, file_strategy)
 
+def read_config_file(file_path):
+    with open(file_path, 'r') as f:
+        return yaml.safe_load(f)
+
+def merge_configs(file_config, args):
+    args_dict = vars(args)
+    for key, value in file_config.items():
+        if key in args_dict and args_dict[key] is None:
+            args_dict[key] = value
+    return args_dict
+
 def main():
     import argparse
 
-    parser = argparse.ArgumentParser(description="Generate project structure from YAML configuration.")
+    parser = argparse.ArgumentParser(
+        description="Generate project structure from YAML configuration.",
+        prog="struct",
+        epilog="Thanks for using %(prog)s! :)",
+
+    )
     parser.add_argument('yaml_file', type=str, help='Path to the YAML configuration file')
     parser.add_argument('base_path', type=str, help='Base path where the structure will be created')
-    parser.add_argument('--log', type=str, default='INFO', help='Set the logging level (DEBUG, INFO, WARNING, ERROR, CRITICAL)')
-    parser.add_argument('--dry-run', action='store_true', help='Perform a dry run without creating any files or directories')
-    parser.add_argument('--vars', type=str, help='Template variables in the format KEY1=value1,KEY2=value2')
-    parser.add_argument('--backup', type=str, help='Path to the backup folder')
-    parser.add_argument('--file-strategy', type=str, choices=['overwrite', 'skip', 'append', 'rename', 'backup'], default='overwrite', help='Strategy for handling existing files')
-    parser.add_argument('--log-file', type=str, help='Path to a log file')
-    parser.add_argument('--global-system-prompt', type=str, help='Global system prompt for OpenAI')
-
+    parser.add_argument('-c', '--config-file', type=str, help='Path to a configuration file')
+    parser.add_argument('-l', '--log', type=str, default='INFO', help='Set the logging level (DEBUG, INFO, WARNING, ERROR, CRITICAL)')
+    parser.add_argument('-d', '--dry-run', action='store_true', help='Perform a dry run without creating any files or directories')
+    parser.add_argument('-v', '--vars', type=str, help='Template variables in the format KEY1=value1,KEY2=value2')
+    parser.add_argument('-b', '--backup', type=str, help='Path to the backup folder')
+    parser.add_argument('-f', '--file-strategy', type=str, choices=['overwrite', 'skip', 'append', 'rename', 'backup'], default='overwrite', help='Strategy for handling existing files')
+    parser.add_argument('-i', '--log-file', type=str, help='Path to a log file')
+    parser.add_argument('-p', '--global-system-prompt', type=str, help='Global system prompt for OpenAI')
 
     args = parser.parse_args()
+
+    # Read config file if provided
+    if args.config_file:
+        file_config = read_config_file(args.config_file)
+        args = argparse.Namespace(**merge_configs(file_config, args))
 
     logging_level = getattr(logging, args.log.upper(), logging.INFO)
     template_vars = dict(item.split('=') for item in args.vars.split(',')) if args.vars else None

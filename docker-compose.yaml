@@ -1,5 +1,5 @@
 services:
-  struct:
+  struct-dry-run:
     build: .
     volumes:
       - .:/app
@@ -9,6 +9,22 @@ services:
     command: [
       "--log=DEBUG",
       "--dry-run",
+      "--vars=project_name=MyProject,author_name=JohnDoe",
+      "--backup=/app/backup",
+      "--file-strategy=rename",
+      "--log-file=/app/logfile.log",
+      "/app/example/structure.yaml",
+      "/app/example_project"
+    ]
+  struct-test:
+    build: .
+    volumes:
+      - .:/app
+    entrypoint: ["python", "struct_module/main.py"]
+    env_file:
+      - .env
+    command: [
+      "--log=DEBUG",
       "--vars=project_name=MyProject,author_name=JohnDoe",
       "--backup=/app/backup",
       "--file-strategy=rename",
