@@ -23,7 +23,7 @@ class FileItem:
         self.remote_location = properties.get("file")
         self.permissions = properties.get("permissions")
 
-        self.system_prompt = properties.get("system_prompt")
+        self.system_prompt = properties.get("system_prompt") or properties.get("global_system_prompt")
         self.user_prompt = properties.get("user_prompt")
         self.openai_client = OpenAI(
             api_key=openai_api_key
@@ -144,13 +144,14 @@ def validate_configuration(structure):
                 raise ValueError(f"The content of '{name}' must be a string or dictionary.")
     logging.info("Configuration validation passed.")
 
-def create_structure(base_path, structure, dry_run=False, template_vars=None, backup_path=None, file_strategy='overwrite'):
+def create_structure(base_path, structure, dry_run=False, template_vars=None, backup_path=None, file_strategy='overwrite', global_system_prompt=None):
     for item in structure:
         logging.debug(f"Processing item: {item}")
         for name, content in item.items():
             logging.debug(f"Processing name: {name}, content: {content}")
             if isinstance(content, dict):
                 content["name"] = name
+                content["global_system_prompt"] = global_system_prompt
                 file_item = FileItem(content)
                 file_item.fetch_content()
             elif isinstance(content, str):
@@ -172,6 +173,8 @@ def main():
     parser.add_argument('--backup', type=str, help='Path to the backup folder')
     parser.add_argument('--file-strategy', type=str, choices=['overwrite', 'skip', 'append', 'rename', 'backup'], default='overwrite', help='Strategy for handling existing files')
     parser.add_argument('--log-file', type=str, help='Path to a log file')
+    parser.add_argument('--global-system-prompt', type=str, help='Global system prompt for OpenAI')
+
 
     args = parser.parse_args()
 
@@ -189,7 +192,7 @@ def main():
     logging.basicConfig(
         level=logging_level,
         filename=args.log_file,
-        format='%(levelname)s:struct:%(message)s',
+        format='[%(asctime)s][%(levelname)s][struct] >>> %(message)s',
     )
     logging.info(f"Starting to create project structure from {args.yaml_file} in {args.base_path}")
     logging.debug(f"YAML file path: {args.yaml_file}, Base path: {args.base_path}, Dry run: {args.dry_run}, Template vars: {template_vars}, Backup path: {backup_path}")
@@ -198,7 +201,7 @@ def main():
         config = yaml.safe_load(f)
 
     validate_configuration(config.get('structure', []))
-    create_structure(args.base_path, config.get('structure', []), args.dry_run, template_vars, backup_path, args.file_strategy)
+    create_structure(args.base_path, config.get('structure', []), args.dry_run, template_vars, backup_path, args.file_strategy, args.global_system_prompt)
 
     logging.info("Finished creating project structure")
 
