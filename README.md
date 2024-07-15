@@ -17,6 +17,32 @@ STRUCT is a powerful and flexible script designed to automate the creation of pr
 - **Configuration Validation**: Ensure your YAML configuration is valid before executing the script.
 - **Verbose Logging**: Get detailed logs of the script's actions for easy debugging and monitoring.
 
+## Installation
+
+You can install STRUCT using pip:
+
+```sh
+pip install git+https://github.com/httpdss/struct.git
+```
+
+Alternatively, you can clone the repository and install it locally. see the [Development](#development) section for more details.
+
+## Quick Start using Docker
+
+You can run STRUCT using Docker without installing it on your system. Here's how you can do it:
+
+1. Create a YAML configuration file for your project structure. See sample configuration [here](./example/structure.yaml).
+2. Run the following command to generate the project structure:
+
+```sh
+docker run \
+  -v $(pwd):/workdir \
+  -e OPENAI_API_KEY=your-key \
+  ghcr.io/httpdss/struct:main \
+  /workdir/structure.yaml \
+  .
+```
+
 ## Usage
 
 Run the script with the following command:
@@ -42,7 +68,15 @@ usage: struct [-h] [--log LOG] [--dry-run] [--vars VARS] [--backup BACKUP] [--fi
 ### Example
 
 ```sh
-struct --log=DEBUG --dry-run --vars="project_name=MyProject,author_name=JohnDoe" --backup=/path/to/backup --file-strategy=rename --log-file=/path/to/logfile.log path/to/project_structure.yaml /path/to/your/project
+struct \
+  --log=DEBUG \
+  --dry-run \
+  --vars="project_name=MyProject,author_name=JohnDoe" \
+  --backup=/path/to/backup \
+  --file-strategy=rename \
+  --log-file=/path/to/logfile.log \
+  ./example/structure.yaml \
+  /path/to/your/output/directory
 ```
 
 ## YAML Configuration
