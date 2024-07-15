@@ -43,6 +43,25 @@ docker run \
   .
 ```
 
+## Using docker alpine
+
+```sh
+docker run -it --entrypoint="" python:3.10-alpine sh -l
+```
+
+and inside the container you can:
+
+```sh
+apk add python-pip git vim
+pip install git+<https://github.com/httpdss/struct.git>
+mkdir example
+cd example/
+touch structure.yaml
+vim structure.yaml # you can copy the content from the example folder
+export OPENAI_API_KEY=something
+struct structure.yaml .
+```
+
 ## Usage
 
 Run the script with the following command:
