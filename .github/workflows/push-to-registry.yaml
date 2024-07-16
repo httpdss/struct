@@ -3,6 +3,8 @@ name: push-to-registry
 on:
   push:
     branches: ['main']
+  tags:
+    - '*'
 
 env:
   REGISTRY: ghcr.io
