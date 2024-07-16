@@ -14,35 +14,35 @@ structure:
   - .devops/apps/environments/dev/providers.tf:
       content: |
         provider "aws" {
-          region = "${ aws_region }"
+          region = "{{ aws_region }}"
         }
   - .devops/apps/environments/prod/main.tf:
       content: "# Terraform configuration for the prod environment"
   - .devops/apps/environments/prod/providers.tf:
       content: |
         provider "aws" {
-          region = "${ aws_region }"
+          region = "{{ aws_region }}"
         }
   - .devops/apps/environments/stage/main.tf:
       content: "# Terraform configuration for the stage environment"
   - .devops/apps/environments/stage/providers.tf:
       content: |
         provider "aws" {
-          region = "${ aws_region }"
+          region = "{{ aws_region }}"
         }
   - .devops/apps/environments/qa/main.tf:
       content: "# Terraform configuration for the qa environment"
   - .devops/apps/environments/qa/providers.tf:
       content: |
         provider "aws" {
-          region = "${ aws_region }"
+          region = "{{ aws_region }}"
         }
   - .devops/apps/init/main.tf:
       content: "# Terraform configuration for the init environment"
   - .devops/apps/init/providers.tf:
       content: |
         provider "aws" {
-          region = "${ aws_region }"
+          region = "{{ aws_region }}"
         }
   - .github/workflows/pre-commit.yaml:
       content: |

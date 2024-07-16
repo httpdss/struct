@@ -2,3 +2,4 @@ PyYAML
 requests
 openai
 python-dotenv
+jinja2
