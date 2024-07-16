@@ -38,6 +38,7 @@ jobs:
             type=ref,event=branch
             type=semver,pattern=v{{version}}
             type=semver,pattern=v{{major}}.{{minor}}
+            type=semver,pattern=v{{major}}
 
       - name: Build and push Docker image
         id: push
