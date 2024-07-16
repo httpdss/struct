@@ -1,4 +1,4 @@
-# STRUCT: Automated Project Structure Generator
+# 🚀 STRUCT: Automated Project Structure Generator
 
 ![Struct Banner](extras/banner.png)
 
@@ -6,7 +6,7 @@
 
 STRUCT is a powerful and flexible script designed to automate the creation of project structures based on YAML configurations. It supports template variables, custom file permissions, remote content fetching, and multiple file handling strategies to streamline your development setup process.
 
-## Features
+## ✨ Features
 
 - **YAML Configuration**: Define your project structure in a simple YAML file.
 - **Template Variables**: Use placeholders in your configuration and replace them with actual values at runtime.
@@ -17,7 +17,7 @@ STRUCT is a powerful and flexible script designed to automate the creation of pr
 - **Configuration Validation**: Ensure your YAML configuration is valid before executing the script.
 - **Verbose Logging**: Get detailed logs of the script's actions for easy debugging and monitoring.
 
-## Installation
+## 🛠️ Installation
 
 You can install STRUCT using pip:
 
@@ -27,7 +27,7 @@ pip install git+https://github.com/httpdss/struct.git
 
 Alternatively, you can clone the repository and install it locally. see the [Development](#development) section for more details.
 
-## Quick Start using Docker
+## 🐳 Quick Start using Docker
 
 You can run STRUCT using Docker without installing it on your system. Here's how you can do it:
 
@@ -38,12 +38,13 @@ You can run STRUCT using Docker without installing it on your system. Here's how
 docker run \
   -v $(pwd):/workdir \
   -e OPENAI_API_KEY=your-key \
+  -u $(id -u):$(id -g) \
   ghcr.io/httpdss/struct:main \
-  /workdir/structure.yaml \
-  .
+  /workdir/example/structure.yaml \
+  /workdir/example_output
 ```
 
-## Using docker alpine
+## 🐳 Using docker alpine
 
 ```sh
 docker run -it --entrypoint="" python:3.10-alpine sh -l
@@ -62,7 +63,7 @@ export OPENAI_API_KEY=something
 struct structure.yaml .
 ```
 
-## Usage
+## 📝 Usage
 
 Run the script with the following command:
 
@@ -98,7 +99,7 @@ struct \
   /path/to/your/output/directory
 ```
 
-## YAML Configuration
+## 📄 YAML Configuration
 
 Here is an example of a YAML configuration file:
 
@@ -121,7 +122,7 @@ structure:
 
 ```
 
-## Development
+## 👩‍💻 Development
 
 To get started with development, follow these steps:
 
@@ -140,18 +141,22 @@ pip install -r requirements.txt
 pip install -r requirements.dev.txt
 ```
 
-## License
+## 📜 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## Funding
+## 💰 Funding
 
 If you find this project helpful, please consider supporting it through donations: [patreon/structproject](https://patreon.com/structproject)
 
-## Contributing
+## 🤝 Contributing
 
 Contributions are welcome! Please open an issue or submit a pull request.
 
-## Acknowledgments
+## 🙏Acknowledgments
 
 Special thanks to all the contributors who helped make this project possible.
+
+## 🐞 Known Issues
+
+- [ ] Its mandatory that you set the `OPENAI_API_KEY` environment variable before running the script. if you are not using gpt properties, you can set it to any value. Issue [#3](https://github.com/httpdss/struct/issues/3)
