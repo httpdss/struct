@@ -1,0 +1,160 @@
+structure:
+  - Chart.yaml:
+      content: |
+        apiVersion: v2
+        name: my-helm-chart
+        description: A Helm chart for Kubernetes
+        version: 0.1.0
+        appVersion: "1.0"
+  - values.yaml:
+      content: |
+        replicaCount: 1
+        image:
+          repository: nginx
+          tag: stable
+          pullPolicy: IfNotPresent
+        service:
+          type: ClusterIP
+          port: 80
+        ingress:
+          enabled: false
+          annotations: {}
+          hosts:
+            - host: chart-example.local
+              paths: []
+          tls: []
+        resources: {}
+        nodeSelector: {}
+        tolerations: []
+        affinity: {}
+  - charts/.gitkeep:
+      content: ""
+  - templates/deployment.yaml:
+      content: |
+        apiVersion: apps/v1
+        kind: Deployment
+        metadata:
+          name: {{ .Release.Name }}-{{ .Chart.Name }}
+          labels:
+            app: {{ .Chart.Name }}
+            chart: {{ .Chart.Name }}-{{ .Chart.Version }}
+            release: {{ .Release.Name }}
+            heritage: {{ .Release.Service }}
+        spec:
+          replicas: {{ .Values.replicaCount }}
+          selector:
+            matchLabels:
+              app: {{ .Chart.Name }}
+              release: {{ .Release.Name }}
+          template:
+            metadata:
+              labels:
+                app: {{ .Chart.Name }}
+                release: {{ .Release.Name }}
+            spec:
+              containers:
+                - name: {{ .Chart.Name }}
+                  image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+                  imagePullPolicy: {{ .Values.image.pullPolicy }}
+                  ports:
+                    - containerPort: 80
+                  livenessProbe:
+                    httpGet:
+                      path: /
+                      port: 80
+                    initialDelaySeconds: 60
+                    periodSeconds: 10
+                  readinessProbe:
+                    httpGet:
+                      path: /
+                      port: 80
+                    initialDelaySeconds: 60
+                    periodSeconds: 10
+                  resources:
+                    {{- toYaml .Values.resources | nindent 12 }}
+    - templates/service.yaml:
+        content: |
+          apiVersion: v1
+          kind: Service
+          metadata:
+            name: {{ .Release.Name }}-{{ .Chart.Name }}
+            labels:
+              app: {{ .Chart.Name }}
+              chart: {{ .Chart.Name }}-{{ .Chart.Version }}
+              release: {{ .Release.Name }}
+              heritage: {{ .Release.Service }}
+          spec:
+            type: {{ .Values.service.type }}
+            ports:
+              - port: {{ .Values.service.port }}
+                targetPort: 80
+                protocol: TCP
+                name: http
+            selector:
+              app: {{ .Chart.Name }}
+              release: {{ .Release.Name }}
+    - templates/ingress.yaml:
+        content: |
+          {{- if .Values.ingress.enabled -}}
+          apiVersion: networking.k8s.io/v1
+          kind: Ingress
+          metadata:
+            name: {{ .Release.Name }}-{{ .Chart.Name }}
+            annotations:
+              {{- range $key, $value := .Values.ingress.annotations }}
+              {{ $key }}: {{ $value | quote }}
+              {{- end }}
+          spec:
+            rules:
+              {{- range .Values.ingress.hosts }}
+              - host: {{ .host | quote }}
+                http:
+                  paths:
+                    {{- range .paths }}
+                    - path: {{ . }}
+                      pathType: ImplementationSpecific
+                      backend:
+                        service:
+                          name: {{ $.Release.Name }}-{{ $.Chart.Name }}
+                          port:
+                            number: 80
+                    {{- end }}
+              {{- end }}
+            {{- if .Values.ingress.tls }}
+            tls:
+              {{- range .Values.ingress.tls }}
+              - hosts:
+                  {{- range .hosts }}
+                  - {{ . | quote }}
+                  {{- end }}
+                secretName: {{ .secretName | quote }}
+              {{- end }}
+            {{- end }}
+          {{- end }}
+    - templates/_helpers.tpl:
+        content: |
+          {{/*
+          Create a default chart name and version as release-name.version
+          */}}
+          {{- define "my-helm-chart.chart" -}}
+          {{- printf "%s-%s" .Chart.Name .Chart.Version | trunc 63 | trimSuffix "-" -}}
+          {{- end }}
+  - .helmignore:
+      content: |
+        # Patterns to ignore when building packages.
+        # This supports shell glob matching, relative path matching, and
+        # negation (prefixed with !).
+        .DS_Store
+        .git/
+        .gitignore
+        .gcloudignore
+        .helmignore
+        *.swp
+        *.bak
+        *.tmp
+        *.orig
+        *.old
+        .project
+        .idea/
+        *.tmproj
+        .vscode/
