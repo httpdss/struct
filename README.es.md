@@ -11,7 +11,7 @@
 
 - [Introducción](#-introducción)
 - [Características](#-características)
-- [Instalación](#install)
+- [Instalación](#instalación)
   - [Usando pip](#usando-pip)
   - [Desde el código fuente](#desde-el-código-fuente)
   - [Usando Docker](#usando-docker)
@@ -42,7 +42,7 @@ Está dirigido a desarrolladores, ingenieros DevOps y cualquier persona que quie
 - **Validación de Configuración**: Asegura que tu configuración YAML es válida antes de ejecutar el script.
 - **Registro Detallado**: Obtén registros detallados de las acciones del script para una fácil depuración y monitoreo.
 
-## 🛠️ Instalación {#install}
+## 🛠️ Instalación
 
 ### Usando pip
 

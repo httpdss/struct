@@ -10,7 +10,7 @@
 
 - [Introduction](#-introduction)
 - [Features](#-features)
-- [Installation](#install)
+- [Installation](#installation)
   - [Using pip](#using-pip)
   - [From Source](#from-source)
   - [Using Docker](#using-docker)
@@ -41,7 +41,7 @@ This is targeted towards developers, DevOps engineers, and anyone who wants to a
 - **Configuration Validation**: Ensure your YAML configuration is valid before executing the script.
 - **Verbose Logging**: Get detailed logs of the script's actions for easy debugging and monitoring.
 
-## 🛠️ Installation {#install}
+## 🛠️ Installation
 
 ### Using pip
 
