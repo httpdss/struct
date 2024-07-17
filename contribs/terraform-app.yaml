@@ -1,9 +1,11 @@
 structure:
-  - .devops/apps/init/main.tf:
-      content: "# This is the main Terraform configuration file."
-  - .devops/apps/init/variables.tf:
+  - main.tf:
+      content: |
+        # This is the main Terraform configuration file.
+        touch_file: 2024-07-17
+  - variables.tf:
       content: "# This is the Terraform variables file."
-  - .devops/apps/init/outputs.tf:
+  - outputs.tf:
       content: "# This is the Terraform outputs file."
-  - .devops/apps/init/providers.tf:
+  - providers.tf:
       content: "# This is the Terraform providers file."

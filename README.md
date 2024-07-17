@@ -1,6 +1,6 @@
-[![en](https://img.shields.io/badge/lang-en-red.svg)](https://github.com/httpdss/struct/blob/master/README.md) [![es](https://img.shields.io/badge/lang-es-yellow.svg)](https://github.com/httpdss/struct/blob/master/README.es.md)
-
 # 🚀 STRUCT: Automated Project Structure Generator
+
+[![en](https://img.shields.io/badge/lang-en-red.svg)](https://github.com/httpdss/struct/blob/master/README.md) [![es](https://img.shields.io/badge/lang-es-yellow.svg)](https://github.com/httpdss/struct/blob/master/README.es.md)
 
 ![Struct Banner](extras/banner.png)
 
@@ -10,7 +10,7 @@
 
 - [Introduction](#-introduction)
 - [Features](#-features)
-- [Installation](#-installation)
+- [Installation](#install)
   - [Using pip](#using-pip)
   - [From Source](#from-source)
   - [Using Docker](#using-docker)
@@ -41,7 +41,7 @@ This is targeted towards developers, DevOps engineers, and anyone who wants to a
 - **Configuration Validation**: Ensure your YAML configuration is valid before executing the script.
 - **Verbose Logging**: Get detailed logs of the script's actions for easy debugging and monitoring.
 
-## 🛠️ Installation
+## 🛠️ Installation {#install}
 
 ### Using pip
 
@@ -53,15 +53,15 @@ pip install git+https://github.com/httpdss/struct.git
 
 ### From Source
 
-Alternatively, you can clone the repository and install it locally. See the [Development](#development) section for more details.
+Alternatively, you can clone the repository and install it locally. See the [Development](#-development) section for more details.
 
 ### Using Docker
 
-You can use the Docker image to run the script without installing it on your system. See the [Quick Start](#quick-start) section for more details.
+You can use the Docker image to run the script without installing it on your system. See the [Quick Start](#-quick-start) section for more details.
 
 ## 🐳 Quick Start
 
-### Using Docker
+### Quick Start Using Docker
 
 1. Create a YAML configuration file for your project structure. See sample configuration [here](./example/structure.yaml).
 2. Run the following command to generate the project structure:
@@ -76,9 +76,9 @@ docker run \
   /workdir/example_output
 ```
 
-Replace `your-key` with your OpenAI API key and adjust the paths as needed. If you are not using prompts inside your structure, you can set the `OPENAI_API_KEY` to any value. There is a known issue with the script that requires the `OPENAI_API_KEY` to be set. See [Known Issues](#known-issues) for more details.
+Replace `your-key` with your OpenAI API key and adjust the paths as needed. If you are not using prompts inside your structure, you can set the `OPENAI_API_KEY` to any value. There is a known issue with the script that requires the `OPENAI_API_KEY` to be set. See [Known Issues](#-known-issues) for more details.
 
-### Using Docker Alpine
+### Quick Start Using Docker Alpine
 
 For testing, you can run an alpine Docker container and install the script inside it:
 

@@ -1,6 +1,7 @@
-[![en](https://img.shields.io/badge/lang-en-red.svg)](https://github.com/httpdss/struct/blob/master/README.md) [![es](https://img.shields.io/badge/lang-es-yellow.svg)](https://github.com/httpdss/struct/blob/master/README.es.md)
 
 # 🚀 STRUCT: Generador Automático de Estructuras de Proyectos
+
+[![en](https://img.shields.io/badge/lang-en-red.svg)](https://github.com/httpdss/struct/blob/master/README.md) [![es](https://img.shields.io/badge/lang-es-yellow.svg)](https://github.com/httpdss/struct/blob/master/README.es.md)
 
 ![Banner de Struct](extras/banner.png)
 
@@ -10,7 +11,7 @@
 
 - [Introducción](#-introducción)
 - [Características](#-características)
-- [Instalación](#-instalación)
+- [Instalación](#install)
   - [Usando pip](#usando-pip)
   - [Desde el código fuente](#desde-el-código-fuente)
   - [Usando Docker](#usando-docker)
@@ -28,6 +29,8 @@
 
 STRUCT es un script potente y flexible diseñado para automatizar la creación de estructuras de proyectos basadas en configuraciones YAML. Admite variables de plantilla, permisos de archivos personalizados, obtención de contenido remoto y múltiples estrategias de manejo de archivos para optimizar tu proceso de configuración de desarrollo.
 
+Está dirigido a desarrolladores, ingenieros DevOps y cualquier persona que quiera automatizar la creación de estructuras de proyectos. Puede usarse para generar código de plantilla, archivos de configuración, documentación y más.
+
 ## ✨ Características
 
 - **Configuración YAML**: Define la estructura de tu proyecto en un simple archivo YAML.
@@ -39,7 +42,7 @@ STRUCT es un script potente y flexible diseñado para automatizar la creación d
 - **Validación de Configuración**: Asegura que tu configuración YAML es válida antes de ejecutar el script.
 - **Registro Detallado**: Obtén registros detallados de las acciones del script para una fácil depuración y monitoreo.
 
-## 🛠️ Instalación
+## 🛠️ Instalación {#install}
 
 ### Usando pip
 
@@ -51,15 +54,15 @@ pip install git+https://github.com/httpdss/struct.git
 
 ### Desde el código fuente
 
-Alternativamente, puedes clonar el repositorio e instalarlo localmente. Consulta la sección [Desarrollo](#desarrollo) para más detalles.
+Alternativamente, puedes clonar el repositorio e instalarlo localmente. Consulta la sección [Desarrollo](#-desarrollo) para más detalles.
 
 ### Usando Docker
 
-Puedes usar la imagen de Docker para ejecutar el script sin instalarlo en tu sistema. Consulta la sección [Inicio Rápido](#inicio-rápido) para más detalles.
+Puedes usar la imagen de Docker para ejecutar el script sin instalarlo en tu sistema. Consulta la sección [Inicio Rápido](#-inicio-rápido) para más detalles.
 
 ## 🐳 Inicio Rápido
 
-### Usando Docker
+### Inicio Rápido Usando Docker
 
 1. Crea un archivo de configuración YAML para la estructura de tu proyecto. Consulta una configuración de ejemplo [aquí](./example/structure.yaml).
 2. Ejecuta el siguiente comando para generar la estructura del proyecto:
@@ -74,9 +77,9 @@ docker run \
   /workdir/example_output
 ```
 
-Reemplaza `tu-clave` con tu clave de API de OpenAI y ajusta las rutas según sea necesario. Si no estás usando prompts dentro de tu estructura, puedes establecer `OPENAI_API_KEY` en cualquier valor. Existe un problema conocido con el script que requiere que `OPENAI_API_KEY` esté configurado. Consulta [Problemas Conocidos](#problemas-conocidos) para más detalles.
+Reemplaza `tu-clave` con tu clave de API de OpenAI y ajusta las rutas según sea necesario. Si no estás usando prompts dentro de tu estructura, puedes establecer `OPENAI_API_KEY` en cualquier valor. Existe un problema conocido con el script que requiere que `OPENAI_API_KEY` esté configurado. Consulta [Problemas Conocidos](#-problemas-conocidos) para más detalles.
 
-### Usando Docker Alpine
+### Inicio Rápido Usando Docker Alpine
 
 Para pruebas, puedes ejecutar un contenedor Docker de Alpine e instalar el script dentro de él:
 
