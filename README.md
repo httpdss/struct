@@ -4,7 +4,8 @@
 
 ![Struct Banner](extras/banner.png)
 
-> ⚠️ **Warning:** This project is still in development and may contain bugs. Use it at your own risk.
+> [!WARNING]
+> This project is still in development and may contain bugs. Use it at your own risk.
 
 ## 📄 Table of Contents
 

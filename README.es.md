@@ -5,7 +5,8 @@
 
 ![Banner de Struct](extras/banner.png)
 
-> ⚠️ **Advertencia:** Este proyecto aún está en desarrollo y puede contener errores. Úsalo bajo tu propio riesgo.
+> [!WARNING]
+> Este proyecto aún está en desarrollo y puede contener errores. Úsalo bajo tu propio riesgo.
 
 ## 📄 Tabla de Contenidos
 
