@@ -1,10 +1,34 @@
+[![en](https://img.shields.io/badge/lang-en-red.svg)](https://github.com/httpdss/struct/blob/master/README.md) [![es](https://img.shields.io/badge/lang-es-yellow.svg)](https://github.com/httpdss/struct/blob/master/README.es.md)
+
 # 🚀 STRUCT: Automated Project Structure Generator
 
 ![Struct Banner](extras/banner.png)
 
 > ⚠️ **Warning:** This project is still in development and may contain bugs. Use it at your own risk.
 
+## 📄 Table of Contents
+
+- [Introduction](#-introduction)
+- [Features](#-features)
+- [Installation](#-installation)
+  - [Using pip](#using-pip)
+  - [From Source](#from-source)
+  - [Using Docker](#using-docker)
+- [Quick Start](#-quick-start)
+- [Usage](#-usage)
+- [YAML Configuration](#-yaml-configuration)
+- [Development](#-development)
+- [License](#-license)
+- [Funding](#-funding)
+- [Contributing](#-contributing)
+- [Acknowledgments](#-acknowledgments)
+- [Known Issues](#-known-issues)
+
+## 📦 Introduction
+
 STRUCT is a powerful and flexible script designed to automate the creation of project structures based on YAML configurations. It supports template variables, custom file permissions, remote content fetching, and multiple file handling strategies to streamline your development setup process.
+
+This is targeted towards developers, DevOps engineers, and anyone who wants to automate the creation of project structures. It can be used to generate boilerplate code, configuration files, documentation, and more.
 
 ## ✨ Features
 
@@ -19,17 +43,25 @@ STRUCT is a powerful and flexible script designed to automate the creation of pr
 
 ## 🛠️ Installation
 
+### Using pip
+
 You can install STRUCT using pip:
 
 ```sh
 pip install git+https://github.com/httpdss/struct.git
 ```
 
-Alternatively, you can clone the repository and install it locally. see the [Development](#development) section for more details.
+### From Source
 
-## 🐳 Quick Start using Docker
+Alternatively, you can clone the repository and install it locally. See the [Development](#development) section for more details.
 
-You can run STRUCT using Docker without installing it on your system. Here's how you can do it:
+### Using Docker
+
+You can use the Docker image to run the script without installing it on your system. See the [Quick Start](#quick-start) section for more details.
+
+## 🐳 Quick Start
+
+### Using Docker
 
 1. Create a YAML configuration file for your project structure. See sample configuration [here](./example/structure.yaml).
 2. Run the following command to generate the project structure:
@@ -44,21 +76,25 @@ docker run \
   /workdir/example_output
 ```
 
-## 🐳 Using docker alpine
+Replace `your-key` with your OpenAI API key and adjust the paths as needed. If you are not using prompts inside your structure, you can set the `OPENAI_API_KEY` to any value. There is a known issue with the script that requires the `OPENAI_API_KEY` to be set. See [Known Issues](#known-issues) for more details.
+
+### Using Docker Alpine
+
+For testing, you can run an alpine Docker container and install the script inside it:
 
 ```sh
 docker run -it --entrypoint="" python:3.10-alpine sh -l
 ```
 
-and inside the container you can:
+Inside the container:
 
 ```sh
 apk add python-pip git vim
-pip install git+<https://github.com/httpdss/struct.git>
+pip install git+https://github.com/httpdss/struct.git
 mkdir example
 cd example/
 touch structure.yaml
-vim structure.yaml # you can copy the content from the example folder
+vim structure.yaml # copy the content from the example folder
 export OPENAI_API_KEY=something
 struct structure.yaml .
 ```
@@ -66,10 +102,6 @@ struct structure.yaml .
 ## 📝 Usage
 
 Run the script with the following command:
-
-- OPTIONS which are optional
-- First argument is the file where project structure is defined
-- Second argument is the path where the project structure will be created
 
 ```sh
 usage: struct [-h] [--log LOG] [--dry-run] [--vars VARS] [--backup BACKUP] [--file-strategy {overwrite,skip,append,rename,backup}] [--log-file LOG_FILE] yaml_file base_path
@@ -85,7 +117,13 @@ usage: struct [-h] [--log LOG] [--dry-run] [--vars VARS] [--backup BACKUP] [--fi
 - `--file-strategy`: Strategy for handling existing files (overwrite, skip, append, rename, backup). Default is overwrite.
 - `--log-file`: Path to a log file.
 
-### Example
+### Simple Example
+
+```sh
+struct /path/to/your/structure.yaml /path/to/your/output/directory
+```
+
+### More Complete Example
 
 ```sh
 struct \
@@ -95,7 +133,7 @@ struct \
   --backup=/path/to/backup \
   --file-strategy=rename \
   --log-file=/path/to/logfile.log \
-  ./example/structure.yaml \
+  /path/to/your/structure.yaml \
   /path/to/your/output/directory
 ```
 
@@ -119,7 +157,6 @@ structure:
   - src/main.py:
       content: |
         print("Hello, World!")
-
 ```
 
 ## 👩‍💻 Development
@@ -153,10 +190,10 @@ If you find this project helpful, please consider supporting it through donation
 
 Contributions are welcome! Please open an issue or submit a pull request.
 
-## 🙏Acknowledgments
+## 🙏 Acknowledgments
 
 Special thanks to all the contributors who helped make this project possible.
 
 ## 🐞 Known Issues
 
-- [ ] Its mandatory that you set the `OPENAI_API_KEY` environment variable before running the script. if you are not using gpt properties, you can set it to any value. Issue [#3](https://github.com/httpdss/struct/issues/3)
+- It is mandatory to set the `OPENAI_API_KEY` environment variable before running the script. If you are not using GPT properties, you can set it to any value. Issue [#3](https://github.com/httpdss/struct/issues/3)
