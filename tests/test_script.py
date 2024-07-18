@@ -28,7 +28,7 @@ def test_fetch_remote_content(mock_get):
 
 # Test for FileItem.apply_template_variables
 def test_apply_template_variables():
-    file_item = FileItem({"name": "README.md", "content": "Hello, ${name}!"})
+    file_item = FileItem({"name": "README.md", "content": "Hello, {{name}}!"})
     template_vars = {"name": "World"}
 
     file_item.apply_template_variables(template_vars)

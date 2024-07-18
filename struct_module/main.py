@@ -7,6 +7,7 @@ import time
 import yaml
 from openai import OpenAI
 from dotenv import load_dotenv
+from jinja2 import Template
 
 load_dotenv()
 
@@ -78,7 +79,7 @@ class FileItem:
         if self.content and template_vars:
             logging.debug(f"Applying template variables: {template_vars}")
             template = Template(self.content)
-            self.content = template.substitute(template_vars)
+            self.content = template.render(template_vars)
 
     def create(self, base_path, dry_run=False, backup_path=None, file_strategy='overwrite'):
         file_path = os.path.join(base_path, self.name)
