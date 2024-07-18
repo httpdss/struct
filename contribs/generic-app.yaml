@@ -108,3 +108,53 @@ structure:
       file: https://raw.githubusercontent.com/bitnami/charts/main/.github/PULL_REQUEST_TEMPLATE.md
   - .github/dependabot.yml:
       file: https://raw.githubusercontent.com/bitnami/charts/main/.github/dependabot.yml
+  - Dockerfile:
+      content:
+        # Use an official Node.js runtime as the base image
+        FROM node:14
+
+        # Set the working directory in the container
+        WORKDIR /app
+
+        # Copy package.json and package-lock.json
+        COPY package*.json ./
+
+        # Install Node.js dependencies
+        RUN npm install
+
+        # Copy the application code
+        COPY . .
+
+        # Expose the port the app runs on
+        EXPOSE 3000
+
+        # Run the application
+        CMD ["npm", "start"]
+  - .dockerignore:
+      content: |
+        node_modules
+        npm-debug.log
+  - docker-compose.yml:
+      content: |
+        version: '3'
+        services:
+          app:
+            build: .
+            ports:
+              - "3000:3000"
+            env_file:
+              - .env
+            volumes:
+              - .:/app
+            environment:
+              - NODE_ENV=development
+  - .env.example:
+      content: |
+        # Environment variables
+        NODE_ENV=development
+        PORT=3000
+  - .env:
+      content: |
+        # Environment variables
+        NODE_ENV=development
+        PORT=3000

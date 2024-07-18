@@ -1,0 +1,36 @@
+structure:
+  - .eslintrc.json:
+      content: |
+        {
+          "env": {
+            "browser": true,
+            "es2021": true
+          },
+          "extends": [
+            "eslint:recommended",
+            "plugin:react/recommended"
+          ],
+          "parserOptions": {
+            "ecmaFeatures": {
+              "jsx": true
+            },
+            "ecmaVersion": 12,
+            "sourceType": "module"
+          },
+          "plugins": [
+            "react"
+          ],
+          "rules": {
+            "react/prop-types": "off"
+          }
+        }
+  - .eslintignore:
+      content: |
+        node_modules/
+        dist/
+  - README.md:
+      content: |
+        # ESLint Configuration
+        Standard ESLint configuration for the project.
+        ## Usage
+        Add the `.eslintrc.json` and `.eslintignore` files to your project.

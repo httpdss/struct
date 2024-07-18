@@ -1,0 +1,35 @@
+structure:
+  - Dockerfile:
+      content: |
+        FROM nginx:latest
+        COPY index.html /usr/share/nginx/html/index.html
+  - .dockerignore:
+      content: |
+        .git
+        .idea
+        .vscode
+  - docker-compose.yml:
+      content: |
+        version: '3'
+        services:
+          web:
+            build: .
+            env_file:
+              - .env
+            ports:
+              - "80:80"
+          db:
+            image: mysql:latest
+            environment:
+              MYSQL_ROOT_PASSWORD: example
+  - .env:
+      content: |
+        MYSQL_ROOT_PASSWORD=example
+  - README.md:
+      content: |
+        # Project Name
+        This project uses Docker Compose to run a multi-container application.
+        ## Usage
+        ```bash
+        docker-compose up -d
+        ```
