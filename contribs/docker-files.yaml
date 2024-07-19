@@ -25,11 +25,3 @@ structure:
   - .env:
       content: |
         MYSQL_ROOT_PASSWORD=example
-  - README.md:
-      content: |
-        # Project Name
-        This project uses Docker Compose to run a multi-container application.
-        ## Usage
-        ```bash
-        docker-compose up -d
-        ```

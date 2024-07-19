@@ -11,9 +11,3 @@ structure:
       content: |
         node_modules/
         dist/
-  - README.md:
-      content: |
-        # Prettier Configuration
-        Standard Prettier configuration for the project.
-        ## Usage
-        Add the `.prettierrc` and `.prettierignore` files to your project.

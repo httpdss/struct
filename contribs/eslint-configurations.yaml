@@ -28,9 +28,3 @@ structure:
       content: |
         node_modules/
         dist/
-  - README.md:
-      content: |
-        # ESLint Configuration
-        Standard ESLint configuration for the project.
-        ## Usage
-        Add the `.eslintrc.json` and `.eslintignore` files to your project.
