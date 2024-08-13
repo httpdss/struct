@@ -4,3 +4,4 @@ __pycache__
 .env
 *.log
 example_project/
+build/*

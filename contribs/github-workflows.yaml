@@ -1,0 +1,11 @@
+structure:
+  - .github/workflows/terrform-workflow.yaml:
+      file: https://raw.githubusercontent.com/httpdss/github-workflows/main/.github/workflows/terraform-workflow.yaml
+  - .github/workflows/pre-commit.yaml:
+      file: https://raw.githubusercontent.com/httpdss/struct/main/.github/workflows/pre-commit.yaml
+  - .github/workflows/release-drafter.yaml:
+      file: https://raw.githubusercontent.com/httpdss/github-workflows/main/.github/workflows/release-drafter.yaml
+  - .github/release-drafter.yml:
+      file: https://raw.githubusercontent.com/httpdss/github-workflows/main/.github/release-drafter.yml
+  - .pre-commit-config.yaml:
+      file: https://raw.githubusercontent.com/httpdss/struct/main/.pre-commit-config.yaml
