@@ -2,11 +2,9 @@ import pytest
 import os
 import tempfile
 import time
-import shutil
-import requests
 import logging
 from unittest.mock import patch, MagicMock
-from struct_module.main import FileItem, validate_configuration, create_structure
+from struct_module.utils import FileItem, validate_configuration, create_structure
 
 # Mock the environment variables for OpenAI
 @pytest.fixture(autouse=True)
