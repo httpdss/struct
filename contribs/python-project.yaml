@@ -134,4 +134,3 @@ structure:
       content: |
         def function2():
           return False
-
