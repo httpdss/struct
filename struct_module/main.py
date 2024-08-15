@@ -12,6 +12,7 @@ openai_model = os.getenv("OPENAI_MODEL")
 if not openai_api_key:
     logging.warning("OpenAI API key not found. Skipping processing prompt.")
 
+
 def main():
     import argparse
 
@@ -65,6 +66,7 @@ def main():
     create_structure(args.base_path, config.get('structure', []), args.dry_run, template_vars, backup_path, args.file_strategy, args.global_system_prompt)
 
     logging.info("Finished creating project structure")
+
 
 if __name__ == "__main__":
     main()

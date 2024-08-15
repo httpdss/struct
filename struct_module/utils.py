@@ -9,6 +9,7 @@ load_dotenv()
 openai_api_key = os.getenv("OPENAI_API_KEY")
 openai_model = os.getenv("OPENAI_MODEL")
 
+
 def validate_configuration(structure):
     if not isinstance(structure, list):
         raise ValueError("The 'structure' key must be a list.")
@@ -38,6 +39,7 @@ def validate_configuration(structure):
                 raise ValueError(f"The content of '{name}' must be a string or dictionary.")
     logging.info("Configuration validation passed.")
 
+
 def create_structure(base_path, structure, dry_run=False, template_vars=None, backup_path=None, file_strategy='overwrite', global_system_prompt=None):
     for item in structure:
         logging.debug(f"Processing item: {item}")
@@ -55,9 +57,11 @@ def create_structure(base_path, structure, dry_run=False, template_vars=None, ba
             file_item.process_prompt(dry_run)
             file_item.create(base_path, dry_run, backup_path, file_strategy)
 
+
 def read_config_file(file_path):
     with open(file_path, 'r') as f:
         return yaml.safe_load(f)
+
 
 def merge_configs(file_config, args):
     args_dict = vars(args)

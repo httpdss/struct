@@ -3,8 +3,9 @@ import os
 import tempfile
 import time
 import logging
-from unittest.mock import patch, MagicMock
+from unittest.mock import patch
 from struct_module.utils import FileItem, validate_configuration, create_structure
+
 
 # Mock the environment variables for OpenAI
 @pytest.fixture(autouse=True)
@@ -12,8 +13,9 @@ def mock_env_vars(monkeypatch):
     monkeypatch.setenv("OPENAI_API_KEY", "test-api-key")
     monkeypatch.setenv("OPENAI_MODEL", "gpt-3.5-turbo")
 
+
 # Test for FileItem.fetch_content
-@patch('struct_module.requests.get')
+@patch('struct_module.file_item.requests.get')
 def test_fetch_remote_content(mock_get):
     mock_get.return_value.status_code = 200
     mock_get.return_value.text = "Mocked content"
@@ -24,6 +26,7 @@ def test_fetch_remote_content(mock_get):
     assert file_item.content == "Mocked content"
     mock_get.assert_called_once_with("https://example.com/mock")
 
+
 # Test for FileItem.apply_template_variables
 def test_apply_template_variables():
     file_item = FileItem({"name": "README.md", "content": "Hello, ${name}!"})
@@ -32,6 +35,7 @@ def test_apply_template_variables():
     file_item.apply_template_variables(template_vars)
 
     assert file_item.content == "Hello, World!"
+
 
 # Test for validate_configuration
 def test_validate_configuration():
@@ -54,6 +58,7 @@ def test_validate_configuration():
 
     with pytest.raises(ValueError):
         validate_configuration(invalid_structure)
+
 
 # Test for FileItem.create with different strategies
 def test_create_file():
@@ -87,6 +92,7 @@ def test_create_file():
             assert f.read() == "#!/bin/bash\necho 'Hello, World!'"
         assert oct(os.stat(script_path).st_mode)[-3:] == '777'
 
+
 # Test for dry run
 def test_dry_run(caplog):
     structure = [
@@ -102,10 +108,12 @@ def test_dry_run(caplog):
             create_structure(tmpdirname, structure, dry_run=True)
 
         assert not os.path.exists(os.path.join(tmpdirname, "README.md"))
-        assert any("[DRY RUN] Would create file:" in message for message in caplog.messages)
+        assert any("[DRY RUN] Would create file:" in message
+                   for message in caplog.messages)
+
 
 # Mocking requests.get for testing fetch_remote_content within create_structure
-@patch('struct_module.requests.get')
+@patch('struct_module.file_item.requests.get')
 def test_create_structure_with_remote_content(mock_get):
     mock_get.return_value.status_code = 200
     mock_get.return_value.text = "Remote content"
@@ -126,6 +134,7 @@ def test_create_structure_with_remote_content(mock_get):
         with open(license_path, 'r') as f:
             assert f.read() == "Remote content"
 
+
 # Test for backup strategy
 def test_backup_strategy():
     structure = [
@@ -144,11 +153,15 @@ def test_backup_strategy():
         backup_path = os.path.join(tmpdirname, "backup")
         os.makedirs(backup_path)
 
-        create_structure(tmpdirname, structure, backup_path=backup_path, file_strategy='backup')
+        create_structure(tmpdirname,
+                         structure,
+                         backup_path=backup_path,
+                         file_strategy='backup')
 
         assert os.path.exists(os.path.join(backup_path, "README.md"))
         with open(readme_path, 'r') as f:
             assert f.read() == "This is a README file."
+
 
 # Test for skip strategy
 def test_skip_strategy():
@@ -170,6 +183,7 @@ def test_skip_strategy():
         with open(readme_path, 'r') as f:
             assert f.read() == "Existing content"
 
+
 # Test for append strategy
 def test_append_strategy():
     structure = [
@@ -189,6 +203,7 @@ def test_append_strategy():
 
         with open(readme_path, 'r') as f:
             assert f.read() == "Existing content. Appended content."
+
 
 # Test for rename strategy
 def test_rename_strategy():
@@ -211,6 +226,7 @@ def test_rename_strategy():
         assert os.path.exists(new_name)
         with open(readme_path, 'r') as f:
             assert f.read() == "This is a new README file."
+
 
 # Test for directory creation
 def test_create_structure_creates_directory():

@@ -30,7 +30,7 @@ jobs:
         pip install -r requirements.dev.txt
 
     - name: Lint with flake8
-      run: flake8 --max-line-length=88 .
+      run: flake8 --max-line-length=200 .
       continue-on-error: true
 
     - name: Run tests

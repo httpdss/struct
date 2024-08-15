@@ -12,6 +12,7 @@ load_dotenv()
 openai_api_key = os.getenv("OPENAI_API_KEY")
 openai_model = os.getenv("OPENAI_MODEL")
 
+
 class FileItem:
     def __init__(self, properties):
         self.name = properties.get("name")
