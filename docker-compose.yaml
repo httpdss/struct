@@ -7,6 +7,7 @@ services:
     env_file:
       - .env
     command: [
+      "generate",
       "--log=DEBUG",
       "--dry-run",
       "--vars=project_name=MyProject,author_name=JohnDoe",
@@ -24,6 +25,7 @@ services:
     env_file:
       - .env
     command: [
+      "generate",
       "--log=DEBUG",
       "--vars=project_name=MyProject,author_name=JohnDoe",
       "--backup=/app/backup",
