@@ -72,7 +72,7 @@ docker run \
   -v $(pwd):/workdir \
   -e OPENAI_API_KEY=your-key \
   -u $(id -u):$(id -g) \
-  ghcr.io/httpdss/struct:main \
+  ghcr.io/httpdss/struct:main generate \
   /workdir/example/structure.yaml \
   /workdir/example_output
 ```
@@ -97,7 +97,7 @@ cd example/
 touch structure.yaml
 vim structure.yaml # copy the content from the example folder
 export OPENAI_API_KEY=something
-struct structure.yaml .
+struct generate structure.yaml .
 ```
 
 ## 📝 Usage
@@ -121,13 +121,13 @@ usage: struct [-h] [--log LOG] [--dry-run] [--vars VARS] [--backup BACKUP] [--fi
 ### Simple Example
 
 ```sh
-struct /path/to/your/structure.yaml /path/to/your/output/directory
+struct generate /path/to/your/structure.yaml /path/to/your/output/directory
 ```
 
 ### More Complete Example
 
 ```sh
-struct \
+struct generate \
   --log=DEBUG \
   --dry-run \
   --vars="project_name=MyProject,author_name=JohnDoe" \

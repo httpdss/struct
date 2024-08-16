@@ -12,7 +12,7 @@ setup(
     install_requires=parse_requirements('requirements.txt'),
     entry_points={
         'console_scripts': [
-            'struct = struct_module:main',
+            'struct = struct_module.main:main',
         ],
     },
 )
