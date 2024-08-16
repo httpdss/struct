@@ -48,11 +48,12 @@ class GenerateCommand(Command):
         elif isinstance(content, str):
           file_item = FileItem({"name": name, "content": content})
 
-          file_item.apply_template_variables(template_vars)
-          file_item.process_prompt(args.dry_run)
-          file_item.create(
-            args.base_path,
-            args.dry_run or False,
-            args.backup_path or None,
-            args.file_strategy or 'overwrite'
-          )
+        file_item.apply_template_variables(template_vars)
+        file_item.process_prompt(args.dry_run)
+
+        file_item.create(
+          args.base_path,
+          args.dry_run or False,
+          args.backup or None,
+          args.file_strategy or 'overwrite'
+        )
