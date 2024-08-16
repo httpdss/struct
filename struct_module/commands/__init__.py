@@ -14,4 +14,3 @@ class Command:
 
     def execute(self, args):
         raise NotImplementedError("Subclasses should implement this!")
-
