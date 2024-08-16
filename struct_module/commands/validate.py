@@ -1,7 +1,6 @@
 import os
 import yaml
 from dotenv import load_dotenv
-from struct_module.utils import validate_configuration
 from struct_module.commands import Command
 
 load_dotenv()

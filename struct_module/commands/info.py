@@ -6,4 +6,10 @@ class InfoCommand(Command):
         parser.set_defaults(func=self.execute)
 
     def execute(self, args):
-        print("Info about the package")
+        print("STRUCT")
+        print("")
+        print("Generate project structure from YAML configuration.")
+        print("Commands:")
+        print("  generate    Generate the project structure")
+        print("  validate    Validate the YAML configuration file")
+        print("  info        Show information about the package")
