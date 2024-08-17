@@ -27,10 +27,10 @@ def main():
     # Create subparsers
     subparsers = parser.add_subparsers()
 
-
     InfoCommand(subparsers.add_parser('info', help='Show information about the package'))
     ValidateCommand(subparsers.add_parser('validate', help='Validate the YAML configuration file'))
     GenerateCommand(subparsers.add_parser('generate', help='Generate the project structure'))
+
     args = parser.parse_args()
 
     # Check if a subcommand was provided

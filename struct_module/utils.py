@@ -1,19 +1,4 @@
-import logging
-import os
-from .file_item import FileItem
-from dotenv import load_dotenv
 import yaml
-
-load_dotenv()
-
-openai_api_key = os.getenv("OPENAI_API_KEY")
-openai_model = os.getenv("OPENAI_MODEL")
-
-
-
-
-
-
 
 
 def read_config_file(file_path):
