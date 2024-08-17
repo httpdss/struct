@@ -73,10 +73,19 @@ class FileItem:
             self.logger.debug(f"Fetched content: {self.content}")
 
     def apply_template_variables(self, template_vars):
-        if self.content and template_vars:
-            logging.debug(f"Applying template variables: {template_vars}")
-            template = Template(self.content)
-            self.content = template.render(template_vars)
+        # if self.content and template_vars:
+        logging.debug(f"Applying template variables: {template_vars}")
+        template = Template(
+            source=self.content,
+            trim_blocks=True,
+            block_start_string='{%@',
+            block_end_string='@%}',
+            variable_start_string='{{@',
+            variable_end_string='@}}',
+            comment_start_string='{#@',
+            comment_end_string='@#}'
+        )
+        self.content = template.render(template_vars or {})
 
     def create(self, base_path, dry_run=False, backup_path=None, file_strategy='overwrite'):
         file_path = os.path.join(base_path, self.name)
