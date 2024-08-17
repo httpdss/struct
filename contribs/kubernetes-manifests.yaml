@@ -1,0 +1,84 @@
+structure:
+  - deployment.yaml:
+      content: |
+        apiVersion: apps/v1
+        kind: Deployment
+        metadata:
+          name: example-deployment
+          labels:
+            app: example-app
+        spec:
+          replicas: 2
+          selector:
+            matchLabels:
+              app: example-app
+          template:
+            metadata:
+              labels:
+                app: example-app
+            spec:
+              containers:
+              - name: example-container
+                image: nginx:latest
+                ports:
+                - containerPort: 80
+  - service.yaml:
+      content: |
+        apiVersion: v1
+        kind: Service
+        metadata:
+          name: example-service
+        spec:
+          selector:
+            app: example-app
+          ports:
+            - protocol: TCP
+              port: 80
+              targetPort: 80
+  - ingress.yaml:
+      content: |
+        apiVersion: networking.k8s.io/v1
+        kind: Ingress
+        metadata:
+          name: example-ingress
+        spec:
+          rules:
+          - host: example.com
+            http:
+              paths:
+              - path: /
+                pathType: Prefix
+                backend:
+                  service:
+                    name: example-service
+                    port:
+                      number: 80
+  - configmap.yaml:
+      content: |
+        apiVersion: v1
+        kind: ConfigMap
+        metadata:
+          name: example-config
+        data:
+          example.property: "value"
+  - secrets.yaml:
+      content: |
+        apiVersion: v1
+        kind: Secret
+        metadata:
+          name: example-secret
+        type: Opaque
+        data:
+          password: dXNlcl9wYXNzd29yZA== # base64 encoded 'user_password'
+  - README.md:
+      content: |
+        # App Name
+        Kubernetes manifests for deploying the example app.
+        ## Usage
+        ```bash
+        kubectl apply -f deployment.yaml
+        kubectl apply -f service.yaml
+        kubectl apply -f ingress.yaml
+        kubectl apply -f configmap.yaml
+        kubectl apply -f secrets.yaml
+        ```

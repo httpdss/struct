@@ -1,0 +1,51 @@
+structure:
+  - recipes/default.rb:
+      content: |
+        package 'nginx' do
+          action :install
+        end
+        service 'nginx' do
+          action [ :enable, :start ]
+        end
+  - attributes/default.rb:
+      content: |
+        default['nginx']['version'] = 'latest'
+  - templates/default/nginx.conf.erb:
+      content: |
+        user  nginx;
+        worker_processes  auto;
+        error_log  /var/log/nginx/error.log warn;
+        pid        /var/run/nginx.pid;
+        events {
+            worker_connections  1024;
+        }
+        http {
+            include       /etc/nginx/mime.types;
+            default_type  application/octet-stream;
+            sendfile        on;
+            keepalive_timeout  65;
+            server {
+                listen       80;
+                server_name  localhost;
+                location / {
+                    root   html;
+                    index  index.html index.htm;
+                }
+            }
+        }
+  - files/default/index.html:
+      content: |
+        <html>
+        <head>
+          <title>Welcome to nginx!</title>
+        </head>
+        <body>
+          <h1>Success! The nginx server is working!</h1>
+        </body>
+        </html>
+  - README.md:
+      content: |
+        # Cookbook Name
+        Chef cookbook for configuring NGINX.
+        ## Usage
+        Add the cookbook to your Chef server and include it in your run list.

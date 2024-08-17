@@ -1,0 +1,21 @@
+structure:
+  - template.yaml:
+      content: |
+        Resources:
+          ExampleBucket:
+            Type: AWS::S3::Bucket
+            Properties:
+              BucketName: example-bucket
+  - parameters.json:
+      content: |
+        [
+          {
+            "ParameterKey": "BucketName",
+            "ParameterValue": "example-bucket"
+          }
+        ]
+  - deploy.sh:
+      permissions: 755
+      content: |
+        #!/bin/bash
+        aws cloudformation deploy --stack-name example-stack --template-file template.yaml --parameter-overrides $(cat parameters.json | jq -r '.[] | "--parameters \(.ParameterKey)=\(.ParameterValue)"') --capabilities CAPABILITY_IAM

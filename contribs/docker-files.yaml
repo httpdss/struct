@@ -1,0 +1,27 @@
+structure:
+  - Dockerfile:
+      content: |
+        FROM nginx:latest
+        COPY index.html /usr/share/nginx/html/index.html
+  - .dockerignore:
+      content: |
+        .git
+        .idea
+        .vscode
+  - docker-compose.yml:
+      content: |
+        version: '3'
+        services:
+          web:
+            build: .
+            env_file:
+              - .env
+            ports:
+              - "80:80"
+          db:
+            image: mysql:latest
+            environment:
+              MYSQL_ROOT_PASSWORD: example
+  - .env:
+      content: |
+        MYSQL_ROOT_PASSWORD=example

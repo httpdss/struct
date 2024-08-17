@@ -1,0 +1,13 @@
+structure:
+  - .prettierrc:
+      content: |
+        {
+          "singleQuote": true,
+          "trailingComma": "es5",
+          "tabWidth": 2,
+          "semi": false
+        }
+  - .prettierignore:
+      content: |
+        node_modules/
+        dist/

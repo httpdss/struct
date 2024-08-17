@@ -1,0 +1,19 @@
+structure:
+  - .git/hooks/pre-commit:
+      permissions: 755
+      content: |
+        #!/bin/sh
+        echo "Running pre-commit hook"
+        # Add pre-commit tasks here
+  - .git/hooks/pre-push:
+      permissions: 755
+      content: |
+        #!/bin/sh
+        echo "Running pre-push hook"
+        # Add pre-push tasks here
+  - .git/hooks/commit-msg:
+      permissions: 755
+      content: |
+        #!/bin/sh
+        echo "Running commit-msg hook"
+        # Add commit-msg tasks here

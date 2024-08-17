@@ -1,0 +1,67 @@
+structure:
+  - .gitlab-ci.yml:
+      content: |
+        stages:
+          - build
+          - test
+          - deploy
+        build_job:
+          stage: build
+          script:
+            - echo "Building the project"
+        test_job:
+          stage: test
+          script:
+            - echo "Running tests"
+        deploy_job:
+          stage: deploy
+          script:
+            - echo "Deploying the project"
+  - Jenkinsfile:
+      content: |
+        pipeline {
+            agent any
+            stages {
+                stage('Build') {
+                    steps {
+                        echo 'Building the project'
+                    }
+                }
+                stage('Test') {
+                    steps {
+                        echo 'Running tests'
+                    }
+                }
+                stage('Deploy') {
+                    steps {
+                        echo 'Deploying the project'
+                    }
+                }
+            }
+        }
+  - .github/workflows/ci.yml:
+      content: |
+        name: CI
+        on: [push, pull_request]
+        jobs:
+          build:
+            runs-on: ubuntu-latest
+            steps:
+              - name: Checkout code
+                uses: actions/checkout@v2
+              - name: Build
+                run: echo "Building the project"
+              - name: Test
+                run: echo "Running tests"
+  - .github/workflows/cd.yml:
+      content: |
+        name: CD
+        on: [push]
+        jobs:
+          deploy:
+            runs-on: ubuntu-latest
+            steps:
+              - name: Checkout code
+                uses: actions/checkout@v2
+              - name: Deploy
+                run: echo "Deploying the project"

@@ -1,0 +1,21 @@
+structure:
+  - Vagrantfile:
+      content: |
+        Vagrant.configure("2") do |config|
+          config.vm.box = "ubuntu/bionic64"
+          config.vm.provision "shell", path: "bootstrap.sh"
+        end
+  - bootstrap.sh:
+      permissions: 755
+      content: |
+        #!/bin/bash
+        apt-get update
+        apt-get install -y nginx
+  - README.md:
+      content: |
+        # Project Name
+        Vagrant setup for development environment.
+        ## Usage
+        ```bash
+        vagrant up
+        ```

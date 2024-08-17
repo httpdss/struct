@@ -1,7 +1,30 @@
 structure:
-  - .devops/module/mymodule/main.tf:
-      content: "# This is the main Terraform module file."
-  - .devops/module/mymodule/variables.tf:
-      content: "# This is the Terraform variables file for this module."
-  - .devops/module/mymodule/outputs.tf:
-      content: "# This is the Terraform outputs file for this module."
+  - main.tf:
+      content: |
+        resource "aws_instance" "example" {
+          ami           = "ami-0c55b159cbfafe1f0"
+          instance_type = "t2.micro"
+        }
+  - variables.tf:
+      content: |
+        variable "instance_type" {
+          description = "Type of instance to launch"
+          type        = string
+          default     = "t2.micro"
+        }
+  - outputs.tf:
+      content: |
+        output "instance_id" {
+          value = aws_instance.example.id
+        }
+  - README.md:
+      content: |
+        # Module Name
+        This module provisions an EC2 instance on AWS.
+        ## Usage
+        ```hcl
+        module "example" {
+          source = "./module-name"
+          instance_type = "t2.micro"
+        }
+        ```
