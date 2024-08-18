@@ -80,6 +80,7 @@ structure:
           region = "{{@ aws_region @}}"
         }
   - .github/workflows/pre-commit.yaml:
+      content: |
         # This file defines the submodules used by the repository
         # See https://git-scm.com/docs/gitmodules
 
