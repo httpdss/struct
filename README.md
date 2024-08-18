@@ -187,6 +187,10 @@ structure:
         Latest release: {{@ "httpdss/struct" | latest_release @}}
 ```
 
+This uses PyGithub to fetch the latest release of the repository so setting the `GITHUB_TOKEN` environment variable will give you access to private repositories.
+
+If there is an error in the process, the filter will return `LATEST_RELEASE_ERROR`.
+
 ## 👩‍💻 Development
 
 To get started with development, follow these steps:

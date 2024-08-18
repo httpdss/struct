@@ -168,6 +168,24 @@ Para definir comentarios, puedes usar la notación de inicio de comentario `{#@`
 - `file_name`: El nombre del archivo que se está procesando.
 - `file_directory`: El nombre del directorio del archivo que se está procesando.
 
+#### Filtros personalizados de Jinja2
+
+##### `latest_release`
+
+Este filtro obtiene la versión más reciente de una release en un repositorio de GitHub. Toma el nombre del repositorio como argumento.
+
+```yaml
+structure:
+  - README.md:
+      content: |
+        # MyProject
+        Latest release: {{@ "httpdss/struct" | latest_release @}}
+```
+
+Esto utiliza PyGithub para obtener la última release del repositorio, por lo que configurar la variable de entorno `GITHUB_TOKEN` te dará acceso a repositorios privados.
+
+Si ocurre un error en el proceso, el filtro devolverá `LATEST_RELEASE_ERROR`.
+
 ## 👩‍💻 Desarrollo
 
 Para comenzar con el desarrollo, sigue estos pasos:

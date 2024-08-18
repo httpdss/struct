@@ -2,7 +2,7 @@ import requests
 import os
 import shutil
 import logging
-from jinja2 import Template
+from jinja2 import Environment
 import time
 from openai import OpenAI
 from dotenv import load_dotenv
@@ -82,14 +82,15 @@ class FileItem:
             "file_name": self.name,
             "file_directory": self.file_directory,
         }
+        if not template_vars:
+            return default_vars
         return {**default_vars, **template_vars}
 
     def apply_template_variables(self, template_vars):
         vars = self._merge_default_template_vars(template_vars)
         logging.debug(f"Applying template variables: {vars}")
 
-        template = Template(
-            source=self.content,
+        env = Environment(
             trim_blocks=True,
             block_start_string='{%@',
             block_end_string='@%}',
@@ -98,7 +99,8 @@ class FileItem:
             comment_start_string='{#@',
             comment_end_string='@#}'
         )
-        template.globals['latest_release'] = get_latest_release
+        env.filters['latest_release'] = get_latest_release
+        template = env.from_string(self.content)
 
         self.content = template.render(vars)
 
