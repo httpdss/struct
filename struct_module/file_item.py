@@ -6,6 +6,7 @@ from jinja2 import Template
 import time
 from openai import OpenAI
 from dotenv import load_dotenv
+from struct_module.filters import get_latest_release
 
 load_dotenv()
 
@@ -86,6 +87,7 @@ class FileItem:
     def apply_template_variables(self, template_vars):
         vars = self._merge_default_template_vars(template_vars)
         logging.debug(f"Applying template variables: {vars}")
+
         template = Template(
             source=self.content,
             trim_blocks=True,
@@ -96,6 +98,8 @@ class FileItem:
             comment_start_string='{#@',
             comment_end_string='@#}'
         )
+        template.globals['latest_release'] = get_latest_release
+
         self.content = template.render(vars)
 
     def create(self, base_path, dry_run=False, backup_path=None, file_strategy='overwrite'):

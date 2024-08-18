@@ -173,6 +173,20 @@ To define comments you can use the comment start notation `{#@` and end comment 
 - `file_name`: The name of the file being processed.
 - `file_directory`: The name of the directory of file that is being processed.
 
+#### Custom Jinja2 filters
+
+##### `latest_release`
+
+This filter fetches the latest release version of a GitHub repository. It takes the repository name as an argument.
+
+```yaml
+structure:
+  - README.md:
+      content: |
+        # MyProject
+        Latest release: {{@ "httpdss/struct" | latest_release @}}
+```
+
 ## 👩‍💻 Development
 
 To get started with development, follow these steps:
