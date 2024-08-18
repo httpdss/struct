@@ -17,6 +17,7 @@ class FileItem:
     def __init__(self, properties):
         self.logger = logging.getLogger(__name__)
         self.name = properties.get("name")
+        self.file_directory = self._get_file_directory()
         self.content = properties.get("content")
         self.remote_location = properties.get("file")
         self.permissions = properties.get("permissions")
@@ -33,6 +34,9 @@ class FileItem:
         else:
             self.logger.debug(f"Using OpenAI model: {openai_model}")
             self.openai_model = openai_model
+
+    def _get_file_directory(self):
+        return os.path.dirname(self.name)
 
     def process_prompt(self, dry_run=False):
         if self.user_prompt:
@@ -72,9 +76,16 @@ class FileItem:
             self.content = response.text
             self.logger.debug(f"Fetched content: {self.content}")
 
+    def _merge_default_template_vars(self, template_vars):
+        default_vars = {
+            "file_name": self.name,
+            "file_directory": self.file_directory,
+        }
+        return {**default_vars, **template_vars}
+
     def apply_template_variables(self, template_vars):
-        # if self.content and template_vars:
-        logging.debug(f"Applying template variables: {template_vars}")
+        vars = self._merge_default_template_vars(template_vars)
+        logging.debug(f"Applying template variables: {vars}")
         template = Template(
             source=self.content,
             trim_blocks=True,
@@ -85,7 +96,7 @@ class FileItem:
             comment_start_string='{#@',
             comment_end_string='@#}'
         )
-        self.content = template.render(template_vars or {})
+        self.content = template.render(vars)
 
     def create(self, base_path, dry_run=False, backup_path=None, file_strategy='overwrite'):
         file_path = os.path.join(base_path, self.name)

@@ -141,19 +141,32 @@ Aquí tienes un ejemplo de un archivo de configuración YAML:
 structure:
   - README.md:
       content: |
-        # ${project_name}
-        Este es un repositorio de plantilla.
+        # {{@ project_name @}}
+        This is a template repository.
   - script.sh:
       permissions: '0777'
       content: |
         #!/bin/bash
-        echo "¡Hola, ${author_name}!"
+        echo "Hello, {{@ author_name @}}!"
   - LICENSE:
       file: https://raw.githubusercontent.com/nishanths/license/master/LICENSE
   - src/main.py:
       content: |
-        print("¡Hola, Mundo!")
+        print("Hello, World!")
 ```
+
+### Variables de plantilla
+
+Puedes usar variables de plantilla en tu archivo de configuración encerrándolas entre `{{@` y `@}}`. Por ejemplo, `{{@ project_name @}}` será reemplazado con el valor de la variable `project_name` en tiempo de ejecución.
+
+Si necesitas definir bloques, puedes usar la notación de inicio de bloque `{%@` y la notación de final de bloque `%@}`.
+
+Para definir comentarios, puedes usar la notación de inicio de comentario `{#@` y la notación de fin de comentario `@#}`.
+
+#### Variables de plantilla predeterminadas
+
+- `file_name`: El nombre del archivo que se está procesando.
+- `file_directory`: El nombre del directorio del archivo que se está procesando.
 
 ## 👩‍💻 Desarrollo
 

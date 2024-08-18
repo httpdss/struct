@@ -168,6 +168,11 @@ If you need to define blocks you can use starting block notation `{%@` and end b
 
 To define comments you can use the comment start notation `{#@` and end comment notation `@#}`.
 
+#### Default template variables
+
+- `file_name`: The name of the file being processed.
+- `file_directory`: The name of the directory of file that is being processed.
+
 ## 👩‍💻 Development
 
 To get started with development, follow these steps:
