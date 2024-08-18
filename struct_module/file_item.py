@@ -2,10 +2,11 @@ import requests
 import os
 import shutil
 import logging
-from string import Template
+from jinja2 import Environment
 import time
 from openai import OpenAI
 from dotenv import load_dotenv
+from struct_module.filters import get_latest_release
 
 load_dotenv()
 
@@ -17,6 +18,7 @@ class FileItem:
     def __init__(self, properties):
         self.logger = logging.getLogger(__name__)
         self.name = properties.get("name")
+        self.file_directory = self._get_file_directory()
         self.content = properties.get("content")
         self.remote_location = properties.get("file")
         self.permissions = properties.get("permissions")
@@ -33,6 +35,9 @@ class FileItem:
         else:
             self.logger.debug(f"Using OpenAI model: {openai_model}")
             self.openai_model = openai_model
+
+    def _get_file_directory(self):
+        return os.path.dirname(self.name)
 
     def process_prompt(self, dry_run=False):
         if self.user_prompt:
@@ -72,11 +77,32 @@ class FileItem:
             self.content = response.text
             self.logger.debug(f"Fetched content: {self.content}")
 
+    def _merge_default_template_vars(self, template_vars):
+        default_vars = {
+            "file_name": self.name,
+            "file_directory": self.file_directory,
+        }
+        if not template_vars:
+            return default_vars
+        return {**default_vars, **template_vars}
+
     def apply_template_variables(self, template_vars):
-        if self.content and template_vars:
-            self.logger.debug(f"Applying template variables: {template_vars}")
-            template = Template(self.content)
-            self.content = template.substitute(template_vars)
+        vars = self._merge_default_template_vars(template_vars)
+        logging.debug(f"Applying template variables: {vars}")
+
+        env = Environment(
+            trim_blocks=True,
+            block_start_string='{%@',
+            block_end_string='@%}',
+            variable_start_string='{{@',
+            variable_end_string='@}}',
+            comment_start_string='{#@',
+            comment_end_string='@#}'
+        )
+        env.filters['latest_release'] = get_latest_release
+        template = env.from_string(self.content)
+
+        self.content = template.render(vars)
 
     def create(self, base_path, dry_run=False, backup_path=None, file_strategy='overwrite'):
         file_path = os.path.join(base_path, self.name)

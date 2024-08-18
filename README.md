@@ -146,19 +146,50 @@ Here is an example of a YAML configuration file:
 structure:
   - README.md:
       content: |
-        # ${project_name}
+        # {{@ project_name @}}
         This is a template repository.
   - script.sh:
       permissions: '0777'
       content: |
         #!/bin/bash
-        echo "Hello, ${author_name}!"
+        echo "Hello, {{@ author_name @}}!"
   - LICENSE:
       file: https://raw.githubusercontent.com/nishanths/license/master/LICENSE
   - src/main.py:
       content: |
         print("Hello, World!")
 ```
+
+### Template variables
+
+You can use template variables in your configuration file by enclosing them in `{{@` and `@}}`. For example, `{{@ project_name @}}` will be replaced with the value of the `project_name` variable at runtime.
+
+If you need to define blocks you can use starting block notation `{%@` and end block notation `%@}`.
+
+To define comments you can use the comment start notation `{#@` and end comment notation `@#}`.
+
+#### Default template variables
+
+- `file_name`: The name of the file being processed.
+- `file_directory`: The name of the directory of file that is being processed.
+
+#### Custom Jinja2 filters
+
+##### `latest_release`
+
+This filter fetches the latest release version of a GitHub repository. It takes the repository name as an argument.
+
+```yaml
+structure:
+  - README.md:
+      content: |
+        # MyProject
+        Latest release: {{@ "httpdss/struct" | latest_release @}}
+```
+
+This uses PyGithub to fetch the latest release of the repository so setting the `GITHUB_TOKEN` environment variable will give you access to private repositories.
+
+If there is an error in the process, the filter will return `LATEST_RELEASE_ERROR`.
 
 ## 👩‍💻 Development
 
