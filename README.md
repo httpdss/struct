@@ -191,6 +191,8 @@ This uses PyGithub to fetch the latest release of the repository so setting the 
 
 If there is an error in the process, the filter will return `LATEST_RELEASE_ERROR`.
 
+NOTE: you can use this filter to get the latest release for a terraform provider. For example, to get the latest release of the `aws` provider, you can use `{{@ "hashicorp/terraform-provider-aws" | latest_release @}}` or datadog provider `{{@ "DataDog/terraform-provider-datadog" | latest_release @}}`.
+
 ## 👩‍💻 Development
 
 To get started with development, follow these steps:

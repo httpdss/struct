@@ -186,6 +186,8 @@ Esto utiliza PyGithub para obtener la última release del repositorio, por lo qu
 
 Si ocurre un error en el proceso, el filtro devolverá `LATEST_RELEASE_ERROR`.
 
+NOTA: puedes usar este filtro para obtener la última versión de un proveedor de Terraform. Por ejemplo, para obtener la última versión del proveedor `aws`, puedes usar `{{@ "hashicorp/terraform-provider-aws" | latest_release @}}` o el proveedor de datadog `{{@ "DataDog/terraform-provider-datadog" | latest_release @}}`.
+
 ## 👩‍💻 Desarrollo
 
 Para comenzar con el desarrollo, sigue estos pasos:
