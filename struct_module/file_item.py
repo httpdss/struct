@@ -20,7 +20,7 @@ class FileItem:
         self.name = properties.get("name")
         self.file_directory = self._get_file_directory()
         self.content = properties.get("content")
-        self.remote_location = properties.get("file")
+        self.content_location = properties.get("file")
         self.permissions = properties.get("permissions")
 
         self.system_prompt = properties.get("system_prompt") or properties.get("global_system_prompt")
@@ -69,13 +69,24 @@ class FileItem:
             self.logger.debug(f"Generated content: {self.content}")
 
     def fetch_content(self):
-        if self.remote_location:
-            self.logger.debug(f"Fetching content from: {self.remote_location}")
-            response = requests.get(self.remote_location)
-            self.logger.debug(f"Response status code: {response.status_code}")
-            response.raise_for_status()
-            self.content = response.text
-            self.logger.debug(f"Fetched content: {self.content}")
+        if self.content_location:
+            self.logger.debug(f"Fetching content from: {self.content_location}")
+
+            if self.content_location.startswith("file://"):
+                file_path = self.content_location[len("file://"):]
+                with open(file_path, 'r') as file:
+                    self.content = file.read()
+                self.logger.debug(f"Fetched content from local file: {self.content}")
+
+            elif self.content_location.startswith("https://"):
+                response = requests.get(self.content_location)
+                self.logger.debug(f"Response status code: {response.status_code}")
+                response.raise_for_status()
+                self.content = response.text
+                self.logger.debug(f"Fetched content from URL: {self.content}")
+
+            else:
+                self.logger.warning(f"Unsupported protocol in content_location: {self.content_location}")
 
     def _merge_default_template_vars(self, template_vars):
         default_vars = {
