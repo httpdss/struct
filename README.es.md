@@ -149,7 +149,7 @@ structure:
         #!/bin/bash
         echo "Hello, {{@ author_name @}}!"
   - LICENSE:
-      file: https://raw.githubusercontent.com/nishanths/license/master/LICENSE
+      remote_file: https://raw.githubusercontent.com/nishanths/license/master/LICENSE
   - src/main.py:
       content: |
         print("Hello, World!")
