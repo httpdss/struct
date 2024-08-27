@@ -34,19 +34,26 @@ class GenerateCommand(Command):
       config = yaml.safe_load(f)
 
     template_vars = dict(item.split('=') for item in args.vars.split(',')) if args.vars else None
-    structure = config.get('structure', [])
+    config_structure = config.get('structure', [])
+    config_variables = config.get('variables', [])
 
-    for item in structure:
+    for item in config_structure:
       self.logger.debug(f"Processing item: {item}")
       for name, content in item.items():
         self.logger.debug(f"Processing name: {name}, content: {content}")
         if isinstance(content, dict):
           content["name"] = name
           content["global_system_prompt"] = args.global_system_prompt
+          content["config_variables"] = config_variables
           file_item = FileItem(content)
           file_item.fetch_content()
         elif isinstance(content, str):
-          file_item = FileItem({"name": name, "content": content})
+          file_item = FileItem(
+            {"name": name,
+             "content": content,
+             "config_variables": config_variables,
+            }
+          )
 
         file_item.apply_template_variables(template_vars)
         file_item.process_prompt(args.dry_run)
