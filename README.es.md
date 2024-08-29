@@ -71,14 +71,11 @@ Puedes usar la imagen de Docker para ejecutar el script sin instalarlo en tu sis
 ```sh
 docker run \
   -v $(pwd):/workdir \
-  -e OPENAI_API_KEY=tu-clave \
   -u $(id -u):$(id -g) \
   ghcr.io/httpdss/struct:main \
   /workdir/example/structure.yaml \
   /workdir/example_output
 ```
-
-Reemplaza `tu-clave` con tu clave de API de OpenAI y ajusta las rutas según sea necesario. Si no estás usando prompts dentro de tu estructura, puedes establecer `OPENAI_API_KEY` en cualquier valor. Existe un problema conocido con el script que requiere que `OPENAI_API_KEY` esté configurado. Consulta [Problemas Conocidos](#-problemas-conocidos) para más detalles.
 
 ### Inicio Rápido Usando Docker Alpine
 
@@ -97,7 +94,6 @@ mkdir example
 cd example/
 touch structure.yaml
 vim structure.yaml # copia el contenido de la carpeta de ejemplo
-export OPENAI_API_KEY=algo
 struct structure.yaml .
 ```
 
@@ -225,4 +221,4 @@ Un agradecimiento especial a todos los contribuyentes que hicieron posible este 
 
 ## 🐞 Problemas Conocidos
 
-- [ ] Es obligatorio configurar la variable de entorno `OPENAI_API_KEY` antes de ejecutar el script. Si no estás usando propiedades GPT, puedes establecerla en cualquier valor. Problema [#3](https://github.com/httpdss/struct/issues/3)
+- [ ] TBD
