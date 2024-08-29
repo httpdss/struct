@@ -25,16 +25,21 @@ class FileItem:
 
       self.system_prompt = properties.get("system_prompt") or properties.get("global_system_prompt")
       self.user_prompt = properties.get("user_prompt")
-      self.openai_client = OpenAI(api_key=openai_api_key)
+      self.openai_client = None
 
+      if openai_api_key:
+        self._configure_openai()
+
+      self.template_renderer = TemplateRenderer(self.config_variables)
+
+    def _configure_openai(self):
+      self.openai_client = OpenAI(api_key=openai_api_key)
       if not openai_model:
         self.logger.info("OpenAI model not found. Using default model.")
         self.openai_model = "gpt-3.5-turbo"
       else:
         self.logger.debug(f"Using OpenAI model: {openai_model}")
         self.openai_model = openai_model
-
-      self.template_renderer = TemplateRenderer(self.config_variables)
 
     def _get_file_directory(self):
         return os.path.dirname(self.name)
@@ -43,7 +48,7 @@ class FileItem:
       if self.user_prompt:
         self.logger.debug(f"Using user prompt: {self.user_prompt}")
 
-        if not openai_api_key:
+        if not self.openai_client or not openai_api_key:
           self.logger.warning("Skipping processing prompt as OpenAI API key is not set.")
           return
 
@@ -57,16 +62,20 @@ class FileItem:
           self.content = "[DRY RUN] Generating content using OpenAI"
           return
 
-        completion = self.openai_client.chat.completions.create(
-          model=self.openai_model,
-          messages=[
-            {"role": "system", "content": system_prompt},
-            {"role": "user", "content": self.user_prompt}
-          ]
-        )
+        if not self.openai_client or not openai_api_key:
+          completion = self.openai_client.chat.completions.create(
+            model=self.openai_model,
+            messages=[
+              {"role": "system", "content": system_prompt},
+              {"role": "user", "content": self.user_prompt}
+            ]
+          )
 
-        self.content = completion.choices[0].message.content
-        self.logger.debug(f"Generated content: {self.content}")
+          self.content = completion.choices[0].message.content
+        else:
+          self.content = "OpenAI API key not found. Skipping content generation."
+          self.logger.warning("Skipping processing prompt as OpenAI API key is not set.")
+        self.logger.debug(f"Generated content: \n\n{self.content}")
 
     def fetch_content(self):
       if self.content_location:
@@ -135,7 +144,7 @@ class FileItem:
 
       with open(file_path, 'w') as f:
         f.write(self.content)
-      self.logger.info(f"Created file: {file_path} with content: {self.content}")
+      self.logger.info(f"Created file: {file_path} with content: \n\n{self.content}")
 
       if self.permissions:
         os.chmod(file_path, int(self.permissions, 8))

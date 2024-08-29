@@ -5,9 +5,6 @@ from struct_module.commands import Command
 
 load_dotenv()
 
-openai_api_key = os.getenv("OPENAI_API_KEY")
-openai_model = os.getenv("OPENAI_MODEL")
-
 # Validate command class
 class ValidateCommand(Command):
     def __init__(self, parser):
@@ -80,8 +77,6 @@ class ValidateCommand(Command):
               if 'prompt' in content and not isinstance(content['prompt'], str):
                 raise ValueError(f"The 'prompt' value for '{name}' must be a string.")
               # Check if 'prompt' key is present but no OpenAI API key is found
-              if 'prompt' in content and not openai_api_key:
-                raise ValueError("Using prompt property and no OpenAI API key was found. Please set it in the .env file.")
             elif not isinstance(content, str):
               raise ValueError(f"The content of '{name}' must be a string or dictionary.")
       self.logger.info("Configuration validation passed.")

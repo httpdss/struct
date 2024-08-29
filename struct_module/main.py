@@ -1,4 +1,4 @@
-import os
+import argparse
 import logging
 from dotenv import load_dotenv
 from struct_module.utils import read_config_file, merge_configs
@@ -6,16 +6,9 @@ from struct_module.commands.generate import GenerateCommand
 from struct_module.commands.info import InfoCommand
 from struct_module.commands.validate import ValidateCommand
 
-import argparse
+
 
 load_dotenv()
-
-openai_api_key = os.getenv("OPENAI_API_KEY")
-openai_model = os.getenv("OPENAI_MODEL")
-
-if not openai_api_key:
-  logging.warning("OpenAI API key not found. Skipping processing prompt.")
-
 
 def main():
     parser = argparse.ArgumentParser(
