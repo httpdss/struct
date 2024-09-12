@@ -7,8 +7,9 @@ from struct_module.file_item import FileItem
 class GenerateCommand(Command):
   def __init__(self, parser):
     super().__init__(parser)
-    parser.add_argument('yaml_file', type=str, help='Path to the YAML configuration file')
+    parser.add_argument('structure_definition', type=str, help='Path to the YAML configuration file')
     parser.add_argument('base_path', type=str, help='Base path where the structure will be created')
+    parser.add_argument('-s', '--structures-path', type=str, help='Path to structure definitions', default='contribs')
     parser.add_argument('-d', '--dry-run', action='store_true', help='Perform a dry run without creating any files or directories')
     parser.add_argument('-v', '--vars', type=str, help='Template variables in the format KEY1=value1,KEY2=value2')
     parser.add_argument('-b', '--backup', type=str, help='Path to the backup folder')
@@ -17,7 +18,7 @@ class GenerateCommand(Command):
     parser.set_defaults(func=self.execute)
 
   def execute(self, args):
-    self.logger.info(f"Generating structure at {args.base_path} with config {args.yaml_file}")
+    self.logger.info(f"Generating structure at {args.base_path} with config {args.structure_definition}")
 
     if args.backup and not os.path.exists(args.backup):
       os.makedirs(args.backup)
@@ -30,8 +31,17 @@ class GenerateCommand(Command):
 
 
   def _create_structure(self, args):
-    with open(args.yaml_file, 'r') as f:
-      config = yaml.safe_load(f)
+    if args.structure_definition.startswith("file://") and args.structure_definition.endswith(".yaml"):
+      with open(args.structure_definition[7:], 'r') as f:
+        config = yaml.safe_load(f)
+    else:
+      file_path = os.path.join(args.structures_path, f"{args.structure_definition}.yaml")
+      # show error if file is not found
+      if not os.path.exists(file_path):
+        self.logger.error(f"File not found: {file_path}")
+        return
+      with open(file_path, 'r') as f:
+        config = yaml.safe_load(f)
 
     template_vars = dict(item.split('=') for item in args.vars.split(',')) if args.vars else None
     config_structure = config.get('structure', [])
