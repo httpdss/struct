@@ -5,6 +5,7 @@ from struct_module.utils import read_config_file, merge_configs
 from struct_module.commands.generate import GenerateCommand
 from struct_module.commands.info import InfoCommand
 from struct_module.commands.validate import ValidateCommand
+from struct_module.commands.list import ListCommand
 
 
 
@@ -23,6 +24,7 @@ def main():
     InfoCommand(subparsers.add_parser('info', help='Show information about the package'))
     ValidateCommand(subparsers.add_parser('validate', help='Validate the YAML configuration file'))
     GenerateCommand(subparsers.add_parser('generate', help='Generate the project structure'))
+    ListCommand(subparsers.add_parser('list', help='List available structures'))
 
     args = parser.parse_args()
 
