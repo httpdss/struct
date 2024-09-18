@@ -4,22 +4,22 @@ structure:
         apiVersion: apps/v1
         kind: Deployment
         metadata:
-          name: example-deployment
+          name: {{% deployment_name | stringify %}}
           labels:
-            app: example-app
+            app: {{% app_name | stringify %}}
         spec:
           replicas: 2
           selector:
             matchLabels:
-              app: example-app
+              app: {{% app_name | stringify %}}
           template:
             metadata:
               labels:
-                app: example-app
+                app: {{% app_name | stringify %}}
             spec:
               containers:
-              - name: example-container
-                image: nginx:latest
+              - name: {{% app_name | stringify %}}
+                image: {{% image_name %}}:{{% image_tag %}}
                 ports:
                 - containerPort: 80
   - service.yaml:
@@ -30,7 +30,7 @@ structure:
           name: example-service
         spec:
           selector:
-            app: example-app
+            app: {{% app_name | stringify %}}
           ports:
             - protocol: TCP
               port: 80
@@ -82,3 +82,21 @@ structure:
         kubectl apply -f configmap.yaml
         kubectl apply -f secrets.yaml
         ```
+
+variables:
+  app_name:
+    description: "The name of the application."
+    type: string
+    default: "example-app"
+  deployment_name:
+    description: "The name of the deployment"
+    type: string
+    default: "example-app-deployment"
+  image_name:
+    description: "The name of the Docker image."
+    type: string
+  image_tag:
+    description: "The tag of the Docker image."
+    type: string
+    default: "latest"
+
