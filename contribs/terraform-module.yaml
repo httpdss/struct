@@ -19,12 +19,12 @@ structure:
         }
   - README.md:
       content: |
-        # Module Name
+        # {{% module_name %}}
         This module provisions an EC2 instance on AWS.
         ## Usage
         ```hcl
         module "example" {
-          source = "./module-name"
+          source = "./path/to/module/{{% module_name | stringify %}}"
           instance_type = "t2.micro"
         }
         ```
