@@ -99,4 +99,3 @@ variables:
     description: "The tag of the Docker image."
     type: string
     default: "latest"
-
