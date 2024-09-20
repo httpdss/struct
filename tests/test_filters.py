@@ -1,5 +1,5 @@
 from unittest.mock import patch, MagicMock
-from struct_module.filters import get_latest_release, stringify
+from struct_module.filters import get_latest_release, slugify
 
 @patch('struct_module.filters.Github')
 @patch('struct_module.filters.os.getenv')
@@ -27,7 +27,7 @@ def test_get_latest_release(mock_getenv, mock_github):
     # mock_repo.default_branch.side_effect = Exception()
     assert get_latest_release('fake/repo') == 'LATEST_RELEASE_ERROR'
 
-def test_stringify():
-    assert stringify('Hello World') == 'hello-world'
-    assert stringify('Python 3.8') == 'python-38'
-    assert stringify('Special_Characters!@#') == 'specialcharacters'
+def test_slugify():
+    assert slugify('Hello World') == 'hello-world'
+    assert slugify('Python 3.8') == 'python-38'
+    assert slugify('Special_Characters!@#') == 'specialcharacters'
