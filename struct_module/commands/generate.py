@@ -2,6 +2,7 @@ from struct_module.commands import Command
 import os
 import yaml
 from struct_module.file_item import FileItem
+from struct_module.completers import file_strategy_completer
 
 # Generate command class
 class GenerateCommand(Command):
@@ -13,7 +14,7 @@ class GenerateCommand(Command):
     parser.add_argument('-d', '--dry-run', action='store_true', help='Perform a dry run without creating any files or directories')
     parser.add_argument('-v', '--vars', type=str, help='Template variables in the format KEY1=value1,KEY2=value2')
     parser.add_argument('-b', '--backup', type=str, help='Path to the backup folder')
-    parser.add_argument('-f', '--file-strategy', type=str, choices=['overwrite', 'skip', 'append', 'rename', 'backup'], default='overwrite', help='Strategy for handling existing files')
+    parser.add_argument('-f', '--file-strategy', type=str, choices=['overwrite', 'skip', 'append', 'rename', 'backup'], default='overwrite', help='Strategy for handling existing files').completer = file_strategy_completer
     parser.add_argument('-p', '--global-system-prompt', type=str, help='Global system prompt for OpenAI')
     parser.set_defaults(func=self.execute)
 
