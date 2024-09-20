@@ -1,7 +1,7 @@
 # FILE: template_renderer.py
 import logging
 from jinja2 import Environment, meta
-from struct_module.filters import get_latest_release, stringify
+from struct_module.filters import get_latest_release, slugify
 
 class TemplateRenderer:
     def __init__(self, config_variables):
@@ -18,7 +18,7 @@ class TemplateRenderer:
 
       custom_filters = {
         'latest_release': get_latest_release,
-        'stringify': stringify,
+        'slugify': slugify,
       }
       self.env.filters.update(custom_filters)
       self.logger = logging.getLogger(__name__)

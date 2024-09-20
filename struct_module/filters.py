@@ -25,7 +25,7 @@ def get_latest_release(repo_name):
       except Exception as e:
         return "LATEST_RELEASE_ERROR"
 
-def stringify(value):
+def slugify(value):
     # Convert to lowercase
     value = value.lower()
     # Replace spaces with hyphens

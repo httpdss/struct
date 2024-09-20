@@ -24,7 +24,7 @@ structure:
         ## Usage
         ```hcl
         module "example" {
-          source = "./path/to/module/{{@ module_name | stringify @}}"
+          source = "./path/to/module/{{@ module_name | slugify @}}"
           instance_type = "t2.micro"
         }
         ```

@@ -34,7 +34,7 @@ This is targeted towards developers, DevOps engineers, and anyone who wants to a
 ## ✨ Features
 
 - **YAML Configuration**: Define your project structure in a simple YAML file.
-- **Template Variables**: Use placeholders in your configuration and replace them with actual values at runtime.
+- **Template Variables**: Use placeholders in your configuration and replace them with actual values at runtime. Also supports custom Jinja2 filters and interactive mode to fill in the variables.
 - **Custom File Permissions**: Set custom permissions for your files directly from the YAML configuration.
 - **Remote Content Fetching**: Include content from remote files by specifying their URLs.
 - **File Handling Strategies**: Choose from multiple strategies (overwrite, skip, append, rename, backup) to manage existing files.
@@ -98,26 +98,23 @@ struct generate structure.yaml .
 
 ## 📝 Usage
 
-Run the script with the following command:
+Run the script with the following command using one of the following subcommands:
+
+- `generate`: Generate the project structure based on the YAML configuration.
+- `validate`: Validate the YAML configuration file.
+- `info`: Display information about the script and its dependencies.
+- `list`: List the available structs
+
+For more information, run the script with the `-h` or `--help` option (this is also available for each subcommand):
 
 ```sh
-usage: struct [-h] [--log LOG] [--dry-run] [--vars VARS] [--backup BACKUP] [--file-strategy {overwrite,skip,append,rename,backup}] [--log-file LOG_FILE] yaml_file base_path
+struct -h
 ```
-
-### Options
-
-- `-h` or `--help`: Show help and exit
-- `--log`: Set the logging level (DEBUG, INFO, WARNING, ERROR, CRITICAL). Default is INFO.
-- `--dry-run`: Perform a dry run without creating any files or directories.
-- `--vars`: Template variables in the format `KEY1=value1,KEY2=value2`.
-- `--backup`: Path to the backup folder.
-- `--file-strategy`: Strategy for handling existing files (overwrite, skip, append, rename, backup). Default is overwrite.
-- `--log-file`: Path to a log file.
 
 ### Simple Example
 
 ```sh
-struct generate /path/to/your/structure.yaml /path/to/your/output/directory
+struct generate terraform-module ./my-terraform-module
 ```
 
 ### More Complete Example
@@ -126,12 +123,11 @@ struct generate /path/to/your/structure.yaml /path/to/your/output/directory
 struct generate \
   --log=DEBUG \
   --dry-run \
-  --vars="project_name=MyProject,author_name=JohnDoe" \
   --backup=/path/to/backup \
   --file-strategy=rename \
   --log-file=/path/to/logfile.log \
-  /path/to/your/structure.yaml \
-  /path/to/your/output/directory
+  terraform-module \
+  ./my-terraform-module
 ```
 
 ## 📄 YAML Configuration
@@ -154,11 +150,20 @@ structure:
   - src/main.py:
       content: |
         print("Hello, World!")
+variables:
+  - project_name:
+      description: "The name of the project"
+      default: "MyProject"
+      type: string
+  - author_name:
+      description: "The name of the author"
+      type: string
+      default: "John Doe"
 ```
 
 ### Template variables
 
-You can use template variables in your configuration file by enclosing them in `{{@` and `@}}`. For example, `{{@ project_name @}}` will be replaced with the value of the `project_name` variable at runtime.
+You can use template variables in your configuration file by enclosing them in `{{@` and `@}}`. For example, `{{@ project_name @}}` will be replaced with the value of the `project_name` variable at runtime. If this are not set when running the script, it will prompt you to enter the value interactively.
 
 If you need to define blocks you can use starting block notation `{%@` and end block notation `%@}`.
 
@@ -168,6 +173,22 @@ To define comments you can use the comment start notation `{#@` and end comment 
 
 - `file_name`: The name of the file being processed.
 - `file_directory`: The name of the directory of file that is being processed.
+
+#### Interactive template variables
+
+If you don't provide a default value for a variable, the script will prompt you to enter the value interactively.
+
+The struct defined should define the variable on a specific section of the YAML file. For example:
+
+```yaml
+variables:
+  - author_name:
+      description: "The name of the author"
+      type: string
+      default: "John Doe"
+```
+
+as you can see, the `author_name` variable is defined on the `variables` section of the YAML file. it includes a `description`, `type` and `default` value which is used if the user doesn't provide a value interactively.
 
 #### Custom Jinja2 filters
 
@@ -188,6 +209,19 @@ This uses PyGithub to fetch the latest release of the repository so setting the 
 If there is an error in the process, the filter will return `LATEST_RELEASE_ERROR`.
 
 NOTE: you can use this filter to get the latest release for a terraform provider. For example, to get the latest release of the `aws` provider, you can use `{{@ "hashicorp/terraform-provider-aws" | latest_release @}}` or datadog provider `{{@ "DataDog/terraform-provider-datadog" | latest_release @}}`.
+
+##### `slugify`
+
+This filter converts a string into a slug. It takes an optional argument to specify the separator character (default is `-`).
+
+```yaml
+structure:
+  - README.md:
+      content: |
+        # {{@ project_name @}}
+        This is a template repository.
+        slugify project_name: {{@ project_name | slugify @}}
+```
 
 ## 👩‍💻 Development
 

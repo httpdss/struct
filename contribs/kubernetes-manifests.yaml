@@ -4,21 +4,21 @@ structure:
         apiVersion: apps/v1
         kind: Deployment
         metadata:
-          name: {{@ deployment_name | stringify @}}
+          name: {{@ deployment_name | slugify @}}
           labels:
-            app: {{@ app_name | stringify @}}
+            app: {{@ app_name | slugify @}}
         spec:
           replicas: 2
           selector:
             matchLabels:
-              app: {{@ app_name | stringify @}}
+              app: {{@ app_name | slugify @}}
           template:
             metadata:
               labels:
-                app: {{@ app_name | stringify @}}
+                app: {{@ app_name | slugify @}}
             spec:
               containers:
-              - name: {{@ app_name | stringify @}}
+              - name: {{@ app_name | slugify @}}
                 image: {{@ image_name @}}:{{@ image_tag @}}
                 ports:
                 - containerPort: 80
@@ -30,7 +30,7 @@ structure:
           name: example-service
         spec:
           selector:
-            app: {{@ app_name | stringify @}}
+            app: {{@ app_name | slugify @}}
           ports:
             - protocol: TCP
               port: 80
