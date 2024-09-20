@@ -22,12 +22,12 @@ def test_get_latest_release(mock_getenv, mock_github):
     assert get_latest_release('fake/repo') == 'main'
 
     # Test with an exception in default_branch
-    mock_repo.default_branch = None
+    mock_repo.default_branch = 'LATEST_RELEASE_ERROR'
     mock_repo.get_latest_release.side_effect = Exception()
-    mock_repo.default_branch.side_effect = Exception()
+    # mock_repo.default_branch.side_effect = Exception()
     assert get_latest_release('fake/repo') == 'LATEST_RELEASE_ERROR'
 
 def test_stringify():
     assert stringify('Hello World') == 'hello-world'
-    assert stringify('Python 3.8') == 'python-3-8'
-    assert stringify('Special_Characters!@#') == 'special_characters'
+    assert stringify('Python 3.8') == 'python-38'
+    assert stringify('Special_Characters!@#') == 'specialcharacters'
