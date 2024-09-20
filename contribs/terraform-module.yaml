@@ -29,7 +29,7 @@ structure:
         }
         ```
 variables:
-  module_name:
-    description: "The name of the module."
-    type: string
-    default: "example-module"
+  - module_name:
+      description: "The name of the module."
+      type: string
+      default: "example-module"

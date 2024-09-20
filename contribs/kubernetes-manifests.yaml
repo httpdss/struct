@@ -84,18 +84,18 @@ structure:
         ```
 
 variables:
-  app_name:
-    description: "The name of the application."
-    type: string
-    default: "example-app"
-  deployment_name:
-    description: "The name of the deployment"
-    type: string
-    default: "example-app-deployment"
-  image_name:
-    description: "The name of the Docker image."
-    type: string
-  image_tag:
-    description: "The tag of the Docker image."
-    type: string
-    default: "latest"
+  - app_name:
+      description: "The name of the application."
+      type: string
+      default: "example-app"
+  - deployment_name:
+      description: "The name of the deployment"
+      type: string
+      default: "example-app-deployment"
+  - image_name:
+      description: "The name of the Docker image."
+      type: string
+  - image_tag:
+      description: "The tag of the Docker image."
+      type: string
+      default: "latest"

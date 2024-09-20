@@ -41,10 +41,10 @@ class TemplateRenderer:
     def get_defaults_from_config(self):
       self.logger.debug(f"Config variables: {self.config_variables}")
       defaults = {}
-      for name, content in self.config_variables.items():
-        if 'default' in content:
-          defaults[name] = content.get('default')
-      self.logger.debug(f"Defaults: {defaults}")
+      for item in self.config_variables:
+        for name, content in item.items():
+          if 'default' in content:
+            defaults[name] = content.get('default')
       return defaults
 
 
