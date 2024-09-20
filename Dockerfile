@@ -10,8 +10,14 @@ COPY requirements.txt .
 # Install any needed packages specified in requirements.txt
 RUN pip install --no-cache-dir -r requirements.txt
 
+# Install argcomplete and activate global completion
+RUN pip install argcomplete
+
 # Copy the rest of the working directory contents into the container at /app
 COPY . .
+
+# Register the script for auto-completion
+RUN echo 'eval "$(register-python-argcomplete struct)"' >> /etc/bash.bashrc
 
 # Run your script when the container launches
 ENTRYPOINT ["python", "struct_module/main.py"]

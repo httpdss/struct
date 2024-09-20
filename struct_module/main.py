@@ -1,4 +1,4 @@
-import argparse
+import argparse, argcomplete
 import logging
 from dotenv import load_dotenv
 from struct_module.utils import read_config_file, merge_configs
@@ -25,6 +25,8 @@ def main():
     ValidateCommand(subparsers.add_parser('validate', help='Validate the YAML configuration file'))
     GenerateCommand(subparsers.add_parser('generate', help='Generate the project structure'))
     ListCommand(subparsers.add_parser('list', help='List available structures'))
+
+    argcomplete.autocomplete(parser)
 
     args = parser.parse_args()
 

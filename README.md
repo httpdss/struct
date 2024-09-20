@@ -208,6 +208,40 @@ pip install -r requirements.txt
 pip install -r requirements.dev.txt
 ```
 
+## 🛠️ Command-Line Auto-Completion
+
+This project uses [argcomplete](https://kislyuk.github.io/argcomplete/) to provide command-line auto-completion for the `struct` script. Follow these steps to enable auto-completion:
+
+1. **Install `argcomplete`**:
+
+    ```sh
+    pip install argcomplete
+    ```
+
+2. **Enable global completion** for your shell. This step is usually done once:
+
+    ```sh
+    activate-global-python-argcomplete
+    ```
+
+3. **Register the script for auto-completion**. Add the following line to your shell's configuration file (e.g., `.bashrc`, `.zshrc`):
+
+    ```sh
+    eval "$(register-python-argcomplete struct)"
+    ```
+
+4. **Reload your shell configuration**:
+
+    ```sh
+    source ~/.bashrc  # or source ~/.zshrc for Zsh users
+    ```
+
+After completing these steps, you should have auto-completion enabled for the `struct` script. You can test it by typing part of a command and pressing `Tab` to see the available options.
+
+```sh
+struct <Tab>
+```
+
 ## 📜 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.

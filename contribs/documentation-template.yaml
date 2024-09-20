@@ -1,7 +1,7 @@
 structure:
   - README.md:
       content: |
-        # {{% project_name %}}
+        # {{@ project_name @}}
 
         Brief description of the project.
 
@@ -18,7 +18,7 @@ structure:
         Guidelines for contributing to the project.
   - CONTRIBUTING.md:
       content: |
-        # Contributing to {{% project_name %}}
+        # Contributing to {{@ project_name @}}
 
         ## How to Contribute
         Guidelines for how to contribute to the project.
