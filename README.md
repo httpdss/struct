@@ -150,6 +150,15 @@ structure:
   - src/main.py:
       content: |
         print("Hello, World!")
+folders:
+  - .devops/modules/mod1:
+      struct: terraform-module
+  - .devops/modules/mod2:
+      struct: terraform-module
+  - ./:
+      struct:
+        - docker-files
+        - go-project
 variables:
   - project_name:
       description: "The name of the project"
