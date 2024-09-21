@@ -6,6 +6,7 @@ from struct_module.commands.generate import GenerateCommand
 from struct_module.commands.info import InfoCommand
 from struct_module.commands.validate import ValidateCommand
 from struct_module.commands.list import ListCommand
+from struct_module.logging_config import configure_logging
 
 
 
@@ -42,11 +43,8 @@ def main():
 
     logging_level = getattr(logging, args.log.upper(), logging.INFO)
 
-    logging.basicConfig(
-      level=logging_level,
-      filename=args.log_file,
-      format='[%(asctime)s][%(levelname)s][struct] >>> %(message)s',
-    )
+    configure_logging(level=logging_level, log_file=args.log_file)
+
 
     args.func(args)
 
