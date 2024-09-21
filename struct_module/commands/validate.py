@@ -19,7 +19,35 @@ class ValidateCommand(Command):
         config = yaml.safe_load(f)
 
       self._validate_structure_config(config.get('structure', []))
+      self._validate_folders_config(config.get('folders', []))
       self._validate_variables_config(config.get('variables', []))
+
+
+    # Validate the 'folders' key in the configuration file
+    # folders should be defined as a list of dictionaries
+    # each dictionary should have a 'struct' key
+    #
+    # Example:
+    # folders:
+    #   - .devops/modules/my_module_one:
+    #       struct: terraform-module
+    #   - .devops/modules/my_module_two:
+    #       struct: terraform-module
+    def _validate_folders_config(self, folders):
+      if not isinstance(folders, list):
+        raise ValueError("The 'folders' key must be a list.")
+      for item in folders:
+        if not isinstance(item, dict):
+            raise ValueError("Each item in the 'folders' list must be a dictionary.")
+        for name, content in item.items():
+            if not isinstance(name, str):
+              raise ValueError("Each name in the 'folders' item must be a string.")
+            if not isinstance(content, dict):
+              raise ValueError(f"The content of '{name}' must be a dictionary.")
+            if 'struct' not in content:
+              raise ValueError(f"Dictionary item '{name}' must contain a 'struct' key.")
+            if not isinstance(content['struct'], str):
+              raise ValueError(f"The 'struct' value for '{name}' must be a string.")
 
 
     # Validate the 'variables' key in the configuration file
