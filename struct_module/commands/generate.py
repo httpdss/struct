@@ -1,7 +1,9 @@
 from struct_module.commands import Command
 import os
 import yaml
+import argparse
 from struct_module.file_item import FileItem
+from struct_module.completers import file_strategy_completer
 
 # Generate command class
 class GenerateCommand(Command):
@@ -13,7 +15,7 @@ class GenerateCommand(Command):
     parser.add_argument('-d', '--dry-run', action='store_true', help='Perform a dry run without creating any files or directories')
     parser.add_argument('-v', '--vars', type=str, help='Template variables in the format KEY1=value1,KEY2=value2')
     parser.add_argument('-b', '--backup', type=str, help='Path to the backup folder')
-    parser.add_argument('-f', '--file-strategy', type=str, choices=['overwrite', 'skip', 'append', 'rename', 'backup'], default='overwrite', help='Strategy for handling existing files')
+    parser.add_argument('-f', '--file-strategy', type=str, choices=['overwrite', 'skip', 'append', 'rename', 'backup'], default='overwrite', help='Strategy for handling existing files').completer = file_strategy_completer
     parser.add_argument('-p', '--global-system-prompt', type=str, help='Global system prompt for OpenAI')
     parser.set_defaults(func=self.execute)
 
@@ -31,6 +33,8 @@ class GenerateCommand(Command):
 
 
   def _create_structure(self, args):
+    if isinstance(args, dict):
+        args = argparse.Namespace(**args)
     if args.structure_definition.startswith("file://") and args.structure_definition.endswith(".yaml"):
       with open(args.structure_definition[7:], 'r') as f:
         config = yaml.safe_load(f)
@@ -49,6 +53,7 @@ class GenerateCommand(Command):
 
     template_vars = dict(item.split('=') for item in args.vars.split(',')) if args.vars else None
     config_structure = config.get('structure', [])
+    config_folders = config.get('folders', [])
     config_variables = config.get('variables', [])
 
     for item in config_structure:
@@ -78,3 +83,42 @@ class GenerateCommand(Command):
           args.backup or None,
           args.file_strategy or 'overwrite'
         )
+
+    for item in config_folders:
+      for folder, content in item.items():
+        folder_path = os.path.join(args.base_path, folder)
+        if args.dry_run:
+          self.logger.info(f"[DRY RUN] Would create folder: {folder_path}")
+          continue
+        os.makedirs(folder_path, exist_ok=True)
+        self.logger.info(f"Created folder: {folder_path}")
+
+        # check if content has struct value
+        if 'struct' in content:
+          self.logger.info(f"Generating structure in folder: {folder} with struct {content['struct']}")
+          if isinstance(content['struct'], str):
+
+            self._create_structure({
+              'structure_definition': content['struct'],
+              'base_path': folder_path,
+              'structures_path': args.structures_path,
+              'dry_run': args.dry_run,
+              'vars': args.vars,
+              'backup': args.backup,
+              'file_strategy': args.file_strategy,
+              'global_system_prompt': args.global_system_prompt,
+            })
+          elif isinstance(content['struct'], list):
+            for struct in content['struct']:
+              self._create_structure({
+                'structure_definition': struct,
+                'base_path': folder_path,
+                'structures_path': args.structures_path,
+                'dry_run': args.dry_run,
+                'vars': args.vars,
+                'backup': args.backup,
+                'file_strategy': args.file_strategy,
+                'global_system_prompt': args.global_system_prompt,
+              })
+        else:
+          self.logger.warning(f"Unsupported content in folder: {folder}")

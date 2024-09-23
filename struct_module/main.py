@@ -1,4 +1,4 @@
-import argparse
+import argparse, argcomplete
 import logging
 from dotenv import load_dotenv
 from struct_module.utils import read_config_file, merge_configs
@@ -6,6 +6,7 @@ from struct_module.commands.generate import GenerateCommand
 from struct_module.commands.info import InfoCommand
 from struct_module.commands.validate import ValidateCommand
 from struct_module.commands.list import ListCommand
+from struct_module.logging_config import configure_logging
 
 
 
@@ -26,6 +27,8 @@ def main():
     GenerateCommand(subparsers.add_parser('generate', help='Generate the project structure'))
     ListCommand(subparsers.add_parser('list', help='List available structures'))
 
+    argcomplete.autocomplete(parser)
+
     args = parser.parse_args()
 
     # Check if a subcommand was provided
@@ -40,11 +43,8 @@ def main():
 
     logging_level = getattr(logging, args.log.upper(), logging.INFO)
 
-    logging.basicConfig(
-      level=logging_level,
-      filename=args.log_file,
-      format='[%(asctime)s][%(levelname)s][struct] >>> %(message)s',
-    )
+    configure_logging(level=logging_level, log_file=args.log_file)
+
 
     args.func(args)
 

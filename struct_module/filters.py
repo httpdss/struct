@@ -1,4 +1,5 @@
 import os
+import re
 from github import Github
 
 def get_latest_release(repo_name):
@@ -23,3 +24,12 @@ def get_latest_release(repo_name):
         return default_branch
       except Exception as e:
         return "LATEST_RELEASE_ERROR"
+
+def slugify(value):
+    # Convert to lowercase
+    value = value.lower()
+    # Replace spaces with hyphens
+    value = re.sub(r'\s+', '-', value)
+    # Remove any non-alphanumeric characters (except hyphens)
+    value = re.sub(r'[^a-z0-9-]', '', value)
+    return value

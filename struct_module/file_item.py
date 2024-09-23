@@ -35,7 +35,7 @@ class FileItem:
     def _configure_openai(self):
       self.openai_client = OpenAI(api_key=openai_api_key)
       if not openai_model:
-        self.logger.info("OpenAI model not found. Using default model.")
+        self.logger.debug("OpenAI model not found. Using default model.")
         self.openai_model = "gpt-3.5-turbo"
       else:
         self.logger.debug(f"Using OpenAI model: {openai_model}")
@@ -144,7 +144,7 @@ class FileItem:
 
       with open(file_path, 'w') as f:
         f.write(self.content)
-      self.logger.info(f"Created file: {file_path} with content: \n\n{self.content}")
+      self.logger.debug(f"Created file: {file_path} with content: \n\n{self.content}")
 
       if self.permissions:
         os.chmod(file_path, int(self.permissions, 8))

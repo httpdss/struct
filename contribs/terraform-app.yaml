@@ -1,8 +1,8 @@
 structure:
   - main.tf:
       content: |
-        # This is the main Terraform configuration file.
-        touch_file: 2024-07-17
+        # This is the main Terraform app main file.
+        touch_file: {{@ now().strftime('%Y-%m-%d') @}}
   - variables.tf:
       content: "# This is the Terraform variables file."
   - outputs.tf:

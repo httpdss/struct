@@ -35,7 +35,7 @@ Está dirigido a desarrolladores, ingenieros DevOps y cualquier persona que quie
 ## ✨ Características
 
 - **Configuración YAML**: Define la estructura de tu proyecto en un simple archivo YAML.
-- **Variables de Plantilla**: Usa marcadores de posición en tu configuración y reemplázalos con valores reales en tiempo de ejecución.
+- **Variables de Plantilla**: Usa marcadores de posición en tu configuración y reemplázalos con valores reales en tiempo de ejecución. También admite filtros personalizados de Jinja2 y modo interactivo para completar las variables.
 - **Permisos de Archivos Personalizados**: Establece permisos personalizados para tus archivos directamente desde la configuración YAML.
 - **Obtención de Contenido Remoto**: Incluye contenido de archivos remotos especificando sus URLs.
 - **Estrategias de Manejo de Archivos**: Elige entre múltiples estrategias (sobrescribir, omitir, añadir, renombrar, respaldar) para gestionar archivos existentes.
@@ -99,34 +99,38 @@ struct structure.yaml .
 
 ## 📝 Uso
 
-Ejecuta el script con el siguiente comando:
+Ejecuta el script con el siguiente comando usando uno de los siguientes subcomandos:
+
+- `generate`: Genera la estructura del proyecto basada en la configuración YAML.
+- `validate`: Valida la configuración YAML para asegurarte de que sea válida.
+- `info`: Muestra información sobre el script y sus dependencias.
+- `list`: Lista las estructuras disponibles.
+
+Para más información, ejecuta el script con la opción `-h` o `--help` (esto también está disponible para cada subcomando):
 
 ```sh
-usage: struct [-h] [--log LOG] [--dry-run] [--vars VARS] [--backup BACKUP] [--file-strategy {overwrite,skip,append,rename,backup}] [--log-file LOG_FILE] yaml_file base_path
+struct -h
 ```
 
-### Opciones
-
-- `-h` o `--help`: Muestra la ayuda y sale.
-- `--log`: Establece el nivel de registro (DEBUG, INFO, WARNING, ERROR, CRITICAL). El valor predeterminado es INFO.
-- `--dry-run`: Realiza una ejecución en seco sin crear archivos o directorios.
-- `--vars`: Variables de plantilla en el formato `CLAVE1=valor1,CLAVE2=valor2`.
-- `--backup`: Ruta a la carpeta de respaldo.
-- `--file-strategy`: Estrategia para manejar archivos existentes (sobrescribir, omitir, añadir, renombrar, respaldar). El valor predeterminado es sobrescribir.
-- `--log-file`: Ruta a un archivo de registro.
-
-### Ejemplo
+### Ejemplo Simple
 
 ```sh
-struct \
+struct generate terraform-module ./mi-modulo-terraform
+```
+
+### Ejemplo Más Completo
+
+```sh
+struct generate \
   --log=DEBUG \
   --dry-run \
   --vars="project_name=MiProyecto,author_name=JuanPerez" \
   --backup=/ruta/al/respaldo \
   --file-strategy=rename \
   --log-file=/ruta/al/archivo_de_registro.log \
-  ./example/structure.yaml \
-  /ruta/a/tu/directorio/de/salida
+  terraform-module \
+  ./mi-modulo-terraform
+
 ```
 
 ## 📄 Configuración YAML
@@ -149,11 +153,29 @@ structure:
   - src/main.py:
       content: |
         print("Hello, World!")
+folders:
+  - .devops/modules/mod1:
+      struct: terraform-module
+  - .devops/modules/mod2:
+      struct: terraform-module
+  - ./:
+      struct:
+        - docker-files
+        - go-project
+variables:
+  - project_name:
+      description: "The name of the project"
+      default: "MyProject"
+      type: string
+  - author_name:
+      description: "The name of the author"
+      type: string
+      default: "John Doe"
 ```
 
 ### Variables de plantilla
 
-Puedes usar variables de plantilla en tu archivo de configuración encerrándolas entre `{{@` y `@}}`. Por ejemplo, `{{@ project_name @}}` será reemplazado con el valor de la variable `project_name` en tiempo de ejecución.
+Puedes usar variables de plantilla en tu archivo de configuración encerrándolas entre `{{@` y `@}}`. Por ejemplo, `{{@ project_name @}}` será reemplazado con el valor de la variable `project_name` en tiempo de ejecución. Si las variables no se proporcionan en la línea de comandos, se solicitarán interactivamente.
 
 Si necesitas definir bloques, puedes usar la notación de inicio de bloque `{%@` y la notación de final de bloque `%@}`.
 
@@ -163,6 +185,22 @@ Para definir comentarios, puedes usar la notación de inicio de comentario `{#@`
 
 - `file_name`: El nombre del archivo que se está procesando.
 - `file_directory`: El nombre del directorio del archivo que se está procesando.
+
+#### Variables de plantilla interactivo
+
+Si no proporcionas todas las variables en la línea de comandos, se solicitarán interactivamente.
+
+La struct definida debe incluir las variables en una seccion de `variables` con la siguiente estructura:
+
+```yaml
+variables:
+  - variable_name:
+      description: "Descripción de la variable"
+      type: string
+      default: "Valor predeterminado"
+```
+
+como puedes ver, cada variable debe tener una descripción, un tipo y un valor predeterminado (opcional). Este valor predeterminado se usará si no se proporciona la variable en la línea de comandos.
 
 #### Filtros personalizados de Jinja2
 
@@ -183,6 +221,19 @@ Esto utiliza PyGithub para obtener la última release del repositorio, por lo qu
 Si ocurre un error en el proceso, el filtro devolverá `LATEST_RELEASE_ERROR`.
 
 NOTA: puedes usar este filtro para obtener la última versión de un proveedor de Terraform. Por ejemplo, para obtener la última versión del proveedor `aws`, puedes usar `{{@ "hashicorp/terraform-provider-aws" | latest_release @}}` o el proveedor de datadog `{{@ "DataDog/terraform-provider-datadog" | latest_release @}}`.
+
+##### `slugify`
+
+Este filtro convierte una cadena en un slug. Toma un argumento opcional para especificar el carácter separador (el valor predeterminado es `-`).
+
+```yaml
+structure:
+  - README.md:
+      content: |
+        # {{@ project_name @}}
+        This is a template repository.
+        slugify project_name: {{@ project_name | slugify @}}
+```
 
 ## 👩‍💻 Desarrollo
 

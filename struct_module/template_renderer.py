@@ -1,7 +1,7 @@
 # FILE: template_renderer.py
 import logging
 from jinja2 import Environment, meta
-from struct_module.filters import get_latest_release
+from struct_module.filters import get_latest_release, slugify
 
 class TemplateRenderer:
     def __init__(self, config_variables):
@@ -15,7 +15,12 @@ class TemplateRenderer:
         comment_start_string='{#@',
         comment_end_string='@#}'
       )
-      self.env.filters['latest_release'] = get_latest_release
+
+      custom_filters = {
+        'latest_release': get_latest_release,
+        'slugify': slugify,
+      }
+      self.env.filters.update(custom_filters)
       self.logger = logging.getLogger(__name__)
 
     # Get the config variables from the list and create a dictionary that has
