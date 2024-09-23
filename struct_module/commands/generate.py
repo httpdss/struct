@@ -4,6 +4,7 @@ import yaml
 import argparse
 from struct_module.file_item import FileItem
 from struct_module.completers import file_strategy_completer
+from struct_module.utils import project_path
 
 # Generate command class
 class GenerateCommand(Command):
@@ -41,7 +42,7 @@ class GenerateCommand(Command):
     else:
       if args.structures_path is None:
         this_file = os.path.dirname(os.path.realpath(__file__))
-        file_path = os.path.join(this_file, "..", "..", "contribs", f"{args.structure_definition}.yaml")
+        file_path = os.path.join(project_path, "contribs", f"{args.structure_definition}.yaml")
       else:
         file_path = os.path.join(args.structures_path, f"{args.structure_definition}.yaml")
       # show error if file is not found

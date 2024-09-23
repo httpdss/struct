@@ -2,6 +2,7 @@ from struct_module.commands import Command
 import os
 import yaml
 from struct_module.file_item import FileItem
+from struct_module.utils import project_path
 
 # List command class
 class ListCommand(Command):
@@ -18,7 +19,7 @@ class ListCommand(Command):
 
     if args.structures_path is None:
       this_file = os.path.dirname(os.path.realpath(__file__))
-      final_path = os.path.join(this_file, "..", "..", "contribs")
+      final_path = os.path.join(project_path, "contribs")
     else:
       final_path = os.path.join(args.structures_path)
 
