@@ -4,6 +4,7 @@ import yaml
 import argparse
 from struct_module.file_item import FileItem
 from struct_module.completers import file_strategy_completer
+from struct_module.utils import project_path
 
 # Generate command class
 class GenerateCommand(Command):
@@ -11,7 +12,7 @@ class GenerateCommand(Command):
     super().__init__(parser)
     parser.add_argument('structure_definition', type=str, help='Path to the YAML configuration file')
     parser.add_argument('base_path', type=str, help='Base path where the structure will be created')
-    parser.add_argument('-s', '--structures-path', type=str, help='Path to structure definitions', default='contribs')
+    parser.add_argument('-s', '--structures-path', type=str, help='Path to structure definitions')
     parser.add_argument('-d', '--dry-run', action='store_true', help='Perform a dry run without creating any files or directories')
     parser.add_argument('-v', '--vars', type=str, help='Template variables in the format KEY1=value1,KEY2=value2')
     parser.add_argument('-b', '--backup', type=str, help='Path to the backup folder')
@@ -39,7 +40,11 @@ class GenerateCommand(Command):
       with open(args.structure_definition[7:], 'r') as f:
         config = yaml.safe_load(f)
     else:
-      file_path = os.path.join(args.structures_path, f"{args.structure_definition}.yaml")
+      if args.structures_path is None:
+        this_file = os.path.dirname(os.path.realpath(__file__))
+        file_path = os.path.join(project_path, "contribs", f"{args.structure_definition}.yaml")
+      else:
+        file_path = os.path.join(args.structures_path, f"{args.structure_definition}.yaml")
       # show error if file is not found
       if not os.path.exists(file_path):
         self.logger.error(f"File not found: {file_path}")
