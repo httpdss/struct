@@ -2,9 +2,10 @@
 import logging
 from jinja2 import Environment, meta
 from struct_module.filters import get_latest_release, slugify
+from struct_module.input_store import InputStore
 
 class TemplateRenderer:
-    def __init__(self, config_variables):
+    def __init__(self, config_variables, input_store):
       self.config_variables = config_variables
       self.env = Environment(
         trim_blocks=True,
@@ -22,6 +23,9 @@ class TemplateRenderer:
       }
       self.env.filters.update(custom_filters)
       self.logger = logging.getLogger(__name__)
+      self.input_store = InputStore(input_store)
+      self.input_store.load()
+      self.input_data = self.input_store.get_data()
 
     # Get the config variables from the list and create a dictionary that has
     # variable name and their default value
@@ -64,9 +68,11 @@ class TemplateRenderer:
 
       for var in undeclared_variables:
         if var not in vars:
-          default = default_values.get(var, "")
+          default = self.input_data.get(var, default_values.get(var, ""))
           user_input = input(f"Enter value for {var} [{default}]: ")
           if not user_input:
             user_input = default
+          self.input_store.set_value(var, user_input)
           vars[var] = user_input
+      self.input_store.save()
       return vars
