@@ -22,6 +22,7 @@ class FileItem:
       self.config_variables = properties.get("config_variables")
       self.content_location = properties.get("file")
       self.permissions = properties.get("permissions")
+      self.input_store = properties.get("input_store")
 
       self.system_prompt = properties.get("system_prompt") or properties.get("global_system_prompt")
       self.user_prompt = properties.get("user_prompt")
@@ -30,7 +31,7 @@ class FileItem:
       if openai_api_key:
         self._configure_openai()
 
-      self.template_renderer = TemplateRenderer(self.config_variables)
+      self.template_renderer = TemplateRenderer(self.config_variables, self.input_store)
 
     def _configure_openai(self):
       self.openai_client = OpenAI(api_key=openai_api_key)

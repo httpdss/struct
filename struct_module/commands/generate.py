@@ -13,6 +13,7 @@ class GenerateCommand(Command):
     parser.add_argument('structure_definition', type=str, help='Path to the YAML configuration file')
     parser.add_argument('base_path', type=str, help='Base path where the structure will be created')
     parser.add_argument('-s', '--structures-path', type=str, help='Path to structure definitions')
+    parser.add_argument('-n', '--input-store', type=str, help='Path to the input store', default='/tmp/struct/input.json')
     parser.add_argument('-d', '--dry-run', action='store_true', help='Perform a dry run without creating any files or directories')
     parser.add_argument('-v', '--vars', type=str, help='Template variables in the format KEY1=value1,KEY2=value2')
     parser.add_argument('-b', '--backup', type=str, help='Path to the backup folder')
@@ -65,13 +66,16 @@ class GenerateCommand(Command):
           content["name"] = name
           content["global_system_prompt"] = args.global_system_prompt
           content["config_variables"] = config_variables
+          content["input_store"] = args.input_store
           file_item = FileItem(content)
           file_item.fetch_content()
         elif isinstance(content, str):
           file_item = FileItem(
-            {"name": name,
-             "content": content,
-             "config_variables": config_variables,
+            {
+              "name": name,
+              "content": content,
+              "config_variables": config_variables,
+              "input_store": args.input_store,
             }
           )
 
@@ -108,6 +112,7 @@ class GenerateCommand(Command):
               'backup': args.backup,
               'file_strategy': args.file_strategy,
               'global_system_prompt': args.global_system_prompt,
+              'input_store': args.input_store,
             })
           elif isinstance(content['struct'], list):
             for struct in content['struct']:
@@ -120,6 +125,7 @@ class GenerateCommand(Command):
                 'backup': args.backup,
                 'file_strategy': args.file_strategy,
                 'global_system_prompt': args.global_system_prompt,
+                'input_store': args.input_store,
               })
         else:
           self.logger.warning(f"Unsupported content in folder: {folder}")
