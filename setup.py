@@ -15,4 +15,5 @@ setup(
             'struct = struct_module.main:main',
         ],
     },
+    include_package_data=True
 )

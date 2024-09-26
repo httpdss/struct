@@ -1,0 +1,29 @@
+name: stuct-on-gha
+
+on:
+  workflow_dispatch:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      - name: Install STRUCT
+        run: |
+          pip install git+https://github.com/httpdss/struct.git
+          struct -h
+
+      - name: Run STRUCT
+        run: |
+          struct list
+
