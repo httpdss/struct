@@ -1,1 +1,1 @@
-include contribs/*
+recursive-include struct_module/contribs *

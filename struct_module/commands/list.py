@@ -19,7 +19,7 @@ class ListCommand(Command):
 
     if args.structures_path is None:
       this_file = os.path.dirname(os.path.realpath(__file__))
-      final_path = os.path.join(project_path, "contribs")
+      final_path = os.path.join(this_file, "..", "contribs")
     else:
       final_path = os.path.join(args.structures_path)
 

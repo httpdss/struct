@@ -17,6 +17,6 @@ setup(
     },
     include_package_data=True,
     package_data={
-      '': ['contribs/*'],
+      '': ['struct_module/contribs/*.yaml'],
     },
 )
