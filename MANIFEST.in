@@ -1,1 +1,1 @@
-include contribs/*.yaml
+include contribs/*
