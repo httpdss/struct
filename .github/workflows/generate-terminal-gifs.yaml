@@ -21,7 +21,7 @@ jobs:
         with:
           python-version: '3.x'
 
-      - uses: charmbracelet/vhs-action@v1
+      - uses: charmbracelet/vhs-action@v2
         with:
           path: ${{ matrix.tapes }}
 
