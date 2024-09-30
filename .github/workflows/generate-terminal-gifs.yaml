@@ -1,6 +1,7 @@
 name: generate-terminal-gifs
 
 on:
+  workflow_dispatch:
   push:
     paths:
       - 'docs/vhs/*.tape'
