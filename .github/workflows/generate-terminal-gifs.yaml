@@ -36,3 +36,4 @@ jobs:
           branch: repository-dispatch/update-${{ github.run_id }}
           labels: |
             automated-pr
+          add-paths: "docs/vhs/*.gif"
