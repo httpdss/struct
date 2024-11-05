@@ -23,6 +23,7 @@ class FileItem:
       self.content_location = properties.get("file")
       self.permissions = properties.get("permissions")
       self.input_store = properties.get("input_store")
+      self.skip = properties.get("skip", False)
 
       self.system_prompt = properties.get("system_prompt") or properties.get("global_system_prompt")
       self.user_prompt = properties.get("user_prompt")
@@ -118,6 +119,11 @@ class FileItem:
 
     def create(self, base_path, dry_run=False, backup_path=None, file_strategy='overwrite'):
       file_path = os.path.join(base_path, self.name)
+
+      if self.skip:
+        self.logger.info(f"Skipping file creation: {file_path}")
+        return
+
       if dry_run:
         self.logger.info(f"[DRY RUN] Would create file: {file_path} with content: \n\n{self.content}")
         return

@@ -46,7 +46,7 @@ class ValidateCommand(Command):
               raise ValueError(f"The content of '{name}' must be a dictionary.")
             if 'struct' not in content:
               raise ValueError(f"Dictionary item '{name}' must contain a 'struct' key.")
-            if not isinstance(content['struct'], str):
+            if not isinstance(content['struct'], str) and not isinstance(content['struct'], list):
               raise ValueError(f"The 'struct' value for '{name}' must be a string.")
 
 
@@ -104,7 +104,8 @@ class ValidateCommand(Command):
               # Check if 'prompt' key is present and its value is a string
               if 'prompt' in content and not isinstance(content['prompt'], str):
                 raise ValueError(f"The 'prompt' value for '{name}' must be a string.")
-              # Check if 'prompt' key is present but no OpenAI API key is found
+              if 'skip' in content and not isinstance(content['skip'], bool):
+                raise ValueError(f"The 'skip' value for '{name}' must be a string.")
             elif not isinstance(content, str):
               raise ValueError(f"The content of '{name}' must be a string or dictionary.")
       self.logger.info("Configuration validation passed.")
