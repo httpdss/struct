@@ -232,6 +232,22 @@ structure:
         slugify project_name: {{@ project_name | slugify @}}
 ```
 
+### `with` Clause
+
+The `with` clause allows you to pass additional variables to nested structures. These variables will be merged with the global variables and can be used within the nested structure.
+
+Example:
+
+```yaml
+folders:
+  - .devops/modules/mod1:
+      struct: terraform-module
+  - .devops/modules/mod2:
+      struct: terraform-module
+      with:
+        module_name: mymod2
+```
+
 ## 👩‍💻 Development
 
 To get started with development, follow these steps:

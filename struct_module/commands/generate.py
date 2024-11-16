@@ -101,14 +101,25 @@ class GenerateCommand(Command):
         # check if content has struct value
         if 'struct' in content:
           self.logger.info(f"Generating structure in folder: {folder} with struct {content['struct']}")
-          if isinstance(content['struct'], str):
 
+          # get vars from with param. this will be a dict of key value pairs
+          merged_vars = ""
+
+          # dict to comma separated string
+          if 'with' in content:
+            if isinstance(content['with'], dict):
+              merged_vars = ",".join([f"{k}={v}" for k, v in content['with'].items()])
+
+          if args.vars:
+            merged_vars = args.vars + "," + merged_vars
+
+          if isinstance(content['struct'], str):
             self._create_structure({
               'structure_definition': content['struct'],
               'base_path': folder_path,
               'structures_path': args.structures_path,
               'dry_run': args.dry_run,
-              'vars': args.vars,
+              'vars': merged_vars,
               'backup': args.backup,
               'file_strategy': args.file_strategy,
               'global_system_prompt': args.global_system_prompt,
@@ -121,7 +132,7 @@ class GenerateCommand(Command):
                 'base_path': folder_path,
                 'structures_path': args.structures_path,
                 'dry_run': args.dry_run,
-                'vars': args.vars,
+                'vars': merged_vars,
                 'backup': args.backup,
                 'file_strategy': args.file_strategy,
                 'global_system_prompt': args.global_system_prompt,

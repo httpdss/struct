@@ -1,4 +1,3 @@
-
 # 🚀 STRUCT: Generador Automático de Estructuras de Proyectos
 
 [![en](https://img.shields.io/badge/lang-en-red.svg)](https://github.com/httpdss/struct/blob/master/README.md) [![es](https://img.shields.io/badge/lang-es-yellow.svg)](https://github.com/httpdss/struct/blob/master/README.es.md)
@@ -233,6 +232,22 @@ structure:
         # {{@ project_name @}}
         This is a template repository.
         slugify project_name: {{@ project_name | slugify @}}
+```
+
+### Cláusula `with`
+
+La cláusula `with` te permite pasar variables adicionales a estructuras anidadas. Estas variables se fusionarán con las variables globales y se pueden usar dentro de la estructura anidada.
+
+Ejemplo:
+
+```yaml
+folders:
+  - .devops/modules/mod1:
+      struct: terraform-module
+  - .devops/modules/mod2:
+      struct: terraform-module
+      with:
+        module_name: mymod2
 ```
 
 ## 👩‍💻 Desarrollo
