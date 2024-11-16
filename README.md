@@ -232,6 +232,10 @@ structure:
         slugify project_name: {{@ project_name | slugify @}}
 ```
 
+##### `default_branch`
+
+This filter fetches the default branch name of a GitHub repository. It takes the repository name as an argument.
+
 ### `with` Clause
 
 The `with` clause allows you to pass additional variables to nested structures. These variables will be merged with the global variables and can be used within the nested structure.
