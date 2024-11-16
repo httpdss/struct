@@ -236,6 +236,14 @@ structure:
 
 This filter fetches the default branch name of a GitHub repository. It takes the repository name as an argument.
 
+```yaml
+structure:
+  - README.md:
+      content: |
+        # MyProject
+        Default branch: {{@ "httpdss/struct" | default_branch @}}
+```
+
 ### `with` Clause
 
 The `with` clause allows you to pass additional variables to nested structures. These variables will be merged with the global variables and can be used within the nested structure.

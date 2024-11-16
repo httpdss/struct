@@ -238,6 +238,14 @@ structure:
 
 Este filtro obtiene el nombre de la rama predeterminada de un repositorio de GitHub. Toma el nombre del repositorio como argumento.
 
+```yaml
+structure:
+  - README.md:
+      content: |
+        # MyProject
+        Default branch: {{@ "httpdss/struct" | default_branch @}}
+```
+
 ### Cláusula `with`
 
 La cláusula `with` te permite pasar variables adicionales a estructuras anidadas. Estas variables se fusionarán con las variables globales y se pueden usar dentro de la estructura anidada.
