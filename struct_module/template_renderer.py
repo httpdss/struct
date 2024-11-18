@@ -1,7 +1,7 @@
 # FILE: template_renderer.py
 import logging
 from jinja2 import Environment, meta
-from struct_module.filters import get_latest_release, slugify
+from struct_module.filters import get_latest_release, slugify, get_default_branch
 from struct_module.input_store import InputStore
 
 class TemplateRenderer:
@@ -20,6 +20,7 @@ class TemplateRenderer:
       custom_filters = {
         'latest_release': get_latest_release,
         'slugify': slugify,
+        'default_branch': get_default_branch
       }
       self.env.filters.update(custom_filters)
       self.logger = logging.getLogger(__name__)
