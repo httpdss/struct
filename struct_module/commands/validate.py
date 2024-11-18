@@ -33,6 +33,8 @@ class ValidateCommand(Command):
     #       struct: terraform-module
     #   - .devops/modules/my_module_two:
     #       struct: terraform-module
+    #       with:
+    #         module_name: my_module_two
     def _validate_folders_config(self, folders):
       if not isinstance(folders, list):
         raise ValueError("The 'folders' key must be a list.")
@@ -48,6 +50,8 @@ class ValidateCommand(Command):
               raise ValueError(f"Dictionary item '{name}' must contain a 'struct' key.")
             if not isinstance(content['struct'], str) and not isinstance(content['struct'], list):
               raise ValueError(f"The 'struct' value for '{name}' must be a string.")
+            if 'with' in content and not isinstance(content['with'], dict):
+              raise ValueError(f"The 'with' value for '{name}' must be a dictionary.")
 
 
     # Validate the 'variables' key in the configuration file
