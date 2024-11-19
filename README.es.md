@@ -157,6 +157,8 @@ folders:
       struct: terraform-module
   - .devops/modules/mod2:
       struct: terraform-module
+      with:
+        module_name: mymod2
   - ./:
       struct:
         - docker-files
