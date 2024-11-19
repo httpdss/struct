@@ -146,7 +146,7 @@ structure:
         #!/bin/bash
         echo "Hello, {{@ author_name @}}!"
   - LICENSE:
-      remote_file: https://raw.githubusercontent.com/nishanths/license/master/LICENSE
+      file: https://raw.githubusercontent.com/nishanths/license/master/LICENSE
   - src/main.py:
       content: |
         print("Hello, World!")
@@ -155,6 +155,8 @@ folders:
       struct: terraform-module
   - .devops/modules/mod2:
       struct: terraform-module
+      with:
+        module_name: mymod2
   - ./:
       struct:
         - docker-files
