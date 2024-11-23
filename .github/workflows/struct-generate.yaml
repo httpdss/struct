@@ -63,9 +63,9 @@ jobs:
 
       - name: Run STRUCT
         run: |
-          struct generate {{ inputs.args }} \
-            {{ inputs.struct_file }} \
-            {{ inputs.output_dir }}
+          struct generate ${{ inputs.args }} \
+            ${{ inputs.struct_file }} \
+            ${{ inputs.output_dir }}
 
       - name: Generate PR with changes
         if: github.event_name == 'workflow_dispatch'
