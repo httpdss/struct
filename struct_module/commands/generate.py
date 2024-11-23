@@ -22,7 +22,9 @@ class GenerateCommand(Command):
     parser.set_defaults(func=self.execute)
 
   def execute(self, args):
-    self.logger.info(f"Generating structure at {args.base_path} with config {args.structure_definition}")
+    self.logger.info(f"Generating structure")
+    self.logger.info(f"  Structure definition: {args.structure_definition}")
+    self.logger.info(f"  Base path: {args.base_path}")
 
     if args.backup and not os.path.exists(args.backup):
       os.makedirs(args.backup)
@@ -96,11 +98,14 @@ class GenerateCommand(Command):
           self.logger.info(f"[DRY RUN] Would create folder: {folder_path}")
           continue
         os.makedirs(folder_path, exist_ok=True)
-        self.logger.info(f"Created folder: {folder_path}")
+        self.logger.info(f"Created folder")
+        self.logger.info(f"  Folder: {folder_path}")
 
         # check if content has struct value
         if 'struct' in content:
-          self.logger.info(f"Generating structure in folder: {folder} with struct {content['struct']}")
+          self.logger.info(f"Generating structure")
+          self.logger.info(f"  Folder: {folder}")
+          self.logger.info(f"  Struct: {content['struct']}")
 
           # get vars from with param. this will be a dict of key value pairs
           merged_vars = ""

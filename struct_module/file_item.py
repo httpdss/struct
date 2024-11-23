@@ -121,7 +121,8 @@ class FileItem:
       file_path = os.path.join(base_path, self.name)
 
       if self.skip:
-        self.logger.info(f"Skipping file creation: {file_path}")
+        self.logger.info(f"Skipping file creation")
+        self.logger.info(f"  File path: {file_path}")
         return
 
       if dry_run:
@@ -141,7 +142,7 @@ class FileItem:
           return
         elif file_strategy == 'append':
           with open(file_path, 'a') as f:
-              f.write(self.content)
+              f.write(f"{self.content}\n")
           self.logger.info(f"Appended to existing file: {file_path}")
           return
         elif file_strategy == 'rename':
@@ -150,9 +151,13 @@ class FileItem:
           self.logger.info(f"Renamed existing file: {file_path} to {new_name}")
 
       with open(file_path, 'w') as f:
-        f.write(self.content)
-      self.logger.debug(f"Created file: {file_path} with content: \n\n{self.content}")
+        f.write(f"{self.content}\n")
+      self.logger.debug(f"Created file with content")
+      self.logger.debug(f"  File path: {file_path}")
+      self.logger.debug(f"  Content: \n\n{self.content}")
 
       if self.permissions:
         os.chmod(file_path, int(self.permissions, 8))
-        self.logger.info(f"Set permissions {self.permissions} for file: {file_path}")
+        self.logger.info(f"Set permissions to file")
+        self.logger.info(f"  File path: {file_path}")
+        self.logger.info(f"  Permissions: {self.permissions}")
