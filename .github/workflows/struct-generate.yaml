@@ -43,6 +43,10 @@ on:
         type: string
         required: false
         default: 'ubuntu-latest'
+    secrets:
+      github-token:
+        description: 'GitHub token'
+        required: true
 
 jobs:
   run:
@@ -71,7 +75,7 @@ jobs:
         if: github.event_name == 'workflow_dispatch'
         uses: peter-evans/create-pull-request@v7
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.github-token }}
           commit-message: ${{ inputs.pr_title }}
           title: ${{ inputs.pr_title }}
           body: |
