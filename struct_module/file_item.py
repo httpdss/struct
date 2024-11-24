@@ -7,6 +7,7 @@ import time
 from openai import OpenAI
 from dotenv import load_dotenv
 from struct_module.template_renderer import TemplateRenderer
+from struct_module.content_fetcher import ContentFetcher
 
 load_dotenv()
 
@@ -24,6 +25,8 @@ class FileItem:
       self.permissions = properties.get("permissions")
       self.input_store = properties.get("input_store")
       self.skip = properties.get("skip", False)
+
+      self.content_fetcher = ContentFetcher()
 
       self.system_prompt = properties.get("system_prompt") or properties.get("global_system_prompt")
       self.user_prompt = properties.get("user_prompt")
@@ -82,22 +85,11 @@ class FileItem:
     def fetch_content(self):
       if self.content_location:
         self.logger.debug(f"Fetching content from: {self.content_location}")
-
-        if self.content_location.startswith("file://"):
-          file_path = self.content_location[len("file://"):]
-          with open(file_path, 'r') as file:
-            self.content = file.read()
-          self.logger.debug(f"Fetched content from local file: {self.content}")
-
-        elif self.content_location.startswith("https://"):
-          response = requests.get(self.content_location)
-          self.logger.debug(f"Response status code: {response.status_code}")
-          response.raise_for_status()
-          self.content = response.text
-          self.logger.debug(f"Fetched content from URL: {self.content}")
-
-        else:
-          self.logger.warning(f"Unsupported protocol in content_location: {self.content_location}")
+        try:
+          self.content = self.content_fetcher.fetch_content(self.content_location)
+          self.logger.debug(f"Fetched content: {self.content}")
+        except Exception as e:
+          self.logger.error(f"Failed to fetch content from {self.content_location}: {e}")
 
     def _merge_default_template_vars(self, template_vars):
       default_vars = {

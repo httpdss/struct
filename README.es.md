@@ -149,6 +149,18 @@ structure:
         echo "Hello, {{@ author_name @}}!"
   - LICENSE:
       file: https://raw.githubusercontent.com/nishanths/license/master/LICENSE
+  - archivo_remoto.txt:
+      file: file:///ruta/al/archivo/local.txt
+  - archivo_github.py:
+      file: github://owner/repo/branch/path/to/file.py
+  - archivo_github_https.py:
+      file: githubhttps://owner/repo/branch/path/to/file.py
+  - archivo_github_ssh.py:
+      file: githubssh://owner/repo/branch/path/to/file.py
+  - archivo_s3.txt:
+      file: s3://bucket_name/key
+  - archivo_gcs.txt:
+      file: gs://bucket_name/key
   - src/main.py:
       content: |
         print("Hello, World!")
