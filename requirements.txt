@@ -6,3 +6,6 @@ jinja2
 PyGithub
 argcomplete
 colorlog
+boto3
+google-cloud
+google-api-core
