@@ -2,9 +2,6 @@ name: generate-terminal-gifs
 
 on:
   workflow_dispatch:
-  push:
-    paths:
-      - 'docs/vhs/*.tape'
 
 jobs:
   run:
@@ -28,13 +25,13 @@ jobs:
         with:
           path: ${{ matrix.tapes }}
 
-      - uses: stefanzweifel/git-auto-commit-action@v5
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v7
         with:
-          commit_message: Update generated VHS GIF
-          branch: main
-          commit_user_name: vhs-action 📼
-          commit_user_email: actions@github.com
-          commit_author: vhs-action 📼 <actions@github.com>
-          file_pattern: '*.gif'
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: Update generated VHS GIF
+          branch: repository-dispatch/update-${{ github.run_id }}
+          title: Update generated VHS GIF
+          body: This PR updates the generated VHS GIF files.
+          base: main
+          path: '*.gif'
