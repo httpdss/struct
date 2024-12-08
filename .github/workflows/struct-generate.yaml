@@ -44,7 +44,7 @@ on:
         required: false
         default: 'ubuntu-latest'
     secrets:
-      github-token:
+      token:
         description: 'GitHub token'
         required: true
 
