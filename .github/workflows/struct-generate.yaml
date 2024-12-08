@@ -75,7 +75,7 @@ jobs:
         if: github.event_name == 'workflow_dispatch'
         uses: peter-evans/create-pull-request@v7
         with:
-          token: ${{ secrets.github-token }}
+          token: ${{ secrets.token }}
           commit-message: ${{ inputs.pr_title }}
           title: ${{ inputs.pr_title }}
           body: |
