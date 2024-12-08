@@ -1,0 +1,18 @@
+name: run-struct
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+  actions: write
+
+jobs:
+  generate:
+    uses: httpdss/struct/.github/workflows/struct-generate.yaml@main
+    with:
+      struct_file: 'file://.struct.yaml'
+      output_dir: '.'
+    secrets:
+      token: ${{ secrets.GITHUB_TOKEN }}
