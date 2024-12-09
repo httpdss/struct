@@ -3,6 +3,7 @@ import logging
 from jinja2 import Environment, meta
 from struct_module.filters import get_latest_release, slugify, get_default_branch
 from struct_module.input_store import InputStore
+from struct_module.utils import get_current_repo
 
 class TemplateRenderer:
     def __init__(self, config_variables, input_store):
@@ -17,13 +18,20 @@ class TemplateRenderer:
         comment_end_string='@#}'
       )
 
+      self.logger = logging.getLogger(__name__)
+
       custom_filters = {
         'latest_release': get_latest_release,
         'slugify': slugify,
         'default_branch': get_default_branch
       }
+
+      globals = {
+        'current_repo': get_current_repo
+      }
+
+      self.env.globals.update(globals)
       self.env.filters.update(custom_filters)
-      self.logger = logging.getLogger(__name__)
       self.input_store = InputStore(input_store)
       self.input_store.load()
       self.input_data = self.input_store.get_data()

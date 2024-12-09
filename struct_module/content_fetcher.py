@@ -53,7 +53,10 @@ class ContentFetcher:
 
     for prefix, method in protocol_map.items():
       if content_location.startswith(prefix):
-        return method(content_location[len(prefix):])
+        if content_location.startswith("http"):
+          return method(content_location)
+        else:
+          return method(content_location[len(prefix):])
 
     raise ValueError(f"Unsupported content location: {content_location}")
 

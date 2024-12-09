@@ -9,3 +9,4 @@ colorlog
 boto3
 google-cloud
 google-api-core
+cachetools
