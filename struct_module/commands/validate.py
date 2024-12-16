@@ -30,9 +30,9 @@ class ValidateCommand(Command):
     # Example:
     # folders:
     #   - .devops/modules/my_module_one:
-    #       struct: terraform-module
+    #       struct: terraform/module
     #   - .devops/modules/my_module_two:
-    #       struct: terraform-module
+    #       struct: terraform/module
     #       with:
     #         module_name: my_module_two
     def _validate_folders_config(self, folders):

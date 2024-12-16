@@ -24,9 +24,9 @@ structure:
                 run: echo Hello, world!
 folders:
   - .devops/modules/mod1:
-      struct: terraform-module
+      struct: terraform/module
   - .devops/modules/mod2:
-      struct: terraform-module
+      struct: terraform/module
       with:
         module_name: mymod2
   - ./:
