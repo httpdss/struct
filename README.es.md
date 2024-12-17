@@ -174,7 +174,7 @@ folders:
   - ./:
       struct:
         - docker-files
-        - go-project
+        - project/go
 variables:
   - project_name:
       description: "The name of the project"

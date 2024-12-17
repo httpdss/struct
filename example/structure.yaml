@@ -32,7 +32,7 @@ folders:
   - ./:
       struct:
         - docker-files
-        - go-project
+        - project/go
         - github/workflows/pre-commit
 variables:
   - project_name:
