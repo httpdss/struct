@@ -166,15 +166,15 @@ structure:
         print("Hello, World!")
 folders:
   - .devops/modules/mod1:
-      struct: terraform-module
+      struct: terraform/module
   - .devops/modules/mod2:
-      struct: terraform-module
+      struct: terraform/module
       with:
         module_name: mymod2
   - ./:
       struct:
         - docker-files
-        - go-project
+        - project/go
 variables:
   - project_name:
       description: "The name of the project"
@@ -269,9 +269,9 @@ Ejemplo:
 ```yaml
 folders:
   - .devops/modules/mod1:
-      struct: terraform-module
+      struct: terraform/module
   - .devops/modules/mod2:
-      struct: terraform-module
+      struct: terraform/module
       with:
         module_name: mymod2
 ```

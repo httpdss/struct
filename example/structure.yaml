@@ -24,15 +24,15 @@ structure:
                 run: echo Hello, world!
 folders:
   - .devops/modules/mod1:
-      struct: terraform-module
+      struct: terraform/module
   - .devops/modules/mod2:
-      struct: terraform-module
+      struct: terraform/module
       with:
         module_name: mymod2
   - ./:
       struct:
         - docker-files
-        - go-project
+        - project/go
         - github/workflows/pre-commit
 variables:
   - project_name:
