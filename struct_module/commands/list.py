@@ -16,15 +16,22 @@ class ListCommand(Command):
     self._list_structures(args)
 
   def _list_structures(self, args):
+    this_file = os.path.dirname(os.path.realpath(__file__))
+    contribs_path = os.path.join(this_file, "..", "contribs")
 
-    if args.structures_path is None:
-      this_file = os.path.dirname(os.path.realpath(__file__))
-      final_path = os.path.join(this_file, "..", "contribs")
+    if args.structures_path:
+      final_path = args.structures_path
+      paths_to_list = [final_path, contribs_path]
     else:
-      final_path = os.path.join(args.structures_path)
+      paths_to_list = [contribs_path]
 
     print("Listing available structures")
-    sorted_list = [structure for structure in os.listdir(final_path) if structure.endswith('.yaml')]
-    sorted_list.sort()
+    all_structures = set()
+    for path in paths_to_list:
+      if os.path.exists(path):
+        structures = [structure for structure in os.listdir(path) if structure.endswith('.yaml')]
+        all_structures.update(structures)
+
+    sorted_list = sorted(all_structures)
     for structure in sorted_list:
       print(f" - {structure[:-5]}")

@@ -39,19 +39,21 @@ class GenerateCommand(Command):
   def _create_structure(self, args):
     if isinstance(args, dict):
         args = argparse.Namespace(**args)
+    this_file = os.path.dirname(os.path.realpath(__file__))
+    contribs_path = os.path.join(this_file, "..", "contribs")
+
     if args.structure_definition.startswith("file://") and args.structure_definition.endswith(".yaml"):
       with open(args.structure_definition[7:], 'r') as f:
         config = yaml.safe_load(f)
     else:
-      if args.structures_path is None:
-        this_file = os.path.dirname(os.path.realpath(__file__))
-        file_path = os.path.join(this_file, "..", "contribs", f"{args.structure_definition}.yaml")
-      else:
+      file_path = os.path.join(contribs_path, f"{args.structure_definition}.yaml")
+      if args.structures_path:
         file_path = os.path.join(args.structures_path, f"{args.structure_definition}.yaml")
-      # show error if file is not found
+
       if not os.path.exists(file_path):
         self.logger.error(f"File not found: {file_path}")
         return
+
       with open(file_path, 'r') as f:
         config = yaml.safe_load(f)
 
