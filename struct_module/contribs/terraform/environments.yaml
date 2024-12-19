@@ -1,0 +1,9 @@
+folders:
+  - .devops/apps/environments/dev:
+      struct: terraform/app
+  - .devops/apps/environments/qa:
+      struct: terraform/app
+  - .devops/apps/environments/stage:
+      struct: terraform/app
+  - .devops/apps/environments/prod:
+      struct: terraform/app
