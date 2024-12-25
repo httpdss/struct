@@ -1,0 +1,72 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "structure": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "patternProperties": {
+          ".*": {
+            "type": "object",
+            "properties": {
+              "skip": { "type": "boolean" },
+              "content": { "type": "string" },
+              "permissions": { "type": "string" },
+              "file": { "type": "string", "format": "uri" }
+            },
+            "additionalProperties": false
+          }
+        }
+      }
+    },
+    "folders": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "patternProperties": {
+          ".*": {
+            "type": "object",
+            "properties": {
+              "struct": {
+                "oneOf": [
+                  { "type": "string" },
+                  {
+                    "type": "array",
+                    "items": { "type": "string" }
+                  }
+                ]
+              },
+              "with": {
+                "type": "object",
+                "properties": {
+                  "module_name": { "type": "string" }
+                },
+                "additionalProperties": false
+              }
+            },
+            "additionalProperties": false
+          }
+        }
+      }
+    },
+    "variables": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "patternProperties": {
+          ".*": {
+            "type": "object",
+            "properties": {
+              "description": { "type": "string" },
+              "type": { "type": "string" },
+              "default": { "type": "string" }
+            },
+            "additionalProperties": false
+          }
+        }
+      }
+    }
+  },
+  "additionalProperties": false
+}
