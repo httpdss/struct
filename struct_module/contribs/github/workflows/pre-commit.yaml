@@ -5,6 +5,7 @@ structure:
 
         on:
           pull_request:
+            branches: [{{@ current_repo() | default_branch @}}]
           push:
             branches: [{{@ current_repo() | default_branch @}}]
 

@@ -1,7 +1,7 @@
 structure:
   - .github/workflows/release-drafter.yaml:
       content: |
-        name: Release Drafter
+        name: release-drafter
 
         on:
           push:
