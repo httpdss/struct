@@ -18,6 +18,7 @@
 - [Inicio Rápido](#-inicio-rápido)
 - [Uso](#-uso)
 - [Configuración YAML](#-configuración-yaml)
+- [Esquema YAML](#-esquema-yaml)
 - [Desarrollo](#-desarrollo)
 - [Licencia](#-licencia)
 - [Financiamiento](#-financiamiento)
@@ -275,6 +276,25 @@ folders:
       with:
         module_name: mymod2
 ```
+
+## 📝 Esquema YAML
+
+Para asegurar que tus archivos de configuración YAML cumplan con la estructura esperada, puedes usar el esquema JSON proporcionado. Esto ayuda a validar tus archivos YAML y proporciona autocompletado en editores compatibles como VSCode.
+
+### Configuración en VSCode
+
+1. Instala la [extensión YAML](https://marketplace.visualstudio.com/items?itemName=redhat.vscode-yaml) para VSCode.
+2. Añade la siguiente configuración a los ajustes de tu espacio de trabajo (`.vscode/settings.json`):
+
+```json
+{
+  "yaml.schemas": {
+    "https://raw.githubusercontent.com/httpdss/struct/refs/heads/main/struct-schema.json": ".struct.yaml"
+  }
+}
+```
+
+Esta configuración asociará el esquema JSON con todos los archivos .struct.yaml en tu espacio de trabajo, proporcionando validación y autocompletado.
 
 ## 👩‍💻 Desarrollo
 

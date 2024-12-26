@@ -18,6 +18,7 @@
 - [Quick Start](#-quick-start)
 - [Usage](#-usage)
 - [YAML Configuration](#-yaml-configuration)
+- [YAML Schema](#-yaml-schema)
 - [Development](#-development)
 - [License](#-license)
 - [Funding](#-funding)
@@ -130,7 +131,7 @@ struct generate \
   ./my-terraform-module
 ```
 
-## 📄 YAML Configuration
+## 📝 YAML Configuration
 
 Here is an example of a YAML configuration file:
 
@@ -273,6 +274,25 @@ folders:
       with:
         module_name: mymod2
 ```
+
+## 📝 YAML Schema
+
+To ensure your YAML configuration files adhere to the expected structure, you can use the provided JSON schema. This helps in validating your YAML files and provides autocompletion in supported editors like VSCode.
+
+### Configuring VSCode
+
+1. Install the [YAML extension](https://marketplace.visualstudio.com/items?itemName=redhat.vscode-yaml) for VSCode.
+2. Add the following configuration to your workspace settings (`.vscode/settings.json`):
+
+```json
+{
+  "yaml.schemas": {
+    "https://raw.githubusercontent.com/httpdss/struct/main/extras/schema.json": ".struct.yaml"
+  }
+}
+```
+
+This configuration will associate the JSON schema with all .struct.yaml files in your workspace, providing validation and autocompletion.
 
 ## 👩‍💻 Development
 
