@@ -27,6 +27,7 @@ structure:
         <!-- markdownlint-disable no-bare-urls -->
 
         # {{@ app_name @}}
+
         This is a generic Terraform app.
 
         <!-- BEGIN_TF_DOCS -->

@@ -37,8 +37,11 @@ structure:
         <!-- markdownlint-disable no-bare-urls -->
 
         # {{@ module_name @}}
+
         This module provisions an EC2 instance on AWS.
+
         ## Usage
+
         ```hcl
         module "example" {
           source = "./path/to/module/{{@ module_name | slugify @}}"

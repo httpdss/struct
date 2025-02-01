@@ -74,7 +74,9 @@ structure:
       content: |
         # App Name
         Kubernetes manifests for deploying the example app.
+
         ## Usage
+
         ```bash
         kubectl apply -f deployment.yaml
         kubectl apply -f service.yaml
