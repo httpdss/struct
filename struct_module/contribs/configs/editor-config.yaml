@@ -1,4 +1,4 @@
-folders:
+structure:
   - .editorconfig:
       content: |
         root = true
