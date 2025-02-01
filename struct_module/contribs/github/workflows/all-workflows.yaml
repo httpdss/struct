@@ -1,6 +1,0 @@
-folders:
-  - ./:
-    struct:
-      - github/workflows/pre-commit
-      - github/workflows/release-drafter
-      - github/workflows/terraform-workflow

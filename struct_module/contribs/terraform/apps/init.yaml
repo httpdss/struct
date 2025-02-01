@@ -1,0 +1,11 @@
+folders:
+  - .devops/apps/init:
+      struct: terraform/apps/generic
+      with:
+        backend_organization_name: "my-organization"
+        backend_workspace_name: "my-app-init"
+  - ./:
+      struct: github/workflows/execute-tf-workflow
+      with:
+        app_name: init
+        app_path: init

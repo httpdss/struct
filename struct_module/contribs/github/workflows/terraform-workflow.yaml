@@ -1,3 +1,0 @@
-structure:
-  - .github/workflows/terrform-workflow.yaml:
-      file: https://raw.githubusercontent.com/httpdss/github-workflows/main/.github/workflows/terraform-workflow.yaml

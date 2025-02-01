@@ -1,0 +1,21 @@
+folders:
+  - .devops/apps/accounts/nonprod:
+      struct: terraform/apps/generic
+      with:
+        backend_organization_name: "my-organization"
+        backend_workspace_name: "accounts-nonprod"
+  - .devops/apps/accounts/prod:
+      struct: terraform/apps/generic
+      with:
+        backend_organization_name: "my-organization"
+        backend_workspace_name: "accounts-prod"
+  - ./:
+      struct: github/workflows/execute-tf-workflow
+      with:
+        app_name: accounts-nonprod
+        app_path: accounts/nonprod
+  - ./:
+      struct: github/workflows/execute-tf-workflow
+      with:
+        app_name: accounts-prod
+        app_path: accounts/prod

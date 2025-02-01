@@ -1,0 +1,42 @@
+structure:
+  - .github/workflows/execute-tf-{{@ app_name | slugify @}}.yaml:
+      content: |
+        name: 'execute-tf-{{@ app_name | slugify @}}'
+        on:
+          pull_request:
+            branches:
+              - main
+            paths:
+              - '.devops/apps/**'
+              - '.github/workflows/execute-tf-{{@ app_name | slugify @}}.yaml'
+          push:
+            branches:
+              - main
+            paths:
+              - '.devops/apps/**'
+              - '.github/workflows/execute-tf-{{@ app_name | slugify @}}.yaml'
+
+        jobs:
+          tf-workflow:
+            uses: httpdss/github-workflows/.github/workflows/execute-tf-workflow.yaml@main
+            with:
+              working-directory: '.devops/apps/{{@ app_path @}}'
+            secrets:
+              gh-token: {{@ github_token @}}
+
+variables:
+  - name: app_name
+    description: "The name of the app."
+    default: "environments-dev"
+    type: string
+    required: true
+  - name: app_path
+    description: "The working directory for the terraform workflow."
+    default: "environments/dev"
+    type: string
+    required: true
+  - name: github_token
+    description: "The GitHub token for authentication."
+    default: "${{ secrets.GITHUB_TOKEN }}"
+    type: string
+    required: false
