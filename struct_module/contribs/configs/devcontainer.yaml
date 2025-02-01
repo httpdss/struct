@@ -2,8 +2,7 @@ folders:
   - .devcontainer/devcontainer.json:
       content: |
         {
-          "name": "My Dev Container",
-          "dockerFile": "Dockerfile",
+          "image": "mcr.microsoft.com/vscode/devcontainers/python:3",
           "settings": {
             "terminal.integrated.shell.linux": "/bin/bash"
           },
