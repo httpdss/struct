@@ -1,0 +1,11 @@
+folders:
+  - .jshintrc:
+      content: |
+        {
+          "node": true,
+          "esversion": 6
+        }
+  - .jshintignore:
+      content: |
+        node_modules/
+        dist/
