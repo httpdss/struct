@@ -2,10 +2,16 @@ structure:
   - .prettierrc:
       content: |
         {
-          "singleQuote": true,
+          "semi": true,
           "trailingComma": "es5",
+          "singleQuote": true,
+          "endOfLine": "lf",
           "tabWidth": 2,
-          "semi": false
+          "arrowParens": "always",
+          "printWidth": 80,
+          "bracketSpacing": true,
+          "quoteProps": "as-needed",
+          "proseWrap": "preserve"
         }
   - .prettierignore:
       content: |
