@@ -13,10 +13,16 @@ structure:
               struct_file: 'file://.struct.yaml'
               output_dir: '.'
             secrets:
-              token: ${{ secrets.STRUCT_RUN_TOKEN }}
+              token: {{@ github_token @}}
   - .struct.yaml:
       content: |
         structure:
           - README.md:
               content: |
                 # Sample content
+
+variables:
+  - github_token:
+      type: string
+      description: 'GitHub token'
+      default: "${{ secrets.STRUCT_RUN_TOKEN }}"
