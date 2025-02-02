@@ -16,4 +16,3 @@ class InfoCommand(Command):
       print("  validate    Validate the YAML configuration file")
       print("  info        Show information about the package")
       print("  list        List available structures")
-      print("  version     Show the package version")
