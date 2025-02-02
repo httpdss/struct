@@ -28,9 +28,12 @@ class ListCommand(Command):
     print("Listing available structures")
     all_structures = set()
     for path in paths_to_list:
-      if os.path.exists(path):
-        structures = [structure for structure in os.listdir(path) if structure.endswith('.yaml')]
-        all_structures.update(structures)
+      for root, _, files in os.walk(path):
+        for file in files:
+            file_path = os.path.join(root, file)
+            rel_path = os.path.relpath(file_path, path)
+            if file.endswith(".yaml"):
+              all_structures.add(rel_path)
 
     sorted_list = sorted(all_structures)
     for structure in sorted_list:
