@@ -33,8 +33,11 @@ class ListCommand(Command):
             file_path = os.path.join(root, file)
             rel_path = os.path.relpath(file_path, path)
             if file.endswith(".yaml"):
+              rel_path = rel_path[:-5]
+              if path == contribs_path:
+                rel_path = f"(contrib) {rel_path}"
               all_structures.add(rel_path)
 
     sorted_list = sorted(all_structures)
     for structure in sorted_list:
-      print(f" - {structure[:-5]}")
+      print(f" - {structure}")
