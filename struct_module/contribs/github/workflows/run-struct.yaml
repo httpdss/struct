@@ -1,0 +1,22 @@
+structure:
+  - .github/workflows/run-struct.yaml:
+      content: |
+        name: run-struct
+
+        on:
+          workflow_dispatch:
+
+        jobs:
+          generate:
+            uses: httpdss/struct/.github/workflows/struct-generate.yaml@main
+            with:
+              struct_file: 'file://.struct.yaml'
+              output_dir: '.'
+            secrets:
+              token: ${{ secrets.STRUCT_RUN_TOKEN }}
+  - .struct.yaml:
+      content: |
+        structure:
+          - README.md:
+              content: |
+                # Sample content

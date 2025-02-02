@@ -25,7 +25,7 @@ class ListCommand(Command):
     else:
       paths_to_list = [contribs_path]
 
-    print("Listing available structures")
+    print("📃 Listing available structures\n")
     all_structures = set()
     for path in paths_to_list:
       for root, _, files in os.walk(path):
@@ -34,10 +34,16 @@ class ListCommand(Command):
             rel_path = os.path.relpath(file_path, path)
             if file.endswith(".yaml"):
               rel_path = rel_path[:-5]
-              if path == contribs_path:
-                rel_path = f"(contrib) {rel_path}"
+              if path != contribs_path:
+                rel_path = f"+ {rel_path}"
               all_structures.add(rel_path)
 
     sorted_list = sorted(all_structures)
     for structure in sorted_list:
       print(f" - {structure}")
+
+    print("\nUse 'struct generate' to generate the structure")
+    print("Note: Structures with '+' sign are custom structures")
+
+
+
