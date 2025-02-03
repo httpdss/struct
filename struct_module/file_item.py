@@ -25,6 +25,7 @@ class FileItem:
       self.permissions = properties.get("permissions")
       self.input_store = properties.get("input_store")
       self.skip = properties.get("skip", False)
+      self.skip_if_exists = properties.get("skip_if_exists", False)
 
       self.content_fetcher = ContentFetcher()
 
@@ -119,6 +120,11 @@ class FileItem:
 
       if dry_run:
         self.logger.info(f"[DRY RUN] Would create file: {file_path} with content: \n\n{self.content}")
+        return
+
+      if self.skip_if_exists and os.path.exists(file_path):
+        self.logger.info(f"Skipping file creation as file exists")
+        self.logger.info(f"  File path: {file_path}")
         return
 
       # Create the directory if it does not exist

@@ -6,6 +6,7 @@ structure:
         This is a template repository.
   - script.sh:
       permissions: '0777'
+      skip_if_exists: true
       content: |
         #!/bin/bash
         echo "Hello, {{@ author_name @}}!"

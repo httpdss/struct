@@ -11,6 +11,7 @@
             "type": "object",
             "properties": {
               "skip": { "type": "boolean" },
+              "skip_if_exists": { "type": "boolean" },
               "content": { "type": "string" },
               "permissions": { "type": "string" },
               "file": { "type": "string", "format": "uri" }
