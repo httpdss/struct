@@ -3,6 +3,10 @@ name: generate-terminal-gifs
 on:
   workflow_dispatch:
 
+permissions:
+  contents: write
+  pull-requests: write
+
 jobs:
   run:
     strategy:
@@ -36,3 +40,4 @@ jobs:
           title: Update generated VHS GIF
           body: This PR updates the generated VHS GIF files.
           base: main
+          labels: automation
