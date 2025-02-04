@@ -63,8 +63,12 @@ Set Width 1200
 Set Height 600
 
 Type "# Create python virtual environment and install struct" Enter
-Type "python3 -m venv .venv" Sleep 2000ms Enter
+Type "python3 -m venv .venv" Enter
+Sleep 5
 Type "source .venv/bin/activate" Enter
-Type "pip install git+https://github.com/httpdss/struct.git" Sleep 5000ms  Enter
+Sleep 5
+Type "pip install git+https://github.com/httpdss/struct.git" Enter
+Sleep 30
 Type "# STRUCT is now installed and ready to use" Enter
 Type "struct list" Enter
+Sleep 10
