@@ -39,6 +39,7 @@ jobs:
 
       - name: force update major tag
         run: |
+          git push --tags
           git tag
           git tag v${{ steps.version.outputs.major }} ${{ steps.version.outputs.tag }} -f
           git push origin refs/tags/v${{ steps.version.outputs.major }} -f
