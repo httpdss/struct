@@ -34,21 +34,22 @@ class InfoCommand(Command):
         with open(file_path, 'r') as f:
           config = yaml.safe_load(f)
 
-      print("Structure definition:")
-      print(f" - Name: {args.structure_definition}")
-      print(f" - Description: {config.get('description', 'No description')}")
+      print("📒 Structure definition\n")
+      print(f"   📌 Name: {args.structure_definition}\n")
+      print(f"   📌 Description: {config.get('description', 'No description')}\n")
 
       if config.get('structure'):
-        print(f" - Structure:")
+        print(f"   📌 Structure:")
         for item in config.get('structure', []):
           for name, content in item.items():
-            print(f"   - {name}: ")
+            print(f"       - {name} ")
             # indent all lines of content
-            for line in content.get('content', content.get('file', 'Not defined')).split('\n'):
-              print(f"       {line}")
+            # for line in content.get('content', content.get('file', 'Not defined')).split('\n'):
+            #   print(f"       {line}")
 
       if config.get('folders'):
-        print(f" - Folders:")
+        print(f"   📌 Folders:")
         for folder in config.get('folders', []):
-          print(f"   - {folder}: {folder.get('struct', 'No structure')}")
+          print(f"     - {folder}")
+          # print(f"     - {folder}: {folder.get('struct', 'No structure')}")
 
