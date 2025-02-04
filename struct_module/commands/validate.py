@@ -110,6 +110,8 @@ class ValidateCommand(Command):
                 raise ValueError(f"The 'prompt' value for '{name}' must be a string.")
               if 'skip' in content and not isinstance(content['skip'], bool):
                 raise ValueError(f"The 'skip' value for '{name}' must be a string.")
+              if 'skip_if_exists' in content and not isinstance(content['skip_if_exists'], bool):
+                raise ValueError(f"The 'skip_if_exists' value for '{name}' must be a string.")
             elif not isinstance(content, str):
               raise ValueError(f"The content of '{name}' must be a string or dictionary.")
       self.logger.info("Configuration validation passed.")

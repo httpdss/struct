@@ -1,0 +1,40 @@
+structure:
+  - providers.yaml:
+      content: |
+        provider "github" {
+          owner = "{{@ github_org @}}"
+        }
+
+        terraform {
+          required_providers {
+            github = {
+              source  = "integrations/github"
+              version = "{{@ "integrations/github" | latest_release @}}"
+            }
+          }
+          backend "remote" {
+            organization = "{{@ github_org @}}"
+            workspaces {
+              name = "github-organization"
+            }
+          }
+        }
+  - main.tf:
+      content: |
+        touch_file: 2025-01-01
+  - variables.tf:
+      content: ""
+  - outputs.tf:
+      content: ""
+  - README.md:
+      content: |
+        <!-- markdownlint-disable no-inline-html -->
+        <!-- markdownlint-disable no-bare-urls -->
+
+        <!-- BEGIN_TF_DOCS -->
+        <!-- END_TF_DOCS -->
+variables:
+  - name: github_org
+    type: string
+    description: "GitHub organization name."
+    default: ""
