@@ -16,7 +16,7 @@ jobs:
         uses: actions/checkout@v4.2.2
         with:
           fetch-depth: 0
-      - uses: release-drafter/release-drafter@v6.0.0
+      - uses: release-drafter/release-drafter@v6.1.0
         id: release-drafter
         with:
           config-name: release-drafter.yml
@@ -38,5 +38,6 @@ jobs:
 
       - name: force update major tag
         run: |
+          git tag
           git tag v${{ steps.version.outputs.major }} ${{ steps.version.outputs.tag }} -f
           git push origin refs/tags/v${{ steps.version.outputs.major }} -f

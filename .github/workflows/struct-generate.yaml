@@ -77,6 +77,7 @@ jobs:
           repository: ${{ inputs.custom_structure_repository }}
           token: ${{ secrets.token }}
           path: ./custom-structures
+          fetch-depth: 1
 
       - name: Run STRUCT
         run: |
