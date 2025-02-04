@@ -44,6 +44,3 @@ class ListCommand(Command):
 
     print("\nUse 'struct generate' to generate the structure")
     print("Note: Structures with '+' sign are custom structures")
-
-
-
