@@ -52,4 +52,3 @@ class InfoCommand(Command):
         for folder in config.get('folders', []):
           print(f"     - {folder}")
           # print(f"     - {folder}: {folder.get('struct', 'No structure')}")
-
