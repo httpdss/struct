@@ -34,4 +34,3 @@ jobs:
           title: Update generated VHS GIF
           body: This PR updates the generated VHS GIF files.
           base: main
-          path: '*.gif'
