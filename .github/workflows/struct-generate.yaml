@@ -43,6 +43,11 @@ on:
         type: string
         required: false
         default: 'ubuntu-latest'
+      custom_structure_repository:
+        description: 'Path to the custom structures repository'
+        type: string
+        required: false
+        default: ''
     secrets:
       token:
         description: 'GitHub token'
@@ -65,11 +70,33 @@ jobs:
           pip install git+https://github.com/httpdss/struct.git
           struct -h
 
+      - name: Install custom structures
+        if: ${{ inputs.custom_structure_repository != '' }}
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ inputs.custom_structure_repository }}
+          token: ${{ secrets.token }}
+          path: ./custom-structures
+
       - name: Run STRUCT
         run: |
-          struct generate ${{ inputs.args }} \
-            ${{ inputs.struct_file }} \
-            ${{ inputs.output_dir }}
+          if [ -d ./custom-structures ]; then
+
+            struct list \
+              -s ./custom-structures
+
+            struct generate \
+              -s ./custom-structures \
+              ${{ inputs.args }} \
+              ${{ inputs.struct_file }} \
+              ${{ inputs.output_dir }} \
+          else
+            struct list
+
+            struct generate ${{ inputs.args }} \
+              ${{ inputs.struct_file }} \
+              ${{ inputs.output_dir }}
+          fi
 
       - name: Generate PR with changes
         if: github.event_name == 'workflow_dispatch'
