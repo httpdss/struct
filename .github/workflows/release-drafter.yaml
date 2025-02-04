@@ -30,6 +30,7 @@ jobs:
           git pull --tags
           echo ${{ steps.release-drafter.outputs.tag_name }}
           tag=${{ steps.release-drafter.outputs.tag_name }}
+          git tag $tag || true
           version=${tag#v}
           major=${version%%.*}
           echo "tag=${tag}" >> $GITHUB_OUTPUT
