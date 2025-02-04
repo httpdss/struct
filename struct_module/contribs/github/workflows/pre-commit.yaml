@@ -1,0 +1,27 @@
+structure:
+  - .github/workflows/pre-commit.yaml:
+      content: |
+        name: pre-commit
+
+        on:
+          pull_request:
+            branches: [{{@ current_repo() | default_branch @}}]
+          push:
+            branches: [{{@ current_repo() | default_branch @}}]
+
+        jobs:
+          pre-commit:
+            runs-on: ubuntu-latest
+            steps:
+            - uses: actions/checkout@{{@ "actions/checkout" | latest_release @}}
+            - uses: actions/setup-python@{{@ "actions/setup-python" | latest_release @}}
+            - uses: pre-commit/action@{{@ "pre-commit/action" | latest_release @}}
+  - .pre-commit-config.yaml:
+      content: |
+        repos:
+        - repo: https://github.com/pre-commit/pre-commit-hooks
+          rev: {{@ "pre-commit/pre-commit-hooks" | latest_release @}}
+          hooks:
+            - id: check-yaml
+            - id: end-of-file-fixer
+            - id: trailing-whitespace

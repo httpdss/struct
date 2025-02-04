@@ -17,17 +17,40 @@ structure:
         output "instance_id" {
           value = aws_instance.example.id
         }
+  - versions.tf:
+      content: |
+        terraform {
+          required_providers {
+            aws = {
+              source  = "hashicorp/aws"
+              version = "{{@ "hashicorp/terraform-provider-aws" | latest_release @}}"
+            }
+            datadog = {
+              source  = "DataDog/datadog"
+              version = "{{@ "DataDog/terraform-provider-datadog" | latest_release @}}"
+            }
+          }
+        }
   - README.md:
       content: |
+        <!-- markdownlint-disable no-inline-html -->
+        <!-- markdownlint-disable no-bare-urls -->
+
         # {{@ module_name @}}
+
         This module provisions an EC2 instance on AWS.
+
         ## Usage
+
         ```hcl
         module "example" {
           source = "./path/to/module/{{@ module_name | slugify @}}"
           instance_type = "t2.micro"
         }
         ```
+
+        <!-- BEGIN_TF_DOCS -->
+        <!-- END_TF_DOCS -->
 variables:
   - module_name:
       description: "The name of the module."

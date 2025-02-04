@@ -172,50 +172,6 @@ structure:
 
         # Canonical name and email address for the app owner
         # app-owner <
-  - .pre-commit-config.yaml:
-      content: |
-        repos:
-        - repo: https://github.com/pre-commit/pre-commit-hooks
-          rev: v4.6.0
-          hooks:
-            - id: trailing-whitespace
-            - id: end-of-file-fixer
-            - id: check-yaml
-  - .tf/states/environments/dev/main.tf:
-      content: "# Terraform configuration for the dev environment"
-  - .tf/states/environments/dev/providers.tf:
-      content: |
-        provider "aws" {
-          region = "${ aws_region }"
-        }
-  - .tf/states/environments/prod/main.tf:
-      content: "# Terraform configuration for the prod environment"
-  - .tf/states/environments/prod/providers.tf:
-      content: |
-        provider "aws" {
-          region = "${ aws_region }"
-        }
-  - .tf/states/environments/qa/main.tf:
-      content: "# Terraform configuration for the qa environment"
-  - .tf/states/environments/qa/providers.tf:
-      content: |
-        provider "aws" {
-          region = "${ aws_region }"
-        }
-  - .tf/states/environments/stage/main.tf:
-      content: "# Terraform configuration for the stage environment"
-  - .tf/states/environments/stage/providers.tf:
-      content: |
-        provider "aws" {
-          region = "${ aws_region }"
-        }
-  - .tf/states/init/main.tf:
-      content: "# Terraform configuration for the init environment"
-  - .tf/states/init/providers.tf:
-      content: |
-        provider "aws" {
-          region = "${ aws_region }"
-        }
   - ACKNOWLEDGEMENTS.md:
       content: |
         # Acknowledgements
@@ -335,3 +291,19 @@ structure:
         # tools Folder
 
         Convenience directory for your use. Should contain scripts to automate tasks in the project, for example, build scripts, rename scripts. Usually contains .sh, .cmd files for example.
+
+folders:
+  - .devops/apps/environments/prod:
+      struct: terraform/module
+  - .devops/apps/environments/stage:
+      struct: terraform/module
+  - .devops/apps/environments/qa:
+      struct: terraform/module
+  - .devops/apps/environments/dev:
+      struct: terraform/module
+  - .devops/apps/init:
+      struct: terraform/module
+  - ./:
+      struct:
+      - github/workflows/pre-commit
+      - github/workflows/release-drafter

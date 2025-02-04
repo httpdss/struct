@@ -1,0 +1,43 @@
+structure:
+  - main.tf:
+      content: |
+        # This is the main Terraform app main file.
+        touch_file: {{@ now().strftime('%Y-%m-%d') @}}
+  - variables.tf:
+      content: "# This is the Terraform variables file."
+  - outputs.tf:
+      content: "# This is the Terraform outputs file."
+  - providers.tf:
+      content: |
+        terraform {
+          required_version = "{{@ "hashicorp/terraform" | latest_release @}}"
+
+          backend "remote" {
+            hostname = "app.terraform.io"
+            organization = "{{@ backend_organization_name @}}"
+
+            workspaces {
+              name = "{{@ backend_workspace_name @}}"
+            }
+          }
+        }
+  - README.md:
+      content: |
+        <!-- markdownlint-disable no-inline-html -->
+        <!-- markdownlint-disable no-bare-urls -->
+
+        # {{@ app_name @}}
+
+        This is a generic Terraform app.
+
+        <!-- BEGIN_TF_DOCS -->
+        <!-- END_TF_DOCS -->
+variables:
+  - name: backend_organization_name
+    type: string
+    description: "Remote backend organization name."
+    default: ""
+  - name: backend_workspace_name
+    type: string
+    description: "Remote backend workspace name."
+    default: ""

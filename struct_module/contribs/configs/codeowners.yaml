@@ -1,0 +1,3 @@
+structure:
+  - CODEOWNERS: |
+      * @github_username

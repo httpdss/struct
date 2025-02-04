@@ -2,13 +2,13 @@ import os
 import yaml
 
 from struct_module.commands import Command
+
 # Info command class for exposing information about the structure
 class InfoCommand(Command):
     def __init__(self, parser):
       super().__init__(parser)
       parser.add_argument('structure_definition', type=str, help='Name of the structure definition')
       parser.add_argument('-s', '--structures-path', type=str, help='Path to structure definitions')
-
 
       parser.set_defaults(func=self.execute)
 
@@ -51,5 +51,4 @@ class InfoCommand(Command):
         print(f" - Folders:")
         for folder in config.get('folders', []):
           print(f"   - {folder}: {folder.get('struct', 'No structure')}")
-
 

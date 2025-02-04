@@ -1,10 +1,12 @@
 structure:
   - README.md:
+      skip: true
       content: |
         # {{@ project_name @}}
         This is a template repository.
   - script.sh:
       permissions: '0777'
+      skip_if_exists: true
       content: |
         #!/bin/bash
         echo "Hello, {{@ author_name @}}!"
@@ -23,13 +25,16 @@ structure:
                 run: echo Hello, world!
 folders:
   - .devops/modules/mod1:
-      struct: terraform-module
+      struct: terraform/module
   - .devops/modules/mod2:
-      struct: terraform-module
+      struct: terraform/module
+      with:
+        module_name: mymod2
   - ./:
       struct:
         - docker-files
-        - go-project
+        - project/go
+        - github/workflows/pre-commit
 variables:
   - project_name:
       description: 'The name of the project.'

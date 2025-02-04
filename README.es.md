@@ -1,4 +1,3 @@
-
 # 🚀 STRUCT: Generador Automático de Estructuras de Proyectos
 
 [![en](https://img.shields.io/badge/lang-en-red.svg)](https://github.com/httpdss/struct/blob/master/README.md) [![es](https://img.shields.io/badge/lang-es-yellow.svg)](https://github.com/httpdss/struct/blob/master/README.es.md)
@@ -19,6 +18,7 @@
 - [Inicio Rápido](#-inicio-rápido)
 - [Uso](#-uso)
 - [Configuración YAML](#-configuración-yaml)
+- [Esquema YAML](#-esquema-yaml)
 - [Desarrollo](#-desarrollo)
 - [Licencia](#-licencia)
 - [Financiamiento](#-financiamiento)
@@ -149,19 +149,33 @@ structure:
         #!/bin/bash
         echo "Hello, {{@ author_name @}}!"
   - LICENSE:
-      remote_file: https://raw.githubusercontent.com/nishanths/license/master/LICENSE
+      file: https://raw.githubusercontent.com/nishanths/license/master/LICENSE
+  - archivo_remoto.txt:
+      file: file:///ruta/al/archivo/local.txt
+  - archivo_github.py:
+      file: github://owner/repo/branch/path/to/file.py
+  - archivo_github_https.py:
+      file: githubhttps://owner/repo/branch/path/to/file.py
+  - archivo_github_ssh.py:
+      file: githubssh://owner/repo/branch/path/to/file.py
+  - archivo_s3.txt:
+      file: s3://bucket_name/key
+  - archivo_gcs.txt:
+      file: gs://bucket_name/key
   - src/main.py:
       content: |
         print("Hello, World!")
 folders:
   - .devops/modules/mod1:
-      struct: terraform-module
+      struct: terraform/module
   - .devops/modules/mod2:
-      struct: terraform-module
+      struct: terraform/module
+      with:
+        module_name: mymod2
   - ./:
       struct:
         - docker-files
-        - go-project
+        - project/go
 variables:
   - project_name:
       description: "The name of the project"
@@ -234,6 +248,53 @@ structure:
         This is a template repository.
         slugify project_name: {{@ project_name | slugify @}}
 ```
+
+##### `default_branch`
+
+Este filtro obtiene el nombre de la rama predeterminada de un repositorio de GitHub. Toma el nombre del repositorio como argumento.
+
+```yaml
+structure:
+  - README.md:
+      content: |
+        # MyProject
+        Default branch: {{@ "httpdss/struct" | default_branch @}}
+```
+
+### Cláusula `with`
+
+La cláusula `with` te permite pasar variables adicionales a estructuras anidadas. Estas variables se fusionarán con las variables globales y se pueden usar dentro de la estructura anidada.
+
+Ejemplo:
+
+```yaml
+folders:
+  - .devops/modules/mod1:
+      struct: terraform/module
+  - .devops/modules/mod2:
+      struct: terraform/module
+      with:
+        module_name: mymod2
+```
+
+## 📝 Esquema YAML
+
+Para asegurar que tus archivos de configuración YAML cumplan con la estructura esperada, puedes usar el esquema JSON proporcionado. Esto ayuda a validar tus archivos YAML y proporciona autocompletado en editores compatibles como VSCode.
+
+### Configuración en VSCode
+
+1. Instala la [extensión YAML](https://marketplace.visualstudio.com/items?itemName=redhat.vscode-yaml) para VSCode.
+2. Añade la siguiente configuración a los ajustes de tu espacio de trabajo (`.vscode/settings.json`):
+
+```json
+{
+  "yaml.schemas": {
+    "https://raw.githubusercontent.com/httpdss/struct/refs/heads/main/struct-schema.json": ".struct.yaml"
+  }
+}
+```
+
+Esta configuración asociará el esquema JSON con todos los archivos .struct.yaml en tu espacio de trabajo, proporcionando validación y autocompletado.
 
 ## 👩‍💻 Desarrollo
 

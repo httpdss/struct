@@ -1,7 +1,11 @@
 import os
 import re
 from github import Github
+from cachetools import TTLCache, cached
 
+cache = TTLCache(maxsize=100, ttl=600)
+
+@cached(cache)
 def get_latest_release(repo_name):
     token = os.getenv('GITHUB_TOKEN')
 
@@ -24,6 +28,21 @@ def get_latest_release(repo_name):
         return default_branch
       except Exception as e:
         return "LATEST_RELEASE_ERROR"
+
+@cached(cache)
+def get_default_branch(repo_name):
+    token = os.getenv('GITHUB_TOKEN')
+
+    if token:
+        g = Github(token)
+    else:
+        g = Github()
+
+    try:
+        repo = g.get_repo(repo_name)
+        return repo.default_branch
+    except Exception:
+        return "DEFAULT_BRANCH_ERROR"
 
 def slugify(value):
     # Convert to lowercase

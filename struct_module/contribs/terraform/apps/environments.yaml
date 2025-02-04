@@ -1,0 +1,41 @@
+folders:
+  - .devops/apps/environments/dev:
+      struct: terraform/apps/generic
+      with:
+        backend_organization_name: "my-organization"
+        backend_workspace_name: "my-app-environments-dev"
+  - .devops/apps/environments/qa:
+      struct: terraform/apps/generic
+      with:
+        backend_organization_name: "my-organization"
+        backend_workspace_name: "my-app-environments-qa"
+  - .devops/apps/environments/stage:
+      struct: terraform/apps/generic
+      with:
+        backend_organization_name: "my-organization"
+        backend_workspace_name: "my-app-environments-stage"
+  - .devops/apps/environments/prod:
+      struct: terraform/apps/generic
+      with:
+        backend_organization_name: "my-organization"
+        backend_workspace_name: "my-app-environments-prod"
+  - ./:
+      struct: github/workflows/execute-tf-workflow
+      with:
+        app_name: environments-dev
+        app_path: environments/dev
+  - ./:
+      struct: github/workflows/execute-tf-workflow
+      with:
+        app_name: environments-qa
+        app_path: environments/qa
+  - ./:
+      struct: github/workflows/execute-tf-workflow
+      with:
+        app_name: environments-stage
+        app_path: environments/stage
+  - ./:
+      struct: github/workflows/execute-tf-workflow
+      with:
+        app_name: environments-prod
+        app_path: environments/prod

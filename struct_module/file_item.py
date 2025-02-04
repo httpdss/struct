@@ -7,6 +7,7 @@ import time
 from openai import OpenAI
 from dotenv import load_dotenv
 from struct_module.template_renderer import TemplateRenderer
+from struct_module.content_fetcher import ContentFetcher
 
 load_dotenv()
 
@@ -23,6 +24,10 @@ class FileItem:
       self.content_location = properties.get("file")
       self.permissions = properties.get("permissions")
       self.input_store = properties.get("input_store")
+      self.skip = properties.get("skip", False)
+      self.skip_if_exists = properties.get("skip_if_exists", False)
+
+      self.content_fetcher = ContentFetcher()
 
       self.system_prompt = properties.get("system_prompt") or properties.get("global_system_prompt")
       self.user_prompt = properties.get("user_prompt")
@@ -81,22 +86,11 @@ class FileItem:
     def fetch_content(self):
       if self.content_location:
         self.logger.debug(f"Fetching content from: {self.content_location}")
-
-        if self.content_location.startswith("file://"):
-          file_path = self.content_location[len("file://"):]
-          with open(file_path, 'r') as file:
-            self.content = file.read()
-          self.logger.debug(f"Fetched content from local file: {self.content}")
-
-        elif self.content_location.startswith("https://"):
-          response = requests.get(self.content_location)
-          self.logger.debug(f"Response status code: {response.status_code}")
-          response.raise_for_status()
-          self.content = response.text
-          self.logger.debug(f"Fetched content from URL: {self.content}")
-
-        else:
-          self.logger.warning(f"Unsupported protocol in content_location: {self.content_location}")
+        try:
+          self.content = self.content_fetcher.fetch_content(self.content_location)
+          self.logger.debug(f"Fetched content: {self.content}")
+        except Exception as e:
+          self.logger.error(f"Failed to fetch content from {self.content_location}: {e}")
 
     def _merge_default_template_vars(self, template_vars):
       default_vars = {
@@ -118,8 +112,19 @@ class FileItem:
 
     def create(self, base_path, dry_run=False, backup_path=None, file_strategy='overwrite'):
       file_path = os.path.join(base_path, self.name)
+
+      if self.skip:
+        self.logger.info(f"Skipping file creation")
+        self.logger.info(f"  File path: {file_path}")
+        return
+
       if dry_run:
         self.logger.info(f"[DRY RUN] Would create file: {file_path} with content: \n\n{self.content}")
+        return
+
+      if self.skip_if_exists and os.path.exists(file_path):
+        self.logger.info(f"Skipping file creation as file exists")
+        self.logger.info(f"  File path: {file_path}")
         return
 
       # Create the directory if it does not exist
@@ -135,7 +140,7 @@ class FileItem:
           return
         elif file_strategy == 'append':
           with open(file_path, 'a') as f:
-              f.write(self.content)
+              f.write(f"{self.content}\n")
           self.logger.info(f"Appended to existing file: {file_path}")
           return
         elif file_strategy == 'rename':
@@ -144,9 +149,13 @@ class FileItem:
           self.logger.info(f"Renamed existing file: {file_path} to {new_name}")
 
       with open(file_path, 'w') as f:
-        f.write(self.content)
-      self.logger.debug(f"Created file: {file_path} with content: \n\n{self.content}")
+        f.write(f"{self.content}\n")
+      self.logger.debug(f"Created file with content")
+      self.logger.debug(f"  File path: {file_path}")
+      self.logger.debug(f"  Content: \n\n{self.content}")
 
       if self.permissions:
         os.chmod(file_path, int(self.permissions, 8))
-        self.logger.info(f"Set permissions {self.permissions} for file: {file_path}")
+        self.logger.info(f"Set permissions to file")
+        self.logger.info(f"  File path: {file_path}")
+        self.logger.info(f"  Permissions: {self.permissions}")
