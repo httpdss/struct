@@ -58,9 +58,9 @@
 Output docs/vhs/usage.gif
 
 Set Shell "bash"
-Set FontSize 32
-Set Width 1200
-Set Height 600
+Set Width 1600
+Set Height 1000
+
 
 Type "# Create python virtual environment and install struct" Enter
 Type "python3 -m venv .venv" Enter
