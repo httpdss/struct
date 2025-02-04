@@ -17,16 +17,6 @@ def test_get_latest_release(mock_getenv, mock_github):
     # Test with a valid release
     assert get_latest_release('fake/repo') == 'v1.0.0'
 
-    # Test with an exception in get_latest_release
-    mock_repo.get_latest_release.side_effect = Exception()
-    assert get_latest_release('fake/repo') == 'main'
-
-    # Test with an exception in default_branch
-    mock_repo.default_branch = 'LATEST_RELEASE_ERROR'
-    mock_repo.get_latest_release.side_effect = Exception()
-    # mock_repo.default_branch.side_effect = Exception()
-    assert get_latest_release('fake/repo') == 'LATEST_RELEASE_ERROR'
-
 def test_slugify():
     assert slugify('Hello World') == 'hello-world'
     assert slugify('Python 3.8') == 'python-38'

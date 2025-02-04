@@ -19,23 +19,10 @@ def test_generate_command(parser):
 
 def test_info_command(parser):
     command = InfoCommand(parser)
-    args = parser.parse_args([])
+    args = parser.parse_args(["github/workflows/pre-commit"])
     with patch('builtins.print') as mock_print:
         command.execute(args)
         mock_print.assert_called()
-
-def test_validate_command(parser):
-    command = ValidateCommand(parser)
-    args = parser.parse_args(['config.yaml'])
-    with patch('builtins.open', patch.mock_open(read_data="structure: []")):
-        with patch('yaml.safe_load', return_value={'structure': []}):
-            with patch.object(command, '_validate_structure_config') as mock_validate_structure:
-                with patch.object(command, '_validate_folders_config') as mock_validate_folders:
-                    with patch.object(command, '_validate_variables_config') as mock_validate_variables:
-                        command.execute(args)
-                        mock_validate_structure.assert_called_once()
-                        mock_validate_folders.assert_called_once()
-                        mock_validate_variables.assert_called_once()
 
 def test_list_command(parser):
     command = ListCommand(parser)
@@ -44,3 +31,20 @@ def test_list_command(parser):
         with patch('builtins.print') as mock_print:
             command.execute(args)
             mock_print.assert_called()
+
+def test_validate_command(parser):
+    command = ValidateCommand(parser)
+    args = parser.parse_args(['config.yaml'])
+    with patch.object(command, '_validate_structure_config') as mock_validate_structure, \
+         patch.object(command, '_validate_folders_config') as mock_validate_folders, \
+         patch.object(command, '_validate_variables_config') as mock_validate_variables, \
+         patch('builtins.open', new_callable=MagicMock) as mock_open, \
+         patch('yaml.safe_load', return_value={
+             'structure': [],
+             'folders': [],
+             'variables': []
+         }):
+        command.execute(args)
+        mock_validate_structure.assert_called_once()
+        mock_validate_folders.assert_called_once()
+        mock_validate_variables.assert_called_once()
