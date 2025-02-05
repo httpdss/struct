@@ -58,8 +58,8 @@
 Output docs/vhs/usage.gif
 
 Set Shell "bash"
-Set Width 1600
-Set Height 1000
+Set Width 600
+Set Height 800
 
 
 Type "# Create python virtual environment and install struct" Enter
