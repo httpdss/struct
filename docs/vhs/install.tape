@@ -68,7 +68,8 @@ Sleep 5
 Type "source .venv/bin/activate" Enter
 Sleep 5
 Type "pip install git+https://github.com/httpdss/struct.git" Enter
-Sleep 30
+Wait /Successfully/
+Sleep 2
 Type "# STRUCT is now installed and ready to use" Enter
 Type "struct list" Enter
 Sleep 10
