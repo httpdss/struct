@@ -34,7 +34,7 @@ jobs:
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v7
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.STRUCT_RUN_TOKEN }}
           commit-message: Update generated VHS GIF
           branch: repository-dispatch/update-${{ github.run_id }}
           title: Update generated VHS GIF
