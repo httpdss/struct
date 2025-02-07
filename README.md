@@ -108,6 +108,8 @@ Run the script with the following command using one of the following subcommands
 
 For more information, run the script with the `-h` or `--help` option (this is also available for each subcommand):
 
+![Struct List](./docs/vhs/usage.gif)
+
 ```sh
 struct -h
 ```
