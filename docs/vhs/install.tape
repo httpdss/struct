@@ -2,7 +2,6 @@
 Output docs/vhs/usage.gif
 
 Set Theme "Monokai Vivid"
-Set FontFamily "FiraCode Nerd Font"
 Set FontSize 14
 Set TypingSpeed 40ms
 Set WindowBar Colorful
