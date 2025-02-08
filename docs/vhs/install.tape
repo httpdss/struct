@@ -1,5 +1,5 @@
 
-Output docs/vhs/usage.gif
+Output docs/vhs/install.gif
 
 Set Theme "Monokai Vivid"
 Set FontSize 14
