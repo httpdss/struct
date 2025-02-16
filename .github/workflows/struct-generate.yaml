@@ -90,7 +90,7 @@ jobs:
               -s ./custom-structures \
               ${{ inputs.args }} \
               ${{ inputs.struct_file }} \
-              ${{ inputs.output_dir }} \
+              ${{ inputs.output_dir }}
           else
             struct list
 
