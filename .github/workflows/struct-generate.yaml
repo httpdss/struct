@@ -53,6 +53,10 @@ on:
         description: 'GitHub token'
         required: true
 
+permissions:
+  contents: write
+  pull-requests: write
+
 jobs:
   run:
     runs-on: ${{ inputs.runs_on }}
