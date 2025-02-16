@@ -2,7 +2,7 @@ structure:
   - main.tf:
       content: |
         # This is the main Terraform app main file.
-        touch_file: {{@ now().strftime('%Y-%m-%d') @}}
+        touch_file: 2025-01-01
   - variables.tf:
       content: "# This is the Terraform variables file."
   - outputs.tf:
@@ -25,8 +25,6 @@ structure:
       content: |
         <!-- markdownlint-disable no-inline-html -->
         <!-- markdownlint-disable no-bare-urls -->
-
-        # {{@ app_name @}}
 
         This is a generic Terraform app.
 
