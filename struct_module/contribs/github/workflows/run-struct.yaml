@@ -1,5 +1,6 @@
 structure:
   - .github/workflows/run-struct.yaml:
+      skip_if_exists: true
       content: |
         name: run-struct
 
@@ -15,6 +16,7 @@ structure:
             secrets:
               token: {{@ github_token @}}
   - .struct.yaml:
+      skip_if_exists: true
       content: |
         structure:
           - README.md:

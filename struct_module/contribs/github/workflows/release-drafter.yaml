@@ -45,7 +45,7 @@ structure:
                   git push origin refs/tags/v${{ steps.version.outputs.major }} -f
   - .github/release-drafter.yml:
       content: |
-        name-template: "v$RESOLVED_VERSION 🌈"
+        name-template: "v$RESOLVED_VERSION"
         tag-template: "v$RESOLVED_VERSION"
         categories:
           - title: "🚀 Features"
