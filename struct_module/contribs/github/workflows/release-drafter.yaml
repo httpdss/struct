@@ -27,22 +27,23 @@ structure:
                   prerelease: false
                 env:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-              - name: version
-                id: version
-                run: |
-                  git pull --tags
-                  echo ${{ steps.release-drafter.outputs.tag_name }}
-                  tag=${{ steps.release-drafter.outputs.tag_name }}
-                  version=${tag#v}
-                  major=${version%%.*}
-                  echo "tag=${tag}" >> $GITHUB_OUTPUT
-                  echo "version=${version}" >> $GITHUB_OUTPUT
-                  echo "major=${major}" >> $GITHUB_OUTPUT
+  - .github/workflows/major-tagging.yaml:
+      content: |
+        name: major-tagging
 
-              - name: force update major tag
-                run: |
-                  git tag v${{ steps.version.outputs.major }} ${{ steps.version.outputs.tag }} -f
-                  git push origin refs/tags/v${{ steps.version.outputs.major }} -f
+        on:
+          push:
+            tags:
+              - v** # Trigger on every tag push
+
+        jobs:
+          tag:
+            name: Move major tag
+            runs-on: ubuntu-latest
+            steps:
+              - uses: actions/checkout@v4
+              - uses: phwt/major-tagging-action@v1
+
   - .github/release-drafter.yml:
       content: |
         name-template: "v$RESOLVED_VERSION"
