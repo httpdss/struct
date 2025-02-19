@@ -48,8 +48,8 @@ on:
         type: string
         required: false
         default: ''
-      structures_folder:
-        description: 'Path to the structures folder'
+      custom_structure_path:
+        description: 'Path to the custom structures directory'
         type: string
         required: false
         default: 'structures'
@@ -89,10 +89,10 @@ jobs:
           if [ -d ./custom-structures ]; then
 
             struct list \
-              -s ./custom-structures/${{ inputs.structures_folder }}
+              -s ./custom-structures/${{ inputs.custom_structure_path: }}
 
             struct generate \
-              -s ./custom-structures/${{ inputs.structures_folder }} \
+              -s ./custom-structures/${{ inputs.custom_structure_path: }} \
               ${{ inputs.args }} \
               ${{ inputs.struct_file }} \
               ${{ inputs.output_dir }}
