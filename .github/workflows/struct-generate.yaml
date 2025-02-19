@@ -89,10 +89,10 @@ jobs:
           if [ -d ./custom-structures ]; then
 
             struct list \
-              -s ./custom-structures/${{ inputs.custom_structure_path: }}
+              -s ./custom-structures/${{ inputs.custom_structure_path }}
 
             struct generate \
-              -s ./custom-structures/${{ inputs.custom_structure_path: }} \
+              -s ./custom-structures/${{ inputs.custom_structure_path }} \
               ${{ inputs.args }} \
               ${{ inputs.struct_file }} \
               ${{ inputs.output_dir }}
