@@ -48,6 +48,11 @@ on:
         type: string
         required: false
         default: ''
+      structures_folder:
+        description: 'Path to the structures folder'
+        type: string
+        required: false
+        default: 'structures'
     secrets:
       token:
         description: 'GitHub token'
@@ -84,10 +89,10 @@ jobs:
           if [ -d ./custom-structures ]; then
 
             struct list \
-              -s ./custom-structures
+              -s ./custom-structures/${{ inputs.structures_folder }}
 
             struct generate \
-              -s ./custom-structures \
+              -s ./custom-structures/${{ inputs.structures_folder }} \
               ${{ inputs.args }} \
               ${{ inputs.struct_file }} \
               ${{ inputs.output_dir }}
