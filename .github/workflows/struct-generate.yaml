@@ -7,7 +7,7 @@ on:
         description: 'Path to the STRUCT file'
         type: string
         required: true
-        default: '.struct.yaml'
+        default: 'file://.struct.yaml'
       output_dir:
         description: 'Path to the output directory'
         type: string
