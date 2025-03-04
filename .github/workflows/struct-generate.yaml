@@ -104,6 +104,12 @@ jobs:
               ${{ inputs.output_dir }}
           fi
 
+      - name: Remove custom-structures before PR generation
+        run: |
+          if [ -d ./custom-structures ]; then
+            rm -rf ./custom-structures
+          fi
+
       - name: Generate PR with changes
         if: github.event_name == 'workflow_dispatch'
         uses: peter-evans/create-pull-request@v7
