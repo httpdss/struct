@@ -6,12 +6,12 @@ on:
       struct_file:
         description: 'Path to the STRUCT file'
         type: string
-        required: true
+        required: false
         default: 'file://.struct.yaml'
       output_dir:
         description: 'Path to the output directory'
         type: string
-        required: true
+        required: false
         default: '.'
       args:
         description: 'Additional arguments to pass to STRUCT'
