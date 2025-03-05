@@ -85,6 +85,8 @@ jobs:
           fetch-depth: 1
 
       - name: Run STRUCT
+        env:
+          GITHUB_TOKEN: ${{ secrets.token }}
         run: |
           if [ -d ./custom-structures ]; then
 
