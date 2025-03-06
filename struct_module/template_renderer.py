@@ -1,5 +1,7 @@
 # FILE: template_renderer.py
 import logging
+import os
+import sys
 from jinja2 import Environment, meta
 from struct_module.filters import get_latest_release, slugify, get_default_branch
 from struct_module.input_store import InputStore
@@ -78,9 +80,10 @@ class TemplateRenderer:
       for var in undeclared_variables:
         if var not in vars:
           default = self.input_data.get(var, default_values.get(var, ""))
-          user_input = input(f"Enter value for {var} [{default}]: ")
-          if not user_input:
-            user_input = default
+          if not sys.stdin.isatty():
+            user_input = default if default else "NEEDS_TO_BE_SET"
+          else:
+            user_input = input(f"Enter value for {var} [{default}]: ") or default
           self.input_store.set_value(var, user_input)
           vars[var] = user_input
       self.input_store.save()
