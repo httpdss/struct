@@ -8,8 +8,10 @@ from struct_module.input_store import InputStore
 from struct_module.utils import get_current_repo
 
 class TemplateRenderer:
-    def __init__(self, config_variables, input_store):
+    def __init__(self, config_variables, input_store, non_interactive):
       self.config_variables = config_variables
+      self.non_interactive = non_interactive
+
       self.env = Environment(
         trim_blocks=True,
         block_start_string='{%@',
@@ -80,7 +82,7 @@ class TemplateRenderer:
       for var in undeclared_variables:
         if var not in vars:
           default = self.input_data.get(var, default_values.get(var, ""))
-          if not sys.stdin.isatty():
+          if self.non_interactive:
             user_input = default if default else "NEEDS_TO_BE_SET"
           else:
             user_input = input(f"Enter value for {var} [{default}]: ") or default
