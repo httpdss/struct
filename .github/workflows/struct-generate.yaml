@@ -92,6 +92,7 @@ jobs:
               -s ./custom-structures/${{ inputs.custom_structure_path }}
 
             struct generate \
+              --non-interactive \
               -s ./custom-structures/${{ inputs.custom_structure_path }} \
               ${{ inputs.args }} \
               ${{ inputs.struct_file }} \
@@ -99,7 +100,9 @@ jobs:
           else
             struct list
 
-            struct generate ${{ inputs.args }} \
+            struct generate \
+              --non-interactive \
+              ${{ inputs.args }} \
               ${{ inputs.struct_file }} \
               ${{ inputs.output_dir }}
           fi
