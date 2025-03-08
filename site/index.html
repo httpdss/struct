@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>STRUCT - Automated Project Structure Generator</title>
+  <style>
+    /* Reset and base styles */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background-color: #121212;
+      color: #e0e0e0;
+      font-family: Arial, sans-serif;
+      line-height: 1.6;
+      padding: 20px;
+    }
+
+    header {
+      text-align: center;
+      padding: 40px 0;
+    }
+
+    header h1 {
+      font-size: 3em;
+      margin-bottom: 10px;
+      color: #ffffff;
+    }
+
+    header p {
+      font-size: 1.2em;
+      color: #bbbbbb;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    section {
+      margin: 40px 0;
+    }
+
+    section h2 {
+      font-size: 2em;
+      margin-bottom: 20px;
+      color: #ffffff;
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+      text-align: left;
+    }
+
+    ul li {
+      background: #1e1e1e;
+      margin: 10px 0;
+      padding: 15px;
+      border-radius: 5px;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 15px 30px;
+      margin: 20px 10px;
+      font-size: 1em;
+      font-weight: bold;
+      text-decoration: none;
+      border-radius: 5px;
+      transition: background-color 0.3s ease;
+    }
+
+    .btn-github {
+      background-color: #24292e;
+      color: #ffffff;
+    }
+
+    .btn-github:hover {
+      background-color: #444c56;
+    }
+
+    .btn-paypal {
+      background-color: #ffc439;
+      color: #000000;
+    }
+
+    .btn-paypal:hover {
+      background-color: #ffb347;
+    }
+
+    footer {
+      margin-top: 40px;
+      text-align: center;
+      font-size: 0.9em;
+      color: #777777;
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <h1>STRUCT</h1>
+    <p>Automated Project Structure Generator</p>
+  </header>
+  <div class="container">
+    <p>
+      Welcome to the official website of STRUCT. Generate your project structures effortlessly using YAML
+      configurations.
+    </p>
+
+    <section id="features">
+      <h2>Features</h2>
+      <ul>
+        <li><strong>YAML Configuration:</strong> Define your project structure in a simple YAML file.</li>
+        <li><strong>Template Variables:</strong> Use placeholders and custom filters for dynamic content.</li>
+        <li><strong>Custom File Permissions:</strong> Set permissions directly from the YAML configuration.</li>
+        <li><strong>Remote Content Fetching:</strong> Include content from remote sources effortlessly.</li>
+        <li><strong>File Handling Strategies:</strong> Choose from overwrite, skip, append, rename, or backup options.
+        </li>
+        <li><strong>Dry Run:</strong> Preview actions without making changes.</li>
+        <li><strong>Configuration Validation:</strong> Validate your YAML file before execution.</li>
+        <li><strong>Verbose Logging:</strong> Access detailed logs for debugging and monitoring.</li>
+      </ul>
+    </section>
+
+    <div>
+      <a class="btn btn-github" href="https://github.com/httpdss/struct" target="_blank">Visit GitHub Repository</a>
+      <a class="btn btn-paypal" href="https://www.paypal.me/httpdss"
+        target="_blank">Donate via PayPal</a>
+    </div>
+  </div>
+  <footer>
+    <p>&copy; 2025 STRUCT. All rights reserved.</p>
+  </footer>
+</body>
+
+</html>
