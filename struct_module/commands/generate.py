@@ -51,7 +51,8 @@ class GenerateCommand(Command):
       if args.structures_path:
         file_path = os.path.join(args.structures_path, f"{args.structure_definition}.yaml")
 
-      if not os.path.exists(file_path) and args.structures_path:
+      if not os.path.exists(file_path):
+        # fallback to contribs path
         file_path = os.path.join(contribs_path, f"{args.structure_definition}.yaml")
 
       if not os.path.exists(file_path):
