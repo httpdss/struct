@@ -1,0 +1,91 @@
+structure:
+  - .github/PULL_REQUEST_TEMPLATE/bug_fix_template.md:
+      content: |
+        ## Bug Fix
+        ### Description
+        <!--- A clear and concise description of what the bug is. -->
+        ### Steps to Reproduce
+        <!--- Steps to reproduce the behavior: -->
+        1. Go to '...'
+        2. Click on '....'
+        3. Scroll down to '....'
+        4. See error
+        ### Expected Behavior
+        <!--- A clear and concise description of what you expected to happen. -->
+        ### Screenshots
+        <!--- If applicable, add screenshots to help explain your problem. -->
+        ### Additional context
+        <!--- Add any other context about the problem here. -->
+  - .github/PULL_REQUEST_TEMPLATE/feature_request_template.md:
+      content: |
+        ## Feature Request
+        ### Description
+        <!--- A clear and concise description of what the problem is. Ex. I'm always frustrated when [..
+        ### Solution
+        <!--- A clear and concise description of what you want to happen. -->
+        ### Alternatives
+        <!--- A clear and concise description of any alternative solutions or features you've considered. -->
+        ### Screenshots
+        <!--- If applicable, add screenshots to help explain your problem. -->
+        ### Additional context
+        <!--- Add any other context or screenshots about the feature request here. -->
+  - .github/PULL_REQUEST_TEMPLATE/pull_request_template.md:
+      content: |
+        # Description
+
+        Please include a summary of the changes and the related issue. Please also include relevant motivation and context. List any dependencies that are required for this change.
+
+        Fixes # (issue)
+
+        ## Type of change
+
+        Please delete options that are not relevant.
+
+        - [ ] Bug fix (non-breaking change which fixes an issue)
+        - [ ] New feature (non-breaking change which adds functionality)
+        - [ ] Breaking change (fix or feature that would cause existing functionality to not work as expected)
+        - [ ] This change requires a documentation update
+
+        # How Has This Been Tested?
+
+        Please describe the tests that you ran to verify your changes. Provide instructions so we can reproduce. Please also list any relevant details for your test configuration
+
+        - [ ] Test A
+        - [ ] Test B
+
+        **Test Configuration**:
+        * Firmware version:
+        * Hardware:
+        * Toolchain:
+        * SDK:
+
+        # Checklist:
+
+        - [ ] My code follows the style guidelines of this project
+        - [ ] I have performed a self-review of my code
+        - [ ] I have commented my code, particularly in hard-to-understand areas
+        - [ ] I have made corresponding changes to the documentation
+        - [ ] My changes generate no new warnings
+        - [ ] I have added tests that prove my fix is effective or that my feature works
+        - [ ] New and existing unit tests pass locally with my changes
+        - [ ] Any dependent changes have been merged and published in downstream modules
+  - .github/ISSUE_TEMPLATE/issue_template.md:
+      content: |
+        ## I'm submitting a ...
+
+        - [ ] bug report
+        - [ ] feature request
+
+        ## What is the current behavior?
+
+        ## If the current behavior is a bug, please provide the steps to reproduce and if possible a minimal demo of the problem
+
+        ## What is the expected behavior?
+
+        ## What is the motivation / use case for changing the behavior?
+
+        ## Please tell us about your environment:
+
+        Version: 2.0.0-beta.X
+        Browser:
+        Language:
