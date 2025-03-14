@@ -1,5 +1,5 @@
 structure:
-  - .github/workflows/stale.yaml
+  - .github/workflows/stale.yaml:
       content: |
         name: 'stale'
         on:
