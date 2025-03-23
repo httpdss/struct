@@ -1,0 +1,13 @@
+name: z-pre-commit
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  terraform-docs:
+    uses: beachbodydigital/devops-github-workflows/.github/workflows/terraform-docs.yaml@v5
+  pre-commit:
+    needs: terraform-docs
+    uses: beachbodydigital/devops-github-workflows/.github/workflows/common-pre-commit.yaml@v5
