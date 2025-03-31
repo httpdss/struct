@@ -1,5 +1,6 @@
 folders:
   - ./:
       struct:
+        - github/prompts/struct
         - github/workflows/pre-commit
         - github/workflows/release-drafter
