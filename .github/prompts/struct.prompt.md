@@ -42,7 +42,6 @@ folders:
         - github/prompts/struct
 ```
 
-
 ### Defining variables
 
 The `variables` key is used to define variables that can be used in the struct files. Each variable should have a description, type, and optional default value.
