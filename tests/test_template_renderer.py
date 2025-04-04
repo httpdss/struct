@@ -9,7 +9,8 @@ def renderer():
         {"var2": {"type": "string", "default": "default2"}}
     ]
     input_store = "/tmp/input.json"
-    return TemplateRenderer(config_variables, input_store)
+    non_interactive = False
+    return TemplateRenderer(config_variables, input_store, non_interactive)
 
 def test_render_template(renderer):
     content = "Hello, {{@ var1 @}}!"

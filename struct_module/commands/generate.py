@@ -19,6 +19,7 @@ class GenerateCommand(Command):
     parser.add_argument('-b', '--backup', type=str, help='Path to the backup folder')
     parser.add_argument('-f', '--file-strategy', type=str, choices=['overwrite', 'skip', 'append', 'rename', 'backup'], default='overwrite', help='Strategy for handling existing files').completer = file_strategy_completer
     parser.add_argument('-p', '--global-system-prompt', type=str, help='Global system prompt for OpenAI')
+    parser.add_argument('--non-interactive', action='store_true', help='Run the command in non-interactive mode')
     parser.set_defaults(func=self.execute)
 
   def execute(self, args):
@@ -51,6 +52,10 @@ class GenerateCommand(Command):
         file_path = os.path.join(args.structures_path, f"{args.structure_definition}.yaml")
 
       if not os.path.exists(file_path):
+        # fallback to contribs path
+        file_path = os.path.join(contribs_path, f"{args.structure_definition}.yaml")
+
+      if not os.path.exists(file_path):
         self.logger.error(f"File not found: {file_path}")
         return
 
@@ -71,6 +76,7 @@ class GenerateCommand(Command):
           content["global_system_prompt"] = args.global_system_prompt
           content["config_variables"] = config_variables
           content["input_store"] = args.input_store
+          content["non_interactive"] = args.non_interactive
           file_item = FileItem(content)
           file_item.fetch_content()
         elif isinstance(content, str):
@@ -80,6 +86,7 @@ class GenerateCommand(Command):
               "content": content,
               "config_variables": config_variables,
               "input_store": args.input_store,
+              "non_interactive": args.non_interactive,
             }
           )
 
@@ -131,6 +138,7 @@ class GenerateCommand(Command):
               'file_strategy': args.file_strategy,
               'global_system_prompt': args.global_system_prompt,
               'input_store': args.input_store,
+              'non_interactive': args.non_interactive,
             })
           elif isinstance(content['struct'], list):
             for struct in content['struct']:
@@ -144,6 +152,7 @@ class GenerateCommand(Command):
                 'file_strategy': args.file_strategy,
                 'global_system_prompt': args.global_system_prompt,
                 'input_store': args.input_store,
+                'non_interactive': args.non_interactive,
               })
         else:
           self.logger.warning(f"Unsupported content in folder: {folder}")

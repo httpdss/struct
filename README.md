@@ -4,9 +4,6 @@
 
 ![Struct Banner](extras/banner.png)
 
-> [!WARNING]
-> This project is still in development and may contain bugs. Use it at your own risk.
-
 ## 📄 Table of Contents
 
 - [Introduction](#-introduction)

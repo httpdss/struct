@@ -24,6 +24,7 @@ class FileItem:
       self.content_location = properties.get("file")
       self.permissions = properties.get("permissions")
       self.input_store = properties.get("input_store")
+      self.non_interactive = properties.get("non_interactive")
       self.skip = properties.get("skip", False)
       self.skip_if_exists = properties.get("skip_if_exists", False)
 
@@ -36,7 +37,11 @@ class FileItem:
       if openai_api_key:
         self._configure_openai()
 
-      self.template_renderer = TemplateRenderer(self.config_variables, self.input_store)
+      self.template_renderer = TemplateRenderer(
+                                  self.config_variables,
+                                  self.input_store,
+                                  self.non_interactive
+                                )
 
     def _configure_openai(self):
       self.openai_client = OpenAI(api_key=openai_api_key)
