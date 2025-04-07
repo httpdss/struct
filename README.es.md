@@ -296,6 +296,58 @@ Para asegurar que tus archivos de configuración YAML cumplan con la estructura 
 
 Esta configuración asociará el esquema JSON con todos los archivos .struct.yaml en tu espacio de trabajo, proporcionando validación y autocompletado.
 
+## 🔄 Script de Disparador de GitHub
+
+El script `github-trigger.py` es una utilidad diseñada para activar el flujo de trabajo `run-struct` en todos los repositorios privados de una organización de GitHub que cumplan con ciertos criterios. Este script es especialmente útil para automatizar tareas en múltiples repositorios.
+
+### 📋 Características
+
+- Filtra repositorios por un tema específico (por ejemplo, `struct-enabled`).
+- Verifica la existencia de un archivo `.struct.yaml` en la rama predeterminada del repositorio.
+- Comprueba la presencia del archivo de flujo de trabajo `run-struct` en `.github/workflows/`.
+- Activa el evento de despacho del flujo de trabajo en los repositorios elegibles.
+
+### 🚀 Uso
+
+Para usar el script, asegúrate de cumplir con los siguientes requisitos:
+
+1. Un token de acceso personal de GitHub válido con los permisos necesarios (configurado como la variable de entorno `GITHUB_TOKEN`).
+2. La biblioteca `PyGithub` instalada (`pip install PyGithub`).
+
+Ejecuta el script con el siguiente comando:
+
+```sh
+python3 scripts/github-trigger.py <organización> <tema>
+```
+
+#### Argumentos
+
+- `<organización>`: El nombre de la organización de GitHub.
+- `<tema>`: El tema para filtrar los repositorios (por ejemplo, `struct-enabled`).
+
+#### Ejemplo
+
+```sh
+export GITHUB_TOKEN=tu_token_de_acceso_personal
+python3 scripts/github-trigger.py mi-org struct-enabled
+```
+
+### 🛠️ Cómo Funciona
+
+1. El script se conecta a la API de GitHub utilizando el token proporcionado.
+2. Itera a través de todos los repositorios privados de la organización especificada.
+3. Para cada repositorio:
+   - Verifica si el repositorio tiene el tema especificado.
+   - Comprueba la existencia de un archivo `.struct.yaml` en la rama predeterminada.
+   - Confirma la presencia del archivo de flujo de trabajo `run-struct`.
+   - Activa el evento de despacho del flujo de trabajo si se cumplen todas las condiciones.
+
+### ⚠️ Notas
+
+- Asegúrate de configurar la variable de entorno `GITHUB_TOKEN` antes de ejecutar el script.
+- El token debe tener permisos suficientes para acceder a repositorios privados y activar flujos de trabajo.
+- Los errores durante la ejecución (por ejemplo, archivos faltantes o permisos insuficientes) se registrarán en la consola.
+
 ## 👩‍💻 Desarrollo
 
 Para comenzar con el desarrollo, sigue estos pasos:
