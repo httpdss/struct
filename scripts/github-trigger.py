@@ -1,85 +1,53 @@
-#!/usr/bin/env python3
 import os
-import sys
+from github import Github
 import argparse
-from github import Github, GithubException
+
+def get_repositories_with_topic(org_name, topic):
+    """Fetch all repositories in an organization with a specific topic."""
+    token = os.getenv("GITHUB_TOKEN")
+    if not token:
+        raise EnvironmentError("GITHUB_TOKEN environment variable is not set.")
+
+    github = Github(token)
+    org = github.get_organization(org_name)
+    repos_with_topic = []
+
+    for repo in org.get_repos():
+        if topic in repo.get_topics():
+            repos_with_topic.append(repo)
+
+    return repos_with_topic
+
+def trigger_workflow(repo):
+    """Trigger the 'run-struct.yaml' workflow for a given repository."""
+    workflows = repo.get_workflows()
+    for workflow in workflows:
+        if workflow.path.endswith("run-struct.yaml"):
+            workflow.create_dispatch(ref=repo.default_branch)
+            print(f"Triggered workflow for repository: {repo.full_name}")
+            return
+
+    print(f"No 'run-struct.yaml' workflow found in repository: {repo.full_name}")
 
 def main():
-    parser = argparse.ArgumentParser(
-        description="Trigger the 'run-struct' workflow for all private repos in an organization that have a .struct.yaml file and the specified topic."
-    )
-    parser.add_argument("org", help="Name of the GitHub organization")
-    parser.add_argument("topic", help="Repository topic to filter by (e.g., 'struct-enabled')")
+    parser = argparse.ArgumentParser(description="Trigger 'run-struct.yaml' workflow for repositories with a specific topic.")
+    parser.add_argument("--org", required=True, help="The GitHub organization name.")
+    parser.add_argument("--topic", required=True, help="The topic to filter repositories by.")
+
     args = parser.parse_args()
 
-    # Ensure that the GitHub token is set in the environment
-    token = os.environ.get("GITHUB_TOKEN")
-    if not token:
-        sys.exit("Error: Please set the GITHUB_TOKEN environment variable.")
-
-    # Connect to GitHub
-    g = Github(token)
+    org_name = args.org
+    topic = args.topic
 
     try:
-        org = g.get_organization(args.org)
-    except GithubException as e:
-        sys.exit(f"Error getting organization '{args.org}': {e}")
+        repos = get_repositories_with_topic(org_name, topic)
+        print(f"Found {len(repos)} repositories with topic '{topic}'.")
 
-    # Iterate over all repositories in the organization
-    for repo in org.get_repos():
-        # Filter for private repositories only
-        if not repo.private:
-            continue
+        for repo in repos:
+            trigger_workflow(repo)
 
-        # Check if the repository has the specified topic
-        try:
-            topics = repo.get_topics()
-        except GithubException as e:
-            print(f"Could not retrieve topics for repo {repo.full_name}: {e}")
-            continue
-
-        if args.topic not in topics:
-            continue
-
-        print(f"\nProcessing repository: {repo.full_name}")
-
-        # Check for the existence of .struct.yaml file (in the repo's default branch)
-        try:
-            _ = repo.get_contents(".struct.yaml", ref=repo.default_branch)
-        except GithubException as e:
-            if e.status == 404:
-                print("  .struct.yaml file not found. Skipping.")
-            else:
-                print(f"  Error retrieving .struct.yaml: {e}")
-            continue
-
-        print("  Found .struct.yaml file.")
-
-        # Check if the workflow file exists at .github/workflows/run-struct.yaml
-        try:
-            _ = repo.get_contents(".github/workflows/run-struct.yaml", ref=repo.default_branch)
-        except GithubException as e:
-            if e.status == 404:
-                print("  Workflow file .github/workflows/run-struct.yaml not found. Skipping workflow trigger.")
-            else:
-                print(f"  Error retrieving workflow file: {e}")
-            continue
-
-        print("  Found workflow file .github/workflows/run-struct.yaml.")
-
-        # Retrieve the workflow object (using the file name as identifier)
-        try:
-            workflow = repo.get_workflow("run-struct.yaml")
-        except GithubException as e:
-            print(f"  Error retrieving workflow object: {e}")
-            continue
-
-        # Trigger a workflow dispatch event on the default branch
-        try:
-            workflow.create_dispatch(ref=repo.default_branch)
-            print("  Triggered run-struct workflow successfully.")
-        except GithubException as e:
-            print(f"  Error triggering workflow: {e}")
+    except Exception as e:
+        print(f"Error: {e}")
 
 if __name__ == "__main__":
     main()
