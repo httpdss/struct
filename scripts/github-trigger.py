@@ -1,6 +1,10 @@
 import os
 from github import Github
 import argparse
+import logging
+
+# Configure logging
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
 def get_repositories_with_topic(org_name, topic):
     """Fetch all repositories in an organization with a specific topic."""
@@ -24,10 +28,10 @@ def trigger_workflow(repo):
     for workflow in workflows:
         if workflow.path.endswith("run-struct.yaml"):
             workflow.create_dispatch(ref=repo.default_branch)
-            print(f"Triggered workflow for repository: {repo.full_name}")
+            logging.info(f"Triggered workflow for repository: {repo.full_name}")
             return
 
-    print(f"No 'run-struct.yaml' workflow found in repository: {repo.full_name}")
+    logging.warning(f"No 'run-struct.yaml' workflow found in repository: {repo.full_name}")
 
 def main():
     parser = argparse.ArgumentParser(description="Trigger 'run-struct.yaml' workflow for repositories with a specific topic.")
@@ -41,13 +45,13 @@ def main():
 
     try:
         repos = get_repositories_with_topic(org_name, topic)
-        print(f"Found {len(repos)} repositories with topic '{topic}'.")
+        logging.info(f"Found {len(repos)} repositories with topic '{topic}'.")
 
         for repo in repos:
             trigger_workflow(repo)
 
     except Exception as e:
-        print(f"Error: {e}")
+        logging.error(f"Error: {e}")
 
 if __name__ == "__main__":
     main()
