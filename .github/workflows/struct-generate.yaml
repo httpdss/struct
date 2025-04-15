@@ -116,7 +116,6 @@ jobs:
           fi
 
       - name: Generate PR with changes
-        if: github.event_name == 'workflow_dispatch'
         uses: peter-evans/create-pull-request@v7
         with:
           token: ${{ secrets.token }}
