@@ -1,4 +1,4 @@
-structure:
+files:
   - .config/REMOVE_ME.md:
       content: |
         # .config Folder

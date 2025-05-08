@@ -1,4 +1,4 @@
-structure:
+files:
   - recipes/default.rb:
       content: |
         package 'nginx' do

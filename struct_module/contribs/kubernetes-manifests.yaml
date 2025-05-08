@@ -1,4 +1,4 @@
-structure:
+files:
   - deployment.yaml:
       content: |
         apiVersion: apps/v1

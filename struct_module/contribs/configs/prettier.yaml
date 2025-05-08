@@ -1,4 +1,4 @@
-structure:
+files:
   - .prettierrc:
       content: |
         {

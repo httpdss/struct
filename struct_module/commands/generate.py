@@ -63,7 +63,7 @@ class GenerateCommand(Command):
         config = yaml.safe_load(f)
 
     template_vars = dict(item.split('=') for item in args.vars.split(',')) if args.vars else None
-    config_structure = config.get('structure', [])
+    config_structure = config.get('structure', config.get('files', []))
     config_folders = config.get('folders', [])
     config_variables = config.get('variables', [])
 

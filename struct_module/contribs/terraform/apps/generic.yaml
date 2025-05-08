@@ -1,4 +1,4 @@
-structure:
+files:
   - main.tf:
       content: |
         # This is the main Terraform app main file.

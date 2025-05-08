@@ -1,4 +1,4 @@
-structure:
+files:
   - Vagrantfile:
       content: |
         Vagrant.configure("2") do |config|

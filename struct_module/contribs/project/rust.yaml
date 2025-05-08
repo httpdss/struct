@@ -1,4 +1,4 @@
-structure:
+files:
   - .editorconfig:
       content: |
         # Editor configuration

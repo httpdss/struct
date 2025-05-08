@@ -38,9 +38,9 @@ class InfoCommand(Command):
       print(f"   📌 Name: {args.structure_definition}\n")
       print(f"   📌 Description: {config.get('description', 'No description')}\n")
 
-      if config.get('structure'):
-        print(f"   📌 Structure:")
-        for item in config.get('structure', []):
+      if config.get('files'):
+        print(f"   📌 Files:")
+        for item in config.get('files', []):
           for name, content in item.items():
             print(f"       - {name} ")
             # indent all lines of content

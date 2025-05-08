@@ -143,7 +143,7 @@ When defining your project structure in the YAML configuration file, you can use
 Example:
 
 ```yaml
-structure:
+files:
   - README.md:
       skip: true
       content: |
@@ -232,7 +232,7 @@ as you can see, the `author_name` variable is defined on the `variables` section
 This filter fetches the latest release version of a GitHub repository. It takes the repository name as an argument.
 
 ```yaml
-structure:
+files:
   - README.md:
       content: |
         # MyProject
@@ -250,7 +250,7 @@ NOTE: you can use this filter to get the latest release for a terraform provider
 This filter converts a string into a slug. It takes an optional argument to specify the separator character (default is `-`).
 
 ```yaml
-structure:
+files:
   - README.md:
       content: |
         # {{@ project_name @}}
@@ -263,7 +263,7 @@ structure:
 This filter fetches the default branch name of a GitHub repository. It takes the repository name as an argument.
 
 ```yaml
-structure:
+files:
   - README.md:
       content: |
         # MyProject
