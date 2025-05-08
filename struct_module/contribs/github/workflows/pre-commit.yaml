@@ -1,7 +1,7 @@
 structure:
-  - .github/workflows/pre-commit.yaml:
+  - .github/workflows/z-pre-commit.yaml:
       content: |
-        name: pre-commit
+        name: z-pre-commit
 
         on:
           pull_request:
