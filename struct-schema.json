@@ -1,5 +1,5 @@
 {
-  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$schema": "https://json-schema.org/draft-07/schema",
   "type": "object",
   "properties": {
     "structure": {
@@ -15,6 +15,36 @@
               "content": { "type": "string" },
               "permissions": { "type": "string" },
               "file": { "type": "string", "format": "uri" }
+            },
+            "additionalProperties": false
+          }
+        }
+      }
+    },
+    "files": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "patternProperties": {
+          ".*": {
+            "type": "object",
+            "properties": {
+              "skip": {
+                "type": "boolean"
+              },
+              "skip_if_exists": {
+                "type": "boolean"
+              },
+              "content": {
+                "type": "string"
+              },
+              "permissions": {
+                "type": "string"
+              },
+              "file": {
+                "type": "string",
+                "format": "uri"
+              }
             },
             "additionalProperties": false
           }

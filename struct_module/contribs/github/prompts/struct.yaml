@@ -1,4 +1,4 @@
-structure:
+files:
   - .github/prompts/struct.prompt.md:
       content: |
         # Struct Assistant

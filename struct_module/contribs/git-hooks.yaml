@@ -1,4 +1,4 @@
-structure:
+files:
   - .git/hooks/pre-commit:
       permissions: 755
       content: |

@@ -1,4 +1,4 @@
-structure:
+files:
   - .github/workflows/stale.yaml:
       content: |
         name: 'stale'

@@ -1,4 +1,4 @@
-structure:
+files:
   - .github/workflows/execute-tf-{{@ app_name | slugify @}}.yaml:
       content: |
         name: 'execute-tf-{{@ app_name | slugify @}}'

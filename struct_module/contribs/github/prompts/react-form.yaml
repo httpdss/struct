@@ -1,4 +1,4 @@
-structure:
+files:
   - .github/prompts/react-form.prompt.md:
       content: |
         Your goal is to generate a new React form component.

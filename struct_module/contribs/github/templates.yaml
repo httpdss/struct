@@ -1,4 +1,4 @@
-structure:
+files:
   - .github/PULL_REQUEST_TEMPLATE/bug_fix_template.md:
       content: |
         ## Bug Fix

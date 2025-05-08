@@ -1,4 +1,4 @@
-structure:
+files:
   - Dockerfile:
       content: |
         FROM nginx:latest

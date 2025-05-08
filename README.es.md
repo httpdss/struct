@@ -138,7 +138,7 @@ struct generate \
 Aquí tienes un ejemplo de un archivo de configuración YAML:
 
 ```yaml
-structure:
+files:
   - README.md:
       content: |
         # {{@ project_name @}}
@@ -223,7 +223,7 @@ como puedes ver, cada variable debe tener una descripción, un tipo y un valor p
 Este filtro obtiene la versión más reciente de una release en un repositorio de GitHub. Toma el nombre del repositorio como argumento.
 
 ```yaml
-structure:
+files:
   - README.md:
       content: |
         # MyProject
@@ -241,7 +241,7 @@ NOTA: puedes usar este filtro para obtener la última versión de un proveedor d
 Este filtro convierte una cadena en un slug. Toma un argumento opcional para especificar el carácter separador (el valor predeterminado es `-`).
 
 ```yaml
-structure:
+files:
   - README.md:
       content: |
         # {{@ project_name @}}
@@ -254,7 +254,7 @@ structure:
 Este filtro obtiene el nombre de la rama predeterminada de un repositorio de GitHub. Toma el nombre del repositorio como argumento.
 
 ```yaml
-structure:
+files:
   - README.md:
       content: |
         # MyProject

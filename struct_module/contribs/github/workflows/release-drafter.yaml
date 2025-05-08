@@ -1,4 +1,4 @@
-structure:
+files:
   - .github/workflows/release-drafter.yaml:
       content: |
         name: release-drafter

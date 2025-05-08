@@ -1,4 +1,4 @@
-structure:
+files:
   - .github/workflows/run-struct.yaml:
       skip_if_exists: true
       content: |
@@ -18,7 +18,7 @@ structure:
   - .struct.yaml:
       skip_if_exists: true
       content: |
-        structure:
+        files:
           - README.md:
               content: |
                 # Sample content

@@ -1,4 +1,4 @@
-structure:
+files:
   - README.md:
       skip: true
       content: |

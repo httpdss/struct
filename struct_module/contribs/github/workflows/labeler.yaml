@@ -1,4 +1,4 @@
-structure:
+files:
   - .github/labeler.yml:
     content: |
       # Add 'root' label to any root file changes

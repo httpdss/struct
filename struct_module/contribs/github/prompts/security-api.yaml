@@ -1,4 +1,4 @@
-structure:
+files:
   - .github/prompts/security-api.prompt.md:
       content: |
         Secure REST API review:

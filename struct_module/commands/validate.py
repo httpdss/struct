@@ -18,7 +18,9 @@ class ValidateCommand(Command):
       with open(args.yaml_file, 'r') as f:
         config = yaml.safe_load(f)
 
-      self._validate_structure_config(config.get('structure', []))
+      if 'structure' in config and 'files' in config:
+          self.logger.warning("Both 'structure' and 'files' keys exist. Prioritizing 'structure'.")
+      self._validate_structure_config(config.get('structure') or config.get('files', []))
       self._validate_folders_config(config.get('folders', []))
       self._validate_variables_config(config.get('variables', []))
 
