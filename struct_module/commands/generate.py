@@ -98,8 +98,11 @@ class GenerateCommand(Command):
           with open(file_path_to_create, 'r') as existing_file:
             existing_content = existing_file.read()
 
+        file_item.process_prompt(
+          args.dry_run,
+          existing_content=existing_content
+        )
         file_item.apply_template_variables(template_vars)
-        file_item.process_prompt(args.dry_run, existing_content=existing_content)
 
         file_item.create(
           args.base_path,
