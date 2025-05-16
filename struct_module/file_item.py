@@ -119,8 +119,6 @@ class FileItem:
       missing_vars = self.template_renderer.prompt_for_missing_vars(self.content, vars)
       vars.update(missing_vars)
 
-      print(self.content)
-
       self.content = self.template_renderer.render_template(self.content, vars)
 
     def create(self, base_path, dry_run=False, backup_path=None, file_strategy='overwrite'):
