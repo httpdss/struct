@@ -55,7 +55,7 @@ class FileItem:
     def _get_file_directory(self):
         return os.path.dirname(self.name)
 
-    def process_prompt(self, dry_run=False):
+    def process_prompt(self, dry_run=False, existing_content=None):
       if self.user_prompt:
         self.logger.debug(f"Using user prompt: {self.user_prompt}")
 
@@ -68,17 +68,22 @@ class FileItem:
         else:
           system_prompt = self.system_prompt
 
+        # If existing_content is provided, append it to the user prompt
+        user_prompt = self.user_prompt
+        if existing_content:
+          user_prompt += f"\n\nCurrent file content (if any):\n```\n{existing_content}\n```\n\nPlease modify existing content so that it meets the new requirements."
+
         if dry_run:
           self.logger.info("[DRY RUN] Would generate content using OpenAI API.")
           self.content = "[DRY RUN] Generating content using OpenAI"
           return
 
-        if not self.openai_client or not openai_api_key:
+        if self.openai_client and openai_api_key:
           completion = self.openai_client.chat.completions.create(
             model=self.openai_model,
             messages=[
               {"role": "system", "content": system_prompt},
-              {"role": "user", "content": self.user_prompt}
+              {"role": "user", "content": user_prompt}
             ]
           )
 
