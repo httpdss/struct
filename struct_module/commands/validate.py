@@ -18,6 +18,15 @@ class ValidateCommand(Command):
       with open(args.yaml_file, 'r') as f:
         config = yaml.safe_load(f)
 
+      # Validate pre_hooks and post_hooks if present
+      for hook_key in ["pre_hooks", "post_hooks"]:
+        if hook_key in config:
+          if not isinstance(config[hook_key], list):
+            raise ValueError(f"The '{hook_key}' key must be a list of shell commands (strings).")
+          for cmd in config[hook_key]:
+            if not isinstance(cmd, str):
+              raise ValueError(f"Each item in '{hook_key}' must be a string (shell command).")
+
       if 'structure' in config and 'files' in config:
           self.logger.warning("Both 'structure' and 'files' keys exist. Prioritizing 'structure'.")
       self._validate_structure_config(config.get('structure') or config.get('files', []))

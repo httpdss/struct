@@ -417,6 +417,35 @@ struct <Tab>
 - [**Automating Project Structures with STRUCT and GitHub Actions**](https://medium.com/@httpdss/automating-project-structures-with-struct-and-github-actions-64e09c40c11e)
 - [**Advanced STRUCT Tips: Working with Template Variables and Jinja2 Filters**](https://medium.com/@httpdss/advanced-struct-tips-working-with-template-variables-and-jinja2-filters-b239bf3145e4)
 
+## 🪝 Pre-generation and Post-generation Hooks
+
+You can define shell commands to run before and after structure generation using the `pre_hooks` and `post_hooks` keys in your YAML configuration. These are optional and allow you to automate setup or cleanup steps.
+
+- **pre_hooks**: List of shell commands to run before generation. If any command fails (non-zero exit), generation is aborted.
+- **post_hooks**: List of shell commands to run after generation completes. If any command fails, an error is shown.
+
+Example:
+
+```yaml
+pre_hooks:
+  - echo "Preparing environment..."
+  - ./scripts/prep.sh
+
+post_hooks:
+  - echo "Generation complete!"
+  - ./scripts/cleanup.sh
+files:
+  - README.md:
+      content: |
+        # My Project
+```
+
+**Notes:**
+
+- Output from hooks (stdout and stderr) is shown in the terminal.
+- If a pre-hook fails, generation is halted.
+- If no hooks are defined, nothing extra happens.
+
 ## 📜 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.

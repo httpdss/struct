@@ -348,6 +348,35 @@ python3 scripts/github-trigger.py mi-org struct-enabled
 - El token debe tener permisos suficientes para acceder a repositorios privados y activar flujos de trabajo.
 - Los errores durante la ejecución (por ejemplo, archivos faltantes o permisos insuficientes) se registrarán en la consola.
 
+## 🪝 Ganchos de Pre-generación y Post-generación
+
+Puedes definir comandos de shell para ejecutar antes y después de la generación de la estructura usando las claves `pre_hooks` y `post_hooks` en tu configuración YAML. Son opcionales y te permiten automatizar pasos de preparación o limpieza.
+
+- **pre_hooks**: Lista de comandos de shell a ejecutar antes de la generación. Si algún comando falla (código distinto de cero), la generación se aborta.
+- **post_hooks**: Lista de comandos de shell a ejecutar después de completar la generación. Si algún comando falla, se muestra un error.
+
+Ejemplo:
+
+```yaml
+pre_hooks:
+  - echo "Preparando el entorno..."
+  - ./scripts/prep.sh
+
+post_hooks:
+  - echo "¡Generación completa!"
+  - ./scripts/cleanup.sh
+files:
+  - README.md:
+      content: |
+        # Mi Proyecto
+```
+
+**Notas:**
+
+- La salida de los ganchos (stdout y stderr) se muestra en la terminal.
+- Si un pre-hook falla, la generación se detiene.
+- Si no se definen hooks, no ocurre nada extra.
+
 ## 👩‍💻 Desarrollo
 
 Para comenzar con el desarrollo, sigue estos pasos:
