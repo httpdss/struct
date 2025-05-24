@@ -11,7 +11,7 @@
 
 - [Introducción](#-introducción)
 - [Características](#-características)
-- [Instalación](#instalación)
+- [Instalación](#️-instalación)
   - [Usando pip](#usando-pip)
   - [Desde el código fuente](#desde-el-código-fuente)
   - [Usando Docker](#usando-docker)

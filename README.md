@@ -8,7 +8,7 @@
 
 - [Introduction](#-introduction)
 - [Features](#-features)
-- [Installation](#installation)
+- [Installation](#️-installation)
 - [Quick Start](#-quick-start)
 - [Usage](#-usage)
 - [YAML Configuration](#-yaml-configuration)
