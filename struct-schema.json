@@ -97,6 +97,16 @@
           }
         }
       }
+    },
+    "pre_hooks": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Shell commands to run before generation"
+    },
+    "post_hooks": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Shell commands to run after generation"
     }
   },
   "additionalProperties": false

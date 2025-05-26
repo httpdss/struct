@@ -5,6 +5,7 @@ import argparse
 from struct_module.file_item import FileItem
 from struct_module.completers import file_strategy_completer
 from struct_module.utils import project_path
+import subprocess
 
 # Generate command class
 class GenerateCommand(Command):
@@ -22,6 +23,45 @@ class GenerateCommand(Command):
     parser.add_argument('--non-interactive', action='store_true', help='Run the command in non-interactive mode')
     parser.set_defaults(func=self.execute)
 
+  def _run_hooks(self, hooks, hook_type="pre"):  # helper for running hooks
+    if not hooks:
+      return True
+    for cmd in hooks:
+      self.logger.info(f"Running {hook_type}-hook: {cmd}")
+      try:
+        result = subprocess.run(cmd, shell=True, check=True, capture_output=True, text=True)
+        if result.stdout:
+          self.logger.info(f"{hook_type}-hook stdout: {result.stdout.strip()}")
+        if result.stderr:
+          self.logger.info(f"{hook_type}-hook stderr: {result.stderr.strip()}")
+      except subprocess.CalledProcessError as e:
+        self.logger.error(f"{hook_type}-hook failed: {cmd}")
+        self.logger.error(f"Return code: {e.returncode}")
+        if e.stdout:
+          self.logger.error(f"stdout: {e.stdout.strip()}")
+        if e.stderr:
+          self.logger.error(f"stderr: {e.stderr.strip()}")
+        return False
+    return True
+
+  def _load_yaml_config(self, structure_definition, structures_path):
+    if structure_definition.startswith("file://") and structure_definition.endswith(".yaml"):
+      with open(structure_definition[7:], 'r') as f:
+        return yaml.safe_load(f)
+    else:
+      this_file = os.path.dirname(os.path.realpath(__file__))
+      contribs_path = os.path.join(this_file, "..", "contribs")
+      file_path = os.path.join(contribs_path, f"{structure_definition}.yaml")
+      if structures_path:
+        file_path = os.path.join(structures_path, f"{structure_definition}.yaml")
+      if not os.path.exists(file_path):
+        file_path = os.path.join(contribs_path, f"{structure_definition}.yaml")
+      if not os.path.exists(file_path):
+        self.logger.error(f"File not found: {file_path}")
+        return None
+      with open(file_path, 'r') as f:
+        return yaml.safe_load(f)
+
   def execute(self, args):
     self.logger.info(f"Generating structure")
     self.logger.info(f"  Structure definition: {args.structure_definition}")
@@ -34,8 +74,27 @@ class GenerateCommand(Command):
       self.logger.info(f"Creating base path: {args.base_path}")
       os.makedirs(args.base_path)
 
+    # Load config to check for hooks
+    config = None
+    config = self._load_yaml_config(args.structure_definition, args.structures_path)
+    if config is None:
+      return
+
+    pre_hooks = config.get('pre_hooks', [])
+    post_hooks = config.get('post_hooks', [])
+
+    # Run pre-hooks
+    if not self._run_hooks(pre_hooks, hook_type="pre"):
+      self.logger.error("Aborting generation due to pre-hook failure.")
+      return
+
+    # Actually generate structure
     self._create_structure(args)
 
+    # Run post-hooks
+    if not self._run_hooks(post_hooks, hook_type="post"):
+      self.logger.error("Post-hook failed.")
+      return
 
   def _create_structure(self, args):
     if isinstance(args, dict):
@@ -43,24 +102,9 @@ class GenerateCommand(Command):
     this_file = os.path.dirname(os.path.realpath(__file__))
     contribs_path = os.path.join(this_file, "..", "contribs")
 
-    if args.structure_definition.startswith("file://") and args.structure_definition.endswith(".yaml"):
-      with open(args.structure_definition[7:], 'r') as f:
-        config = yaml.safe_load(f)
-    else:
-      file_path = os.path.join(contribs_path, f"{args.structure_definition}.yaml")
-      if args.structures_path:
-        file_path = os.path.join(args.structures_path, f"{args.structure_definition}.yaml")
-
-      if not os.path.exists(file_path):
-        # fallback to contribs path
-        file_path = os.path.join(contribs_path, f"{args.structure_definition}.yaml")
-
-      if not os.path.exists(file_path):
-        self.logger.error(f"File not found: {file_path}")
-        return
-
-      with open(file_path, 'r') as f:
-        config = yaml.safe_load(f)
+    config = self._load_yaml_config(args.structure_definition, args.structures_path)
+    if config is None:
+      return
 
     template_vars = dict(item.split('=') for item in args.vars.split(',')) if args.vars else None
     config_structure = config.get('files', config.get('structure', []))

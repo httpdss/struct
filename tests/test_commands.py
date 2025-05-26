@@ -12,8 +12,12 @@ def parser():
 
 def test_generate_command(parser):
     command = GenerateCommand(parser)
-    args = parser.parse_args(['structure.yaml', 'base_path'])
-    with patch.object(command, '_create_structure') as mock_create_structure:
+    # Patch os.path.exists to always return True for the config file, and patch open/yaml.safe_load to return a minimal config
+    with patch('os.path.exists', return_value=True), \
+         patch('builtins.open', new_callable=MagicMock) as mock_open, \
+         patch('yaml.safe_load', return_value={'files': []}), \
+         patch.object(command, '_create_structure') as mock_create_structure:
+        args = parser.parse_args(['structure.yaml', 'base_path'])
         command.execute(args)
         mock_create_structure.assert_called_once()
 
