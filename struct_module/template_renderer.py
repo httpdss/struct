@@ -85,7 +85,7 @@ class TemplateRenderer:
           if self.non_interactive:
             user_input = default if default else "NEEDS_TO_BE_SET"
           else:
-            user_input = input(f"Enter value for {var} [{default}]: ") or default
+            user_input = input(f"❓ Enter value for {var} [{default}]: ") or default
           self.input_store.set_value(var, user_input)
           vars[var] = user_input
       self.input_store.save()

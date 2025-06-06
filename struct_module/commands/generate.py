@@ -57,7 +57,7 @@ class GenerateCommand(Command):
       if not os.path.exists(file_path):
         file_path = os.path.join(contribs_path, f"{structure_definition}.yaml")
       if not os.path.exists(file_path):
-        self.logger.error(f"File not found: {file_path}")
+        self.logger.error(f"❗ File not found: {file_path}")
         return None
       with open(file_path, 'r') as f:
         return yaml.safe_load(f)
@@ -138,7 +138,7 @@ class GenerateCommand(Command):
         file_path_to_create = os.path.join(args.base_path, name)
         existing_content = None
         if os.path.exists(file_path_to_create):
-          self.logger.info(f"File already exists: {file_path_to_create}")
+          self.logger.warning(f"⚠️ File already exists: {file_path_to_create}")
           with open(file_path_to_create, 'r') as existing_file:
             existing_content = existing_file.read()
 
@@ -169,7 +169,13 @@ class GenerateCommand(Command):
         if 'struct' in content:
           self.logger.info(f"Generating structure")
           self.logger.info(f"  Folder: {folder}")
-          self.logger.info(f"  Struct: {content['struct']}")
+          self.logger.info(f"  Struct:")
+          if isinstance(content['struct'], list):
+            # iterate over the list of structures
+            for struct in content['struct']:
+              self.logger.info(f"    - {struct}")
+          if isinstance(content['struct'], str):
+            self.logger.info(f"    - {content['struct']}")
 
           # get vars from with param. this will be a dict of key value pairs
           merged_vars = ""

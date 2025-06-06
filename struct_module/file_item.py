@@ -101,7 +101,7 @@ class FileItem:
           self.content = self.content_fetcher.fetch_content(self.content_location)
           self.logger.debug(f"Fetched content: {self.content}")
         except Exception as e:
-          self.logger.error(f"Failed to fetch content from {self.content_location}: {e}")
+          self.logger.error(f"❗ Failed to fetch content from {self.content_location}: {e}")
 
     def _merge_default_template_vars(self, template_vars):
       default_vars = {
@@ -125,8 +125,7 @@ class FileItem:
       file_path = os.path.join(base_path, self.name)
 
       if self.skip:
-        self.logger.info(f"Skipping file creation")
-        self.logger.info(f"  File path: {file_path}")
+        self.logger.info(f"skip is set to true. skipping creation.")
         return
 
       if dry_run:
@@ -134,8 +133,7 @@ class FileItem:
         return
 
       if self.skip_if_exists and os.path.exists(file_path):
-        self.logger.info(f"Skipping file creation as file exists")
-        self.logger.info(f"  File path: {file_path}")
+        self.logger.info(f"    skip_if_exists is set to true and file already exists. skipping creation.")
         return
 
       # Create the directory if it does not exist
@@ -152,7 +150,7 @@ class FileItem:
         elif file_strategy == 'append':
           with open(file_path, 'a') as f:
               f.write(f"{self.content}\n")
-          self.logger.info(f"Appended to existing file: {file_path}")
+          self.logger.info(f"✅ Appended to existing file: {file_path}")
           return
         elif file_strategy == 'rename':
           new_name = f"{file_path}.{int(time.time())}"
@@ -161,12 +159,12 @@ class FileItem:
 
       with open(file_path, 'w') as f:
         f.write(f"{self.content}\n")
-      self.logger.debug(f"Created file with content")
-      self.logger.debug(f"  File path: {file_path}")
-      self.logger.debug(f"  Content: \n\n{self.content}")
+      self.logger.info(f"✅ Created file with content")
+      self.logger.info(f"     File path: {file_path}")
+      self.logger.debug(f"     Content: \n\n{self.content}")
 
       if self.permissions:
         os.chmod(file_path, int(self.permissions, 8))
-        self.logger.info(f"Set permissions to file")
-        self.logger.info(f"  File path: {file_path}")
-        self.logger.info(f"  Permissions: {self.permissions}")
+        self.logger.info(f"🔐 Set permissions to file")
+        self.logger.info(f"     File path: {file_path}")
+        self.logger.info(f"     Permissions: {self.permissions}")

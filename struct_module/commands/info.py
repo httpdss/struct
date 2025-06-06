@@ -29,7 +29,7 @@ class InfoCommand(Command):
           file_path = os.path.join(args.structures_path, f"{args.structure_definition}.yaml")
         # show error if file is not found
         if not os.path.exists(file_path):
-          self.logger.error(f"File not found: {file_path}")
+          self.logger.error(f"❗ File not found: {file_path}")
           return
         with open(file_path, 'r') as f:
           config = yaml.safe_load(f)
