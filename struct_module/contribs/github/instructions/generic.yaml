@@ -1,0 +1,5 @@
+files:
+  - .github/instructions/generic.instruction.md:
+      skip_if_exists: true
+      content: |
+        Your instructions here
