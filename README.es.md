@@ -72,7 +72,7 @@ Puedes usar la imagen de Docker para ejecutar el script sin instalarlo en tu sis
 docker run \
   -v $(pwd):/workdir \
   -u $(id -u):$(id -g) \
-  ghcr.io/httpdss/struct:main \
+  ghcr.io/httpdss/struct:main generate \
   /workdir/example/structure.yaml \
   /workdir/example_output
 ```
