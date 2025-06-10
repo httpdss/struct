@@ -28,3 +28,34 @@ def test_prompt_for_missing_vars(renderer):
 def test_get_defaults_from_config(renderer):
     defaults = renderer.get_defaults_from_config()
     assert defaults == {"var1": "default1", "var2": "default2"}
+
+
+def test_render_template_with_mappings():
+    config_variables = []
+    input_store = "/tmp/input.json"
+    non_interactive = True
+    mappings = {
+        "aws_account_ids": {
+            "myenv-non-prod": "123456789",
+            "myenv-prod": "987654321"
+        }
+    }
+    renderer = TemplateRenderer(
+        config_variables, input_store, non_interactive, mappings=mappings)
+    content = "Account: {{@ mappings.aws_account_ids['myenv-prod'] @}}"
+    rendered_content = renderer.render_template(content, {})
+    assert rendered_content == "Account: 987654321"
+
+    # Also test dot notation
+    content_dot = "Account: {{@ mappings.aws_account_ids.myenv_non_prod @}}"
+    # Jinja2 does not allow dash in dot notation, so we use underscore for this test
+    mappings_dot = {
+        "aws_account_ids": {
+            "myenv_non_prod": "123456789",
+            "myenv_prod": "987654321"
+        }
+    }
+    renderer_dot = TemplateRenderer(
+        config_variables, input_store, non_interactive, mappings=mappings_dot)
+    rendered_content_dot = renderer_dot.render_template(content_dot, {})
+    assert rendered_content_dot == "Account: 123456789"

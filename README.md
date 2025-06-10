@@ -446,6 +446,41 @@ files:
 - If a pre-hook fails, generation is halted.
 - If no hooks are defined, nothing extra happens.
 
+## 🗺️ Mappings Support
+
+You can provide a mappings YAML file to inject key-value maps into your templates. This is useful for referencing environment-specific values, IDs, or any other mapping you want to use in your generated files.
+
+### Example mappings file
+
+```yaml
+mappings:
+  aws_account_ids:
+    myenv-non-prod: 123456789
+    myenv-prod: 987654321
+```
+
+### Usage in templates
+
+You can reference mapping values in your templates using the `mappings` variable:
+
+```jinja
+{{@ mappings.aws_account_ids['myenv-prod'] @}}
+```
+
+This will render as:
+
+```
+987654321
+```
+
+### Passing the mappings file
+
+Use the `--mappings-file` argument with the `generate` command:
+
+```sh
+struct generate --mappings-file ./mymap.yaml my-struct.yaml .
+```
+
 ## 📜 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.

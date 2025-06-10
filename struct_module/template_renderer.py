@@ -8,9 +8,10 @@ from struct_module.input_store import InputStore
 from struct_module.utils import get_current_repo
 
 class TemplateRenderer:
-    def __init__(self, config_variables, input_store, non_interactive):
+    def __init__(self, config_variables, input_store, non_interactive, mappings=None):
       self.config_variables = config_variables
       self.non_interactive = non_interactive
+      self.mappings = mappings or {}
 
       self.env = Environment(
         trim_blocks=True,
@@ -66,6 +67,10 @@ class TemplateRenderer:
 
 
     def render_template(self, content, vars):
+      # Inject mappings into the template context
+      if self.mappings:
+        vars = vars.copy() if vars else {}
+        vars['mappings'] = self.mappings
       template = self.env.from_string(content)
       return template.render(vars)
 

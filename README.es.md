@@ -377,6 +377,41 @@ files:
 - Si un pre-hook falla, la generación se detiene.
 - Si no se definen hooks, no ocurre nada extra.
 
+## 🗺️ Soporte de Mappings
+
+Puedes proporcionar un archivo YAML de mappings para inyectar mapas clave-valor en tus plantillas. Esto es útil para referenciar valores específicos de entorno, IDs o cualquier otro mapeo que quieras usar en tus archivos generados.
+
+### Ejemplo de archivo de mappings
+
+```yaml
+mappings:
+  aws_account_ids:
+    myenv-non-prod: 123456789
+    myenv-prod: 987654321
+```
+
+### Uso en plantillas
+
+Puedes referenciar valores del mapping en tus plantillas usando la variable `mappings`:
+
+```jinja
+{{@ mappings.aws_account_ids['myenv-prod'] @}}
+```
+
+Esto se renderizará como:
+
+```
+987654321
+```
+
+### Pasar el archivo de mappings
+
+Usa el argumento `--mappings-file` con el comando `generate`:
+
+```sh
+struct generate --mappings-file ./mimapa.yaml mi-estructura.yaml .
+```
+
 ## 👩‍💻 Desarrollo
 
 Para comenzar con el desarrollo, sigue estos pasos:
