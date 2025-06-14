@@ -385,6 +385,8 @@ Puedes proporcionar un archivo YAML de mappings para inyectar mapas clave-valor 
 
 ```yaml
 mappings:
+  teams:
+    devops: devops-team
   aws_account_ids:
     myenv-non-prod: 123456789
     myenv-prod: 987654321
@@ -403,6 +405,22 @@ Esto se renderizará como:
 ```
 987654321
 ```
+
+### Usar mappings en la cláusula `with`
+
+También puedes asignar un valor desde un mapping directamente en la cláusula `with` para llamadas a struct de carpetas. Por ejemplo:
+
+```yaml
+folders:
+  - ./:
+      struct:
+        - configs/codeowners
+    with:
+      team: {{@ mappings.teams.devops @}}
+      account_id: {{@ mappings.aws_account_ids['myenv-prod'] @}}
+```
+
+Esto asignará el valor `devops-team` a la variable `team` y `987654321` a `account_id` en el struct, usando los valores de tu archivo de mappings.
 
 ### Pasar el archivo de mappings
 

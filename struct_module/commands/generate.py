@@ -4,7 +4,8 @@ import yaml
 import argparse
 from struct_module.file_item import FileItem
 from struct_module.completers import file_strategy_completer
-from struct_module.utils import project_path
+from struct_module.template_renderer import TemplateRenderer
+
 import subprocess
 
 # Generate command class
@@ -199,7 +200,17 @@ class GenerateCommand(Command):
           # dict to comma separated string
           if 'with' in content:
             if isinstance(content['with'], dict):
-              merged_vars = ",".join([f"{k}={v}" for k, v in content['with'].items()])
+              # Render Jinja2 expressions in each value using TemplateRenderer
+              rendered_with = {}
+              renderer = TemplateRenderer(
+                  config_variables, args.input_store, args.non_interactive, mappings)
+              for k, v in content['with'].items():
+                # Render the value as a template, passing in mappings and template_vars
+                context = template_vars.copy() if template_vars else {}
+                context['mappings'] = mappings or {}
+                rendered_with[k] = renderer.render_template(str(v), context)
+              merged_vars = ",".join(
+                  [f"{k}={v}" for k, v in rendered_with.items()])
 
           if args.vars:
             merged_vars = args.vars + "," + merged_vars

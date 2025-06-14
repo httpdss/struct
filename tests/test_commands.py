@@ -52,3 +52,26 @@ def test_validate_command(parser):
         mock_validate_structure.assert_called_once()
         mock_validate_folders.assert_called_once()
         mock_validate_variables.assert_called_once()
+
+
+def test_with_value_renders_jinja2_with_mappings():
+    from struct_module.template_renderer import TemplateRenderer
+    config_variables = []
+    input_store = "/tmp/input.json"
+    non_interactive = True
+    mappings = {
+        "teams": {
+            "devops": "devops-team"
+        }
+    }
+    # Simulate a 'with' dict as in the folder struct logic
+    with_dict = {"team": "{{@ mappings.teams.devops @}}"}
+    template_vars = {}
+    renderer = TemplateRenderer(
+        config_variables, input_store, non_interactive, mappings)
+    rendered_with = {}
+    for k, v in with_dict.items():
+        context = template_vars.copy() if template_vars else {}
+        context['mappings'] = mappings or {}
+        rendered_with[k] = renderer.render_template(str(v), context)
+    assert rendered_with["team"] == "devops-team"
