@@ -33,15 +33,17 @@ class FileItem:
       self.system_prompt = properties.get("system_prompt") or properties.get("global_system_prompt")
       self.user_prompt = properties.get("user_prompt")
       self.openai_client = None
+      self.mappings = properties.get("mappings", {})
 
       if openai_api_key:
         self._configure_openai()
 
       self.template_renderer = TemplateRenderer(
-                                  self.config_variables,
-                                  self.input_store,
-                                  self.non_interactive
-                                )
+          self.config_variables,
+          self.input_store,
+          self.non_interactive,
+          self.mappings
+      )
 
     def _configure_openai(self):
       self.openai_client = OpenAI(api_key=openai_api_key)

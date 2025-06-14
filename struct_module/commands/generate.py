@@ -4,7 +4,8 @@ import yaml
 import argparse
 from struct_module.file_item import FileItem
 from struct_module.completers import file_strategy_completer
-from struct_module.utils import project_path
+from struct_module.template_renderer import TemplateRenderer
+
 import subprocess
 
 # Generate command class
@@ -21,6 +22,8 @@ class GenerateCommand(Command):
     parser.add_argument('-f', '--file-strategy', type=str, choices=['overwrite', 'skip', 'append', 'rename', 'backup'], default='overwrite', help='Strategy for handling existing files').completer = file_strategy_completer
     parser.add_argument('-p', '--global-system-prompt', type=str, help='Global system prompt for OpenAI')
     parser.add_argument('--non-interactive', action='store_true', help='Run the command in non-interactive mode')
+    parser.add_argument('--mappings-file', type=str,
+                        help='Path to a YAML file containing mappings to be used in templates')
     parser.set_defaults(func=self.execute)
 
   def _run_hooks(self, hooks, hook_type="pre"):  # helper for running hooks
@@ -67,6 +70,18 @@ class GenerateCommand(Command):
     self.logger.info(f"  Structure definition: {args.structure_definition}")
     self.logger.info(f"  Base path: {args.base_path}")
 
+    # Load mappings if provided
+    mappings = {}
+    if getattr(args, 'mappings_file', None):
+      if os.path.exists(args.mappings_file):
+        with open(args.mappings_file, 'r') as mf:
+          try:
+            mappings = yaml.safe_load(mf) or {}
+          except Exception as e:
+            self.logger.error(f"Failed to load mappings file: {e}")
+      else:
+        self.logger.error(f"Mappings file not found: {args.mappings_file}")
+
     if args.backup and not os.path.exists(args.backup):
       os.makedirs(args.backup)
 
@@ -89,14 +104,14 @@ class GenerateCommand(Command):
       return
 
     # Actually generate structure
-    self._create_structure(args)
+    self._create_structure(args, mappings)
 
     # Run post-hooks
     if not self._run_hooks(post_hooks, hook_type="post"):
       self.logger.error("Post-hook failed.")
       return
 
-  def _create_structure(self, args):
+  def _create_structure(self, args, mappings=None):
     if isinstance(args, dict):
         args = argparse.Namespace(**args)
     this_file = os.path.dirname(os.path.realpath(__file__))
@@ -121,6 +136,7 @@ class GenerateCommand(Command):
           content["config_variables"] = config_variables
           content["input_store"] = args.input_store
           content["non_interactive"] = args.non_interactive
+          content["mappings"] = mappings or {}
           file_item = FileItem(content)
           file_item.fetch_content()
         elif isinstance(content, str):
@@ -131,6 +147,7 @@ class GenerateCommand(Command):
               "config_variables": config_variables,
               "input_store": args.input_store,
               "non_interactive": args.non_interactive,
+              "mappings": mappings or {},
             }
           )
 
@@ -183,7 +200,17 @@ class GenerateCommand(Command):
           # dict to comma separated string
           if 'with' in content:
             if isinstance(content['with'], dict):
-              merged_vars = ",".join([f"{k}={v}" for k, v in content['with'].items()])
+              # Render Jinja2 expressions in each value using TemplateRenderer
+              rendered_with = {}
+              renderer = TemplateRenderer(
+                  config_variables, args.input_store, args.non_interactive, mappings)
+              for k, v in content['with'].items():
+                # Render the value as a template, passing in mappings and template_vars
+                context = template_vars.copy() if template_vars else {}
+                context['mappings'] = mappings or {}
+                rendered_with[k] = renderer.render_template(str(v), context)
+              merged_vars = ",".join(
+                  [f"{k}={v}" for k, v in rendered_with.items()])
 
           if args.vars:
             merged_vars = args.vars + "," + merged_vars

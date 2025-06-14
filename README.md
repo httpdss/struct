@@ -446,6 +446,59 @@ files:
 - If a pre-hook fails, generation is halted.
 - If no hooks are defined, nothing extra happens.
 
+## 🗺️ Mappings Support
+
+You can provide a mappings YAML file to inject key-value maps into your templates. This is useful for referencing environment-specific values, IDs, or any other mapping you want to use in your generated files.
+
+### Example mappings file
+
+```yaml
+mappings:
+  teams:
+    devops: devops-team
+  aws_account_ids:
+    myenv-non-prod: 123456789
+    myenv-prod: 987654321
+```
+
+### Usage in templates
+
+You can reference mapping values in your templates using the `mappings` variable:
+
+```jinja
+{{@ mappings.aws_account_ids['myenv-prod'] @}}
+```
+
+This will render as:
+
+```
+987654321
+```
+
+### Using mappings in the `with` clause
+
+You can also assign a value from a mapping directly in the `with` clause for folder struct calls. For example:
+
+```yaml
+folders:
+  - ./:
+      struct:
+        - configs/codeowners
+    with:
+      team: {{@ mappings.teams.devops @}}
+      account_id: {{@ mappings.aws_account_ids['myenv-prod'] @}}
+```
+
+This will assign the value `devops-team` to the variable `team` and `987654321` to `account_id` in the struct, using the values from your mappings file.
+
+### Passing the mappings file
+
+Use the `--mappings-file` argument with the `generate` command:
+
+```sh
+struct generate --mappings-file ./mymap.yaml my-struct.yaml .
+```
+
 ## 📜 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
