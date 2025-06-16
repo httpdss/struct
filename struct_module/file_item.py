@@ -100,8 +100,18 @@ class FileItem:
       if self.content_location:
         self.logger.debug(f"Fetching content from: {self.content_location}")
         try:
-          self.content = self.content_fetcher.fetch_content(self.content_location)
-          self.logger.debug(f"Fetched content: {self.content}")
+          raw_content = self.content_fetcher.fetch_content(
+              self.content_location)
+          self.logger.debug(f"Fetched content: {raw_content}")
+          # Render the fetched content using the template renderer
+          template_vars = self._merge_default_template_vars(
+              self.config_variables)
+          missing_vars = self.template_renderer.prompt_for_missing_vars(
+              raw_content, template_vars)
+          template_vars.update(missing_vars)
+          self.content = self.template_renderer.render_template(
+              raw_content, template_vars)
+          self.logger.debug(f"Rendered content: {self.content}")
         except Exception as e:
           self.logger.error(f"❗ Failed to fetch content from {self.content_location}: {e}")
 
