@@ -12,7 +12,7 @@ files:
         # The subdomain to serve from
         SUBDOMAIN={{@ n8n_subdomain @}}
 
-        # The above example serve n8n at: https://n8n.{{@ n8n_domain_name @}}
+        # The above example serve n8n at: https://{{@ n8n_subdomain @}}.{{@ n8n_domain_name @}}
 
         # Optional timezone to set which gets used by Cron and other scheduling nodes
         # New York is the default value if not set
