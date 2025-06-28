@@ -1,4 +1,8 @@
 files:
+  - .gitignore:
+      content: |
+        # Ignore env files
+        .env
   - .env:
       content: |
         # DOMAIN_NAME and SUBDOMAIN together determine where n8n will be reachable from
@@ -8,14 +12,14 @@ files:
         # The subdomain to serve from
         SUBDOMAIN={{@ n8n_subdomain @}}
 
-        # The above example serve n8n at: https://n8n.{{@ n8n_domain_name @}}}}
+        # The above example serve n8n at: https://{{@ n8n_subdomain @}}.{{@ n8n_domain_name @}}
 
         # Optional timezone to set which gets used by Cron and other scheduling nodes
         # New York is the default value if not set
         GENERIC_TIMEZONE={{@ n8n_generic_timezone @}}
 
         # The email address to use for the TLS/SSL certificate creation
-        SSL_EMAIL=user@{{@ n8n_ssl_email @}}}}
+        SSL_EMAIL={{@ n8n_ssl_email @}}
   - local-files/.gitkeep:
       content: |
         # Keep this file to ensure the local-files directory is included in version control
