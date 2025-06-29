@@ -19,8 +19,7 @@
         "editorconfig.editorconfig",
         "davidanson.vscode-markdownlint",
         "foxundermoon.shell-format",
-        "gruntfuggly.todo-tree",
-        "harrydowning.yaml-embedded-languages"
+        "gruntfuggly.todo-tree"
       ],
       "settings": {
         "editor.formatOnSave": true,
