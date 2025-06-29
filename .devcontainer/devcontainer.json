@@ -3,7 +3,6 @@
   "image": "mcr.microsoft.com/devcontainers/python:3",
   "features": {
     "ghcr.io/gvatsal60/dev-container-features/pre-commit": {},
-    "ghcr.io/eitsupi/devcontainer-features/go-task:latest": {}
   },
   "postCreateCommand": "bash ./scripts/devcontainer_start.sh",
   "customizations": {
