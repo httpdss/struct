@@ -8,6 +8,9 @@ on:
     branches:
       - main
 
+env:
+  OPENAI_API_KEY: "my-test-key"
+
 jobs:
   build:
 
