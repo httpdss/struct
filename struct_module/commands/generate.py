@@ -24,6 +24,8 @@ class GenerateCommand(Command):
     parser.add_argument('--non-interactive', action='store_true', help='Run the command in non-interactive mode')
     parser.add_argument('--mappings-file', type=str,
                         help='Path to a YAML file containing mappings to be used in templates')
+    parser.add_argument('-o', '--output', type=str,
+                        choices=['console', 'file'], default='file', help='Output mode')
     parser.set_defaults(func=self.execute)
 
   def _run_hooks(self, hooks, hook_type="pre"):  # helper for running hooks
@@ -85,7 +87,7 @@ class GenerateCommand(Command):
     if args.backup and not os.path.exists(args.backup):
       os.makedirs(args.backup)
 
-    if args.base_path and not os.path.exists(args.base_path):
+    if args.base_path and not os.path.exists(args.base_path) and "console" not in args.output:
       self.logger.info(f"Creating base path: {args.base_path}")
       os.makedirs(args.base_path)
 
@@ -165,22 +167,26 @@ class GenerateCommand(Command):
         )
         file_item.apply_template_variables(template_vars)
 
-        file_item.create(
-          args.base_path,
-          args.dry_run or False,
-          args.backup or None,
-          args.file_strategy or 'overwrite'
-        )
+        # Output mode logic
+        if hasattr(args, 'output') and args.output == 'console':
+          # Print the file path and content to the console instead of creating the file
+          print(f"=== {file_path_to_create} ===")
+          print(file_item.content)
+        else:
+          file_item.create(
+              args.base_path,
+              args.dry_run or False,
+              args.backup or None,
+              args.file_strategy or 'overwrite'
+          )
 
     for item in config_folders:
       for folder, content in item.items():
         folder_path = os.path.join(args.base_path, folder)
-        if args.dry_run:
-          self.logger.info(f"[DRY RUN] Would create folder: {folder_path}")
-          continue
-        os.makedirs(folder_path, exist_ok=True)
-        self.logger.info(f"Created folder")
-        self.logger.info(f"  Folder: {folder_path}")
+        if hasattr(args, 'output') and args.output == 'file':
+          os.makedirs(folder_path, exist_ok=True)
+          self.logger.info(f"Created folder")
+          self.logger.info(f"  Folder: {folder_path}")
 
         # check if content has struct value
         if 'struct' in content:
