@@ -100,10 +100,15 @@ class FileItem:
       missing_vars = self.template_renderer.prompt_for_missing_vars(self.content, vars)
       vars.update(missing_vars)
 
+      self.vars = vars
+      self.logger.debug(f"Final template variables: {self.vars}")
+
       self.content = self.template_renderer.render_template(self.content, vars)
 
     def create(self, base_path, dry_run=False, backup_path=None, file_strategy='overwrite'):
       file_path = os.path.join(base_path, self.name)
+
+      file_path = self.template_renderer.render_template(file_path, self.vars)
 
       if self.skip:
         self.logger.info(f"skip is set to true. skipping creation.")

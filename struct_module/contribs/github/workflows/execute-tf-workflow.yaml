@@ -25,15 +25,15 @@ files:
               gh-token: {{@ github_token @}}
 
 variables:
-  - name: app_name
-    description: "The name of the app."
-    default: "environments-dev"
-    type: string
-  - name: app_path
-    description: "The working directory for the terraform workflow."
-    default: "environments/dev"
-    type: string
-  - name: github_token
-    description: "The GitHub token for authentication."
-    default: "${{ secrets.GITHUB_TOKEN }}"
-    type: string
+  - app_name:
+      description: "The name of the app."
+      default: "environments-dev"
+      type: string
+  - app_path:
+      description: "The working directory for the terraform workflow."
+      default: "environments/dev"
+      type: string
+  - github_token:
+      description: "The GitHub token for authentication."
+      default: "${{ secrets.GITHUB_TOKEN }}"
+      type: string
