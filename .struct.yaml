@@ -4,5 +4,6 @@ folders:
         - github/prompts/struct
         - github/workflows/pre-commit
         - github/workflows/release-drafter
+        - github/workflows/labeler
         - configs/prettier
         - configs/editor-config
