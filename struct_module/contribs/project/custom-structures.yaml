@@ -1,0 +1,24 @@
+files:
+  - README.md:
+      content: |
+        # Custom Struct Structures
+  - custom-mappings.yaml:
+      content: |
+        # Custom Struct Mappings
+        # This file defines custom mappings for the Struct.
+        mappings:
+          aws_account_ids:
+            nonprod: "123456789012"
+            prod: "987654321098"
+
+  - structures/.gitkeep:
+      content: ""
+folders:
+  - ./:
+      struct:
+        - configs/devcontainer
+        - configs/editor-config
+        - configs/prettier
+        - github/workflows/run-struct
+        - github/workflows/release-drafter
+        - github/workflows/pre-commit

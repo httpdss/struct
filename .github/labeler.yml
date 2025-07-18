@@ -1,0 +1,11 @@
+# Add 'feature' label to any PR where the head branch name starts with `feature` or has a `feature` section in the name
+feature:
+- head-branch: ['^feature', 'feature']
+
+# Add 'bug' label to any PR where the head branch name starts with `bug` or has a `bug` section in the name
+bug:
+- head-branch: ['^bug', 'bug']
+
+# Add 'docs' label to any PR where the head branch name starts with `docs` or has a `docs` section in the name
+docs:
+- head-branch: ['^docs', 'docs']
