@@ -102,6 +102,7 @@ struct structure.yaml .
 Ejecuta el script con el siguiente comando usando uno de los siguientes subcomandos:
 
 - `generate`: Genera la estructura del proyecto basada en la configuración YAML.
+- `generate-schema`: Genera esquema JSON para las plantillas de estructura disponibles.
 - `validate`: Valida la configuración YAML para asegurarte de que sea válida.
 - `info`: Muestra información sobre el script y sus dependencias.
 - `list`: Lista las estructuras disponibles.
@@ -132,6 +133,37 @@ struct generate \
   ./mi-modulo-terraform
 
 ```
+
+### Comando Generate Schema
+
+El comando `generate-schema` crea definiciones de esquema JSON para las plantillas de estructura disponibles, facilitando que las herramientas e IDEs proporcionen autocompletado y validación.
+
+#### Uso Básico
+
+```sh
+# Generar esquema a stdout
+struct generate-schema
+
+# Generar esquema con ruta de estructuras personalizada
+struct generate-schema -s /ruta/a/estructuras/personalizadas
+
+# Guardar esquema en archivo
+struct generate-schema -o schema.json
+
+# Combinar ruta personalizada y archivo de salida
+struct generate-schema -s /ruta/a/estructuras/personalizadas -o schema.json
+```
+
+#### Opciones del Comando
+
+- `-s, --structures-path`: Ruta a definiciones de estructura adicionales (opcional)
+- `-o, --output`: Ruta del archivo de salida para el esquema (predeterminado: stdout)
+
+El esquema generado incluye todas las estructuras disponibles tanto del directorio contribs integrado como de cualquier ruta de estructuras personalizada que especifiques. Esto es útil para:
+
+- Autocompletado IDE al escribir archivos `.struct.yaml`
+- Validación de referencias de estructura en tus configuraciones
+- Descubrimiento programático de plantillas disponibles
 
 ## 📄 Configuración YAML
 
@@ -402,7 +434,7 @@ Puedes referenciar valores del mapping en tus plantillas usando la variable `map
 
 Esto se renderizará como:
 
-```
+```text
 987654321
 ```
 
