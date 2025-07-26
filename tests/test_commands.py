@@ -117,17 +117,35 @@ def test_generate_schema_stdout_output(parser):
         ('/path/to/contribs/subdir', [], ['nested-struct.yaml'])
     ]
 
+    def mock_join_side_effect(*args):
+        if len(args) == 2 and args[0] == '/path/to/commands' and args[1] == '..':
+            return '/path/to'
+        elif len(args) == 3 and args[0] == '/path/to' and args[1] == '..' and args[2] == 'contribs':
+            return '/path/to/contribs'
+        elif len(args) == 2:
+            return '/'.join(args)
+        else:
+            return '/'.join(args)
+
+    def mock_relpath_side_effect(file_path, base_path):
+        if file_path == '/path/to/contribs/terraform-module.yaml':
+            return 'terraform-module.yaml'
+        elif file_path == '/path/to/contribs/docker-files.yaml':
+            return 'docker-files.yaml'
+        elif file_path == '/path/to/contribs/subdir/nested-struct.yaml':
+            return 'subdir/nested-struct.yaml'
+        return 'unknown.yaml'
+
     with patch('os.path.dirname') as mock_dirname, \
-            patch('os.path.realpath') as mock_realpath, \
-            patch('os.path.join') as mock_join, \
-            patch('os.path.exists', return_value=True), \
-            patch('os.walk', return_value=mock_walk_data), \
-            patch('os.path.relpath', side_effect=['terraform-module', 'docker-files', 'subdir/nested-struct']), \
-            patch('builtins.print') as mock_print:
+         patch('os.path.realpath') as mock_realpath, \
+         patch('os.path.join', side_effect=mock_join_side_effect), \
+         patch('os.path.exists', return_value=True), \
+         patch('os.walk', return_value=mock_walk_data), \
+         patch('os.path.relpath', side_effect=mock_relpath_side_effect), \
+         patch('builtins.print') as mock_print:
 
         mock_dirname.return_value = '/path/to/commands'
         mock_realpath.return_value = '/path/to/commands'
-        mock_join.return_value = '/path/to/contribs'
 
         command._generate_schema(args)
 
@@ -162,19 +180,39 @@ def test_generate_schema_file_output(parser):
 
     mock_file = MagicMock()
 
+    def mock_join_side_effect(*args):
+        if len(args) == 2 and args[0] == '/path/to/commands' and args[1] == '..':
+            return '/path/to'
+        elif len(args) == 3 and args[0] == '/path/to' and args[1] == '..' and args[2] == 'contribs':
+            return '/path/to/contribs'
+        elif len(args) == 2:
+            return '/'.join(args)
+        else:
+            return '/'.join(args)
+
+    def mock_relpath_side_effect(file_path, base_path):
+        if file_path == '/path/to/contribs/test-struct.yaml':
+            return 'test-struct.yaml'
+        return 'unknown.yaml'
+
+    def mock_exists_side_effect(path):
+        # Return False for output directory so makedirs gets called
+        if path == '/output':
+            return False
+        return True
+
     with patch('os.path.dirname') as mock_dirname, \
-            patch('os.path.realpath') as mock_realpath, \
-            patch('os.path.join') as mock_join, \
-            patch('os.path.exists', return_value=True), \
-            patch('os.walk', return_value=mock_walk_data), \
-            patch('os.path.relpath', return_value='test-struct'), \
-            patch('os.makedirs') as mock_makedirs, \
-            patch('builtins.open', return_value=mock_file) as mock_open, \
-            patch('builtins.print') as mock_print:
+         patch('os.path.realpath') as mock_realpath, \
+         patch('os.path.join', side_effect=mock_join_side_effect), \
+         patch('os.path.exists', side_effect=mock_exists_side_effect), \
+         patch('os.walk', return_value=mock_walk_data), \
+         patch('os.path.relpath', side_effect=mock_relpath_side_effect), \
+         patch('os.makedirs') as mock_makedirs, \
+         patch('builtins.open', return_value=mock_file) as mock_open, \
+         patch('builtins.print') as mock_print:
 
         mock_dirname.side_effect = ['/path/to/commands', '/output']
         mock_realpath.return_value = '/path/to/commands'
-        mock_join.return_value = '/path/to/contribs'
         mock_file.__enter__.return_value = mock_file
 
         command._generate_schema(args)
@@ -210,23 +248,33 @@ def test_generate_schema_with_custom_structures_path(parser):
         else:  # contribs path
             return [('/path/to/contribs', [], ['builtin-struct.yaml'])]
 
-    def mock_relpath_side_effect(file_path, base_path):
-        if 'custom-struct' in file_path:
-            return 'custom-struct'
+    def mock_join_side_effect(*args):
+        if len(args) == 2 and args[0] == '/path/to/commands' and args[1] == '..':
+            return '/path/to'
+        elif len(args) == 3 and args[0] == '/path/to' and args[1] == '..' and args[2] == 'contribs':
+            return '/path/to/contribs'
+        elif len(args) == 2:
+            return '/'.join(args)
         else:
-            return 'builtin-struct'
+            return '/'.join(args)
+
+    def mock_relpath_side_effect(file_path, base_path):
+        if file_path == '/custom/structures/custom-struct.yaml':
+            return 'custom-struct.yaml'
+        elif file_path == '/path/to/contribs/builtin-struct.yaml':
+            return 'builtin-struct.yaml'
+        return 'unknown.yaml'
 
     with patch('os.path.dirname') as mock_dirname, \
-            patch('os.path.realpath') as mock_realpath, \
-            patch('os.path.join') as mock_join, \
-            patch('os.path.exists', return_value=True), \
-            patch('os.walk', side_effect=mock_walk_side_effect), \
-            patch('os.path.relpath', side_effect=mock_relpath_side_effect), \
-            patch('builtins.print') as mock_print:
+         patch('os.path.realpath') as mock_realpath, \
+         patch('os.path.join', side_effect=mock_join_side_effect), \
+         patch('os.path.exists', return_value=True), \
+         patch('os.walk', side_effect=mock_walk_side_effect), \
+         patch('os.path.relpath', side_effect=mock_relpath_side_effect), \
+         patch('builtins.print') as mock_print:
 
         mock_dirname.return_value = '/path/to/commands'
         mock_realpath.return_value = '/path/to/commands'
-        mock_join.return_value = '/path/to/contribs'
 
         command._generate_schema(args)
 
@@ -315,20 +363,34 @@ def test_generate_schema_nonexistent_path(parser):
         else:  # contribs path
             return [('/path/to/contribs', [], ['builtin.yaml'])]
 
+    def mock_join_side_effect(*args):
+        if len(args) == 2 and args[0] == '/path/to/commands' and args[1] == '..':
+            return '/path/to'
+        elif len(args) == 3 and args[0] == '/path/to' and args[1] == '..' and args[2] == 'contribs':
+            return '/path/to/contribs'
+        elif len(args) == 2:
+            return '/'.join(args)
+        else:
+            return '/'.join(args)
+
     def mock_exists_side_effect(path):
         return '/nonexistent/path' not in path
 
+    def mock_relpath_side_effect(file_path, base_path):
+        if file_path == '/path/to/contribs/builtin.yaml':
+            return 'builtin.yaml'
+        return 'unknown.yaml'
+
     with patch('os.path.dirname') as mock_dirname, \
-            patch('os.path.realpath') as mock_realpath, \
-            patch('os.path.join') as mock_join, \
-            patch('os.path.exists', side_effect=mock_exists_side_effect), \
-            patch('os.walk', side_effect=mock_walk_side_effect), \
-            patch('os.path.relpath', return_value='builtin'), \
-            patch('builtins.print') as mock_print:
+         patch('os.path.realpath') as mock_realpath, \
+         patch('os.path.join', side_effect=mock_join_side_effect), \
+         patch('os.path.exists', side_effect=mock_exists_side_effect), \
+         patch('os.walk', side_effect=mock_walk_side_effect), \
+         patch('os.path.relpath', side_effect=mock_relpath_side_effect), \
+         patch('builtins.print') as mock_print:
 
         mock_dirname.return_value = '/path/to/commands'
         mock_realpath.return_value = '/path/to/commands'
-        mock_join.return_value = '/path/to/contribs'
 
         command._generate_schema(args)
 
