@@ -6,6 +6,7 @@ from struct_module.commands.generate import GenerateCommand
 from struct_module.commands.info import InfoCommand
 from struct_module.commands.validate import ValidateCommand
 from struct_module.commands.list import ListCommand
+from struct_module.commands.generate_schema import GenerateSchemaCommand
 from struct_module.logging_config import configure_logging
 
 
@@ -26,6 +27,7 @@ def main():
     ValidateCommand(subparsers.add_parser('validate', help='Validate the YAML configuration file'))
     GenerateCommand(subparsers.add_parser('generate', help='Generate the project structure'))
     ListCommand(subparsers.add_parser('list', help='List available structures'))
+    GenerateSchemaCommand(subparsers.add_parser('generate-schema', help='Generate JSON schema for available structures'))
 
     argcomplete.autocomplete(parser)
 
