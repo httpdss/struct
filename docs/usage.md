@@ -44,7 +44,7 @@ struct generate \
 - `--backup`: Specify backup directory for existing files
 - `--file-strategy`: Choose how to handle existing files (overwrite, skip, append, rename, backup)
 - `--log-file`: Write logs to specified file
-- `--mappings-file`: Provide external mappings file
+- `--mappings-file`: Provide external mappings file (can be used multiple times)
 
 ## Generate Schema Command
 
