@@ -10,6 +10,8 @@ When defining your project structure in the YAML configuration file, you can use
 - **content**: Define the content of the file directly in the YAML configuration.
 - **file**: Specify a local or remote file to include. Supported protocols include `file://`, `http://`, `https://`, `github://`, `githubhttps://`, `githubssh://`, `s3://`, and `gs://`.
 
+  > **Note**: For local `.yaml` files, the `file://` protocol is automatically added if not specified.
+
 Example:
 
 ```yaml

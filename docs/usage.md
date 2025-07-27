@@ -24,6 +24,16 @@ struct -h
 struct generate terraform-module ./my-terraform-module
 ```
 
+### YAML File Usage
+
+For local YAML configuration files, the `file://` protocol is automatically added:
+
+```sh
+# Both of these work identically
+struct generate my-config.yaml ./output
+struct generate file://my-config.yaml ./output
+```
+
 ### Complete Example
 
 ```sh

@@ -146,6 +146,8 @@ This approach allows you to pass specific mapping values as variables to nested 
 Use the `--mappings-file` argument with the `generate` command:
 
 ```sh
+# Both commands work identically - file:// is automatically added for .yaml files
+struct generate --mappings-file ./mymap.yaml my-struct.yaml .
 struct generate --mappings-file ./mymap.yaml file://my-struct.yaml .
 ```
 
@@ -157,7 +159,7 @@ You can specify multiple mappings files that will be merged in order:
 struct generate \
   --mappings-file ./common-mappings.yaml \
   --mappings-file ./env-specific-mappings.yaml \
-  file://my-struct.yaml .
+  my-struct.yaml .
 ```
 
 **Merging behavior:**
@@ -173,7 +175,7 @@ struct generate \
 struct generate \
   --mappings-file ./mappings/common.yaml \
   --mappings-file ./mappings/${ENVIRONMENT}.yaml \
-  file://infrastructure.yaml \
+  infrastructure.yaml \
   ./output
 ```
 

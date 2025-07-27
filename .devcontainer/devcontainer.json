@@ -2,7 +2,7 @@
   "name": "Struct devcontainer",
   "image": "mcr.microsoft.com/devcontainers/python:3",
   "features": {
-    "ghcr.io/devcontainers/features/python:1": {},
+    // "ghcr.io/devcontainers/features/python:1": {},
     "ghcr.io/gvatsal60/dev-container-features/pre-commit:1": {}
   },
   "postCreateCommand": "bash ./scripts/devcontainer_start.sh",
@@ -30,5 +30,9 @@
   "mounts": [
     "type=bind,source=${localWorkspaceFolder},target=/work",
     "type=bind,source=/home/${localEnv:USER}/.ssh,target=/home/vscode/.ssh"
-  ]
+  ],
+  // environment variables to be set in the container
+  "remoteEnv": {
+    "OPENAI_API_KEY": "set-key-here"
+  }
 }

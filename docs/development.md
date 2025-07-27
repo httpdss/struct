@@ -178,7 +178,7 @@ pytest tests/integration/
 ### Enable Debug Logging
 
 ```sh
-struct --log=DEBUG generate file://my-config.yaml ./output
+struct --log=DEBUG generate my-config.yaml ./output
 ```
 
 ### Use Python Debugger
