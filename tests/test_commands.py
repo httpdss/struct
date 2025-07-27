@@ -400,3 +400,122 @@ def test_generate_schema_nonexistent_path(parser):
         structures = schema['definitions']['PluginList']['enum']
         assert 'builtin' in structures
         assert len(structures) == 1
+
+def test_deep_merge_dicts():
+    """Test the _deep_merge_dicts functionality"""
+    parser = argparse.ArgumentParser()
+    command = GenerateCommand(parser)
+
+    dict1 = {
+        'a': 1,
+        'b': {
+            'c': 2,
+            'd': 3
+        },
+        'e': 4
+    }
+
+    dict2 = {
+        'b': {
+            'd': 30,
+            'f': 40
+        },
+        'g': 50
+    }
+
+    result = command._deep_merge_dicts(dict1, dict2)
+
+    expected = {
+        'a': 1,
+        'b': {
+            'c': 2,
+            'd': 30,  # overridden by dict2
+            'f': 40   # added from dict2
+        },
+        'e': 4,
+        'g': 50  # added from dict2
+    }
+
+    assert result == expected
+
+def test_multiple_mappings_files():
+    """Test loading and merging multiple mappings files"""
+    parser = argparse.ArgumentParser()
+    command = GenerateCommand(parser)
+
+    # Mock two mappings files
+    mappings1_content = {
+        'mappings': {
+            'teams': {
+                'devops': 'devops-team'
+            },
+            'environments': {
+                'dev': {
+                    'database_url': 'postgres://dev-db:5432'
+                }
+            }
+        }
+    }
+
+    mappings2_content = {
+        'mappings': {
+            'teams': {
+                'frontend': 'frontend-team'
+            },
+            'environments': {
+                'dev': {
+                    'debug': True
+                },
+                'prod': {
+                    'database_url': 'postgres://prod-db:5432'
+                }
+            }
+        }
+    }
+
+    with patch('os.path.exists', return_value=True), \
+         patch('builtins.open', new_callable=MagicMock) as mock_open, \
+         patch('yaml.safe_load', side_effect=[mappings1_content, mappings2_content]), \
+         patch.object(command, '_create_structure') as mock_create_structure:
+
+        # Create args with multiple mappings files
+        args = argparse.Namespace(
+            structure_definition='test.yaml',
+            base_path='/tmp/test',
+            mappings_file=['mappings1.yaml', 'mappings2.yaml'],
+            backup=None,
+            output='file'
+        )
+
+        # Mock config loading
+        with patch.object(command, '_load_yaml_config', return_value={'files': []}):
+            command.execute(args)
+
+        # Verify both files were attempted to be opened
+        assert mock_open.call_count == 2
+
+        # Verify _create_structure was called with merged mappings
+        mock_create_structure.assert_called_once()
+        call_args = mock_create_structure.call_args[0]
+        merged_mappings = call_args[1]  # Second argument is mappings
+
+        # Verify the mappings were merged correctly
+        expected_mappings = {
+            'mappings': {
+                'teams': {
+                    'devops': 'devops-team',
+                    'frontend': 'frontend-team'
+                },
+                'environments': {
+                    'dev': {
+                        'database_url': 'postgres://dev-db:5432',
+                        'debug': True
+                    },
+                    'prod': {
+                        'database_url': 'postgres://prod-db:5432'
+                    }
+                }
+            }
+        }
+
+        assert merged_mappings == expected_mappings

@@ -22,11 +22,23 @@ class GenerateCommand(Command):
     parser.add_argument('-f', '--file-strategy', type=str, choices=['overwrite', 'skip', 'append', 'rename', 'backup'], default='overwrite', help='Strategy for handling existing files').completer = file_strategy_completer
     parser.add_argument('-p', '--global-system-prompt', type=str, help='Global system prompt for OpenAI')
     parser.add_argument('--non-interactive', action='store_true', help='Run the command in non-interactive mode')
-    parser.add_argument('--mappings-file', type=str,
-                        help='Path to a YAML file containing mappings to be used in templates')
+    parser.add_argument('--mappings-file', type=str, action='append',
+                        help='Path to a YAML file containing mappings to be used in templates (can be specified multiple times)')
     parser.add_argument('-o', '--output', type=str,
                         choices=['console', 'file'], default='file', help='Output mode')
     parser.set_defaults(func=self.execute)
+
+  def _deep_merge_dicts(self, dict1, dict2):
+    """
+    Deep merge two dictionaries, with dict2 values overriding dict1 values.
+    """
+    result = dict1.copy()
+    for key, value in dict2.items():
+      if key in result and isinstance(result[key], dict) and isinstance(value, dict):
+        result[key] = self._deep_merge_dicts(result[key], value)
+      else:
+        result[key] = value
+    return result
 
   def _run_hooks(self, hooks, hook_type="pre"):  # helper for running hooks
     if not hooks:
@@ -75,14 +87,20 @@ class GenerateCommand(Command):
     # Load mappings if provided
     mappings = {}
     if getattr(args, 'mappings_file', None):
-      if os.path.exists(args.mappings_file):
-        with open(args.mappings_file, 'r') as mf:
-          try:
-            mappings = yaml.safe_load(mf) or {}
-          except Exception as e:
-            self.logger.error(f"Failed to load mappings file: {e}")
-      else:
-        self.logger.error(f"Mappings file not found: {args.mappings_file}")
+      for mappings_file_path in args.mappings_file:
+        if os.path.exists(mappings_file_path):
+          self.logger.info(f"Loading mappings from: {mappings_file_path}")
+          with open(mappings_file_path, 'r') as mf:
+            try:
+              file_mappings = yaml.safe_load(mf) or {}
+              # Deep merge the mappings, with later files overriding earlier ones
+              mappings = self._deep_merge_dicts(mappings, file_mappings)
+            except Exception as e:
+              self.logger.error(f"Failed to load mappings file {mappings_file_path}: {e}")
+              return
+        else:
+          self.logger.error(f"Mappings file not found: {mappings_file_path}")
+          return
 
     if args.backup and not os.path.exists(args.backup):
       os.makedirs(args.backup)

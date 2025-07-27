@@ -151,7 +151,7 @@ struct generate --mappings-file ./mymap.yaml file://my-struct.yaml .
 
 ### Multiple Mappings Files
 
-You can specify multiple mappings files that will be merged:
+You can specify multiple mappings files that will be merged in order:
 
 ```sh
 struct generate \
@@ -160,7 +160,22 @@ struct generate \
   file://my-struct.yaml .
 ```
 
-Later files override earlier ones for conflicting keys.
+**Merging behavior:**
+
+- Files are processed in the order specified
+- Later files override earlier ones for conflicting keys
+- Deep merging is performed for nested dictionaries
+- This enables clean separation of common vs environment-specific configuration
+
+**Example with environment variable:**
+
+```sh
+struct generate \
+  --mappings-file ./mappings/common.yaml \
+  --mappings-file ./mappings/${ENVIRONMENT}.yaml \
+  file://infrastructure.yaml \
+  ./output
+```
 
 ## Practical Examples
 
