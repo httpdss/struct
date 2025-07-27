@@ -62,6 +62,9 @@ class GenerateCommand(Command):
     return True
 
   def _load_yaml_config(self, structure_definition, structures_path):
+    if structure_definition.endswith(".yaml") and not structure_definition.startswith("file://"):
+      structure_definition = f"file://{structure_definition}"
+
     if structure_definition.startswith("file://") and structure_definition.endswith(".yaml"):
       with open(structure_definition[7:], 'r') as f:
         return yaml.safe_load(f)
