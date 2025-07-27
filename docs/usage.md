@@ -50,7 +50,7 @@ struct generate \
 
 The `generate-schema` command creates JSON schema definitions for available structure templates, making it easier for tools and IDEs to provide autocompletion and validation.
 
-### Basic Usage
+### Basic Usage of `generate-schema`
 
 ```sh
 # Generate schema to stdout
@@ -66,7 +66,7 @@ struct generate-schema -o schema.json
 struct generate-schema -s /path/to/custom/structures -o schema.json
 ```
 
-### Command Options
+### Command Options for `generate-schema`
 
 - `-s, --structures-path`: Path to additional structure definitions (optional)
 - `-o, --output`: Output file path for the schema (default: stdout)
@@ -94,5 +94,5 @@ struct list
 ### Show Information
 
 ```sh
-struct info
+struct info <structure_definition>
 ```

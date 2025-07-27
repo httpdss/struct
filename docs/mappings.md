@@ -146,7 +146,7 @@ This approach allows you to pass specific mapping values as variables to nested 
 Use the `--mappings-file` argument with the `generate` command:
 
 ```sh
-struct generate --mappings-file ./mymap.yaml my-struct.yaml .
+struct generate --mappings-file ./mymap.yaml file://my-struct.yaml .
 ```
 
 ### Multiple Mappings Files
@@ -157,7 +157,7 @@ You can specify multiple mappings files that will be merged:
 struct generate \
   --mappings-file ./common-mappings.yaml \
   --mappings-file ./env-specific-mappings.yaml \
-  my-struct.yaml .
+  file://my-struct.yaml .
 ```
 
 Later files override earlier ones for conflicting keys.
@@ -167,6 +167,7 @@ Later files override earlier ones for conflicting keys.
 ### Multi-Environment Deployment
 
 **mappings.yaml:**
+
 ```yaml
 mappings:
   environments:
@@ -188,6 +189,7 @@ mappings:
 ```
 
 **k8s-deployment.yaml template:**
+
 ```yaml
 files:
   - k8s/deployment.yaml:
@@ -222,6 +224,7 @@ variables:
 ### Team-Specific Configurations
 
 **teams.yaml:**
+
 ```yaml
 mappings:
   teams:
@@ -237,6 +240,7 @@ mappings:
 ```
 
 **Usage:**
+
 ```yaml
 folders:
   - ./services/api:
@@ -287,20 +291,5 @@ files:
   - config.yml:
       content: |
         # This provides a fallback value
-        value: {{@ mappings.get('nonexistent', {}).get('key', 'default_value') @}}
+        value: {{@ mappings.team.devops | default "no_team" @}}
 ```
-
-## Integration with CI/CD
-
-Mappings work well in automated environments:
-
-```sh
-# Different mappings for different environments
-struct generate \
-  --mappings-file ./mappings/common.yaml \
-  --mappings-file ./mappings/${ENVIRONMENT}.yaml \
-  ./infrastructure.yaml \
-  ./output
-```
-
-This allows you to maintain environment-specific configurations while sharing common data across deployments.

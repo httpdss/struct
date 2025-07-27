@@ -5,7 +5,8 @@ STRUCT provides JSON schema validation to ensure your YAML configuration files a
 ## Schema Location
 
 The official schema is available at:
-```
+
+```text
 https://raw.githubusercontent.com/httpdss/struct/main/struct-schema.json
 ```
 
@@ -68,6 +69,7 @@ files:
 ```
 
 **Properties:**
+
 - `content` (string): Inline file content
 - `permissions` (string): Octal permissions (e.g., "0755")
 - `skip` (boolean): Skip file creation
@@ -87,6 +89,7 @@ folders:
 ```
 
 **Properties:**
+
 - `struct` (string|array): Structure name(s) to apply
 - `with` (object): Variables to pass to the structure
 
@@ -103,6 +106,7 @@ variables:
 ```
 
 **Properties:**
+
 - `description` (string): Human-readable description
 - `type` (string): Variable type (string, integer, boolean)
 - `default` (any): Default value

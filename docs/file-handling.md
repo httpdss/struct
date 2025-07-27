@@ -64,9 +64,6 @@ Reference local or remote files:
 files:
   - LICENSE:
       file: https://raw.githubusercontent.com/nishanths/license/master/LICENSE
-
-  - local-config.json:
-      file: file:///path/to/local/config.json
 ```
 
 ## Remote File Protocols
@@ -141,13 +138,13 @@ Control how STRUCT handles existing files with the `--file-strategy` option:
 
 ```sh
 # Skip existing files
-struct generate --file-strategy=skip my-config.yaml ./output
+struct generate --file-strategy=skip file://my-config.yaml ./output
 
 # Backup existing files
-struct generate --file-strategy=backup --backup=/tmp/backup my-config.yaml ./output
+struct generate --file-strategy=backup --backup=/tmp/backup file://my-config.yaml ./output
 
 # Rename existing files
-struct generate --file-strategy=rename my-config.yaml ./output
+struct generate --file-strategy=rename file://my-config.yaml ./output
 ```
 
 ## Advanced Examples

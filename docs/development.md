@@ -132,7 +132,6 @@ class MyCommand(BaseCommand):
 New structure templates go in `struct_module/contribs/`. Each template should:
 
 - Have a clear directory structure
-- Include a `.struct.yaml` file
 - Provide good documentation
 - Include example usage
 
@@ -154,7 +153,6 @@ def test_my_feature():
 ### 4. Update Documentation
 
 - Add or update relevant documentation in `docs/`
-- Update the changelog
 - Add examples if applicable
 
 ## Testing
@@ -175,24 +173,12 @@ Run integration tests to verify end-to-end functionality:
 pytest tests/integration/
 ```
 
-### Testing with Docker
-
-Test the Docker image locally:
-
-```sh
-# Build the image
-docker build -t struct:dev .
-
-# Test basic functionality
-docker run --rm struct:dev --help
-```
-
 ## Debugging
 
 ### Enable Debug Logging
 
 ```sh
-struct --log=DEBUG generate my-config.yaml ./output
+struct --log=DEBUG generate file://my-config.yaml ./output
 ```
 
 ### Use Python Debugger
@@ -203,13 +189,9 @@ Add breakpoints in your code:
 import pdb; pdb.set_trace()
 ```
 
-## Release Process
-
-1. Update version in `setup.py`
-2. Update `CHANGELOG.md`
-3. Create a new tag: `git tag v1.0.0`
-4. Push changes: `git push origin main --tags`
-5. GitHub Actions will automatically build and publish
+```sh
+struct --log=DEBUG generate my-config.yaml ./output
+```
 
 ## Contributing Guidelines
 

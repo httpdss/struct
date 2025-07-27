@@ -113,7 +113,6 @@ Deep dive into STRUCT's templating system, covering advanced variable usage and 
 - **Cookiecutter**: Alternative project templating tool
 - **Yeoman**: JavaScript-focused scaffolding
 - **Copilot**: AI-powered code generation
-- **Terraform**: Infrastructure as code
 
 ## Community Resources
 
@@ -121,7 +120,6 @@ Deep dive into STRUCT's templating system, covering advanced variable usage and 
 
 - **GitHub Discussions**: Official community forum
 - **Stack Overflow**: Questions tagged with `struct-tool`
-- **Reddit**: `/r/devops` and `/r/python` communities
 
 ### Code Examples
 

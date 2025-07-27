@@ -75,35 +75,21 @@ python3 scripts/github-trigger.py my-org struct-enabled --dry-run --verbose
 
 ## Automating STRUCT
 
-Combine GitHub Actions with STRUCT to automate project structure generation in CI/CD pipelines. Trigger the process with a push or pull request event.
+Combine GitHub Actions with STRUCT to automate project structure generation in CI/CD pipelines. Trigger the process manually or automatically based on events like pull requests or pushes.
 
 Example Workflow:
 
 ```yaml
-name: Run Struct
+name: run-struct
 
 on:
-  push:
-    branches:
-      - main
+  workflow_dispatch:
 
 jobs:
-  run-struct:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
-
-      - name: Set up Python
-        uses: actions/setup-python@v2
-        with:
-          python-version: '3.x'
-
-      - name: Install STRUCT
-        run: pip install git+https://github.com/httpdss/struct.git
-
-      - name: Generate structure
-        run: struct generate my-structure.yaml ./output
+  generate:
+    uses: httpdss/struct/.github/workflows/struct-generate.yaml@main
+    secrets:
+      token: ${{ secrets.STRUCT_RUN_TOKEN }}
 ```
 
 ## Best Practices

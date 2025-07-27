@@ -2,7 +2,7 @@
 
 ## Quick Start Using Docker
 
-1. Create a YAML configuration file for your project structure. See sample configuration [here](../example/structure.yaml).
+1. Create a YAML configuration file for your project structure. [See sample configuration here](../example/structure.yaml).
 2. Run the following command to generate the project structure:
 
 ```sh
@@ -10,11 +10,20 @@ docker run \
   -v $(pwd):/workdir \
   -u $(id -u):$(id -g) \
   ghcr.io/httpdss/struct:main generate \
-  /workdir/example/structure.yaml \
+  file:///workdir/example/structure.yaml \
   /workdir/example_output
 ```
 
 ## Quick Start Using Docker Alpine
+
+```sh
+docker run \
+  -v $(pwd):/workdir \
+  -u $(id -u):$(id -g) \
+  ghcr.io/httpdss/struct:alpine generate \
+  file:///workdir/example/structure.yaml \
+  /workdir/example_output
+```
 
 For testing, you can run an alpine Docker container and install the script inside it:
 
@@ -31,7 +40,7 @@ mkdir example
 cd example/
 touch structure.yaml
 vim structure.yaml # copy the content from the example folder
-struct generate structure.yaml .
+struct generate file://structure.yaml .
 ```
 
 ## First Example
