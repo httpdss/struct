@@ -138,14 +138,16 @@ Control how STRUCT handles existing files with the `--file-strategy` option:
 
 ```sh
 # Skip existing files
-struct generate --file-strategy=skip file://my-config.yaml ./output
+struct generate --file-strategy=skip my-config.yaml ./output
 
 # Backup existing files
-struct generate --file-strategy=backup --backup=/tmp/backup file://my-config.yaml ./output
+struct generate --file-strategy=backup --backup=/tmp/backup my-config.yaml ./output
 
 # Rename existing files
-struct generate --file-strategy=rename file://my-config.yaml ./output
+struct generate --file-strategy=rename my-config.yaml ./output
 ```
+
+> **Note**: The `file://` protocol is automatically added for `.yaml` files, so these examples work with or without the explicit protocol.
 
 ## Advanced Examples
 

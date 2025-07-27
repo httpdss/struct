@@ -40,8 +40,10 @@ mkdir example
 cd example/
 touch structure.yaml
 vim structure.yaml # copy the content from the example folder
-struct generate file://structure.yaml .
+struct generate structure.yaml .
 ```
+
+> **Note**: The `file://` protocol is automatically added for `.yaml` files, so `structure.yaml` and `file://structure.yaml` work identically.
 
 ## First Example
 
