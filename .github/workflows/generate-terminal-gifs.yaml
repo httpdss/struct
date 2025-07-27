@@ -13,6 +13,13 @@ jobs:
       matrix:
         tapes:
           - 'docs/vhs/install.tape'
+          - 'docs/vhs/basic-usage.tape'
+          - 'docs/vhs/yaml-config.tape'
+          - 'docs/vhs/mappings-demo.tape'
+          - 'docs/vhs/multiple-mappings.tape'
+          - 'docs/vhs/advanced-features.tape'
+          - 'docs/vhs/remote-content.tape'
+          - 'docs/vhs/schema-generation.tape'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
