@@ -658,31 +658,33 @@ variables:
       {
         icon: 'fab fa-github',
         title: 'GitHub Repository',
-        description: 'Contribute to STRUCT, report issues, and collaborate with the community',
+        description:
+          'Contribute to STRUCT, report issues, and collaborate with the community',
         action: 'View on GitHub',
-        link: 'https://github.com/httpdss/struct'
+        link: 'https://github.com/httpdss/struct',
       },
       {
         icon: 'fas fa-comments',
         title: 'Discussions',
-        description: 'Ask questions, share ideas, and get help from other STRUCT users',
+        description:
+          'Ask questions, share ideas, and get help from other STRUCT users',
         action: 'Join Discussion',
-        link: 'https://github.com/httpdss/struct/discussions'
+        link: 'https://github.com/httpdss/struct/discussions',
       },
       {
         icon: 'fas fa-book',
         title: 'Documentation',
         description: 'Comprehensive guides, tutorials, and API documentation',
         action: 'Read Docs',
-        link: '/docs'
+        link: 'https://github.com/httpdss/struct/blob/main/docs/index.md',
       },
       {
         icon: 'fas fa-heart',
         title: 'Support Project',
         description: 'Help keep STRUCT development active and growing',
         action: 'Support Us',
-        link: 'https://patreon.com/structproject'
-      }
+        link: 'https://patreon.com/structproject',
+      },
     ];
 
     const communityGrid = document.querySelector('#community .community-grid');
