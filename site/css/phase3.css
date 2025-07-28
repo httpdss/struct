@@ -409,11 +409,17 @@
   cursor: pointer;
   transition: all 0.3s ease;
   position: relative;
+  user-select: none;
+}
+
+.wizard-option * {
+  pointer-events: none; /* Ensure clicks bubble up to the option */
 }
 
 .wizard-option:hover {
   border-color: var(--color-primary);
   background: rgba(0, 255, 136, 0.05);
+  transform: translateY(-2px);
 }
 
 .wizard-option.selected {

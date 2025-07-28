@@ -367,7 +367,7 @@ variables:
               <button class="wizard-btn wizard-btn-secondary" onclick="structPhase3.previousWizardStep()" ${index === 0 ? 'disabled' : ''}>
                 Previous
               </button>
-              <button class="wizard-btn" onclick="structPhase3.nextWizardStep()" ${index === wizardSteps.length - 1 ? 'style="display:none"' : ''}>
+              <button class="wizard-btn" onclick="structPhase3.nextWizardStep()" ${index === wizardSteps.length - 1 ? 'style="display:none"' : ''} ${!step.isResult ? 'disabled style="opacity: 0.5"' : ''}>
                 Next
               </button>
               ${index === wizardSteps.length - 1 ? `
@@ -403,22 +403,56 @@ variables:
 
   setupWizardNavigation() {
     document.addEventListener('click', (e) => {
-      if (e.target.matches('.wizard-option')) {
-        const panel = e.target.closest('.wizard-panel');
+      // Check if the clicked element is a wizard option or its child
+      const wizardOption = e.target.closest('.wizard-option');
+      if (wizardOption) {
+        const panel = wizardOption.closest('.wizard-panel');
+        if (!panel || !panel.classList.contains('active')) {
+          return; // Only handle clicks in the active panel
+        }
+
+        // Remove selection from all options in this panel
         panel.querySelectorAll('.wizard-option').forEach(opt => opt.classList.remove('selected'));
-        e.target.classList.add('selected');
+        wizardOption.classList.add('selected');
 
         const step = parseInt(panel.dataset.panel);
-        const value = e.target.dataset.value;
+        const value = wizardOption.dataset.value;
         this.wizardData[step] = value;
+
+        console.log(`Wizard step ${step} selected: ${value}`); // Debug log
+
+        // Remove any existing error when selection is made
+        const existingError = panel.querySelector('.wizard-error');
+        if (existingError) {
+          existingError.remove();
+        }
+
+        // Enable the Next button
+        const nextBtn = panel.querySelector('.wizard-btn:not(.wizard-btn-secondary)');
+        if (nextBtn && !nextBtn.textContent.includes('Download')) {
+          nextBtn.disabled = false;
+          nextBtn.style.opacity = '1';
+        }
       }
     });
   }
 
   nextWizardStep() {
+    // Validate that current step has a selection
+    if (!this.wizardData[this.currentWizardStep]) {
+      this.showWizardError('Please make a selection before continuing.');
+      return;
+    }
+
     if (this.currentWizardStep < 2) {
       this.currentWizardStep++;
       this.updateWizardStep();
+
+      // Debug: Log current step and check if panel exists
+      console.log(`Advanced to step ${this.currentWizardStep}`);
+      const activePanel = document.querySelector('.wizard-panel.active');
+      console.log('Active panel:', activePanel);
+      console.log('Wizard options in active panel:', activePanel ? activePanel.querySelectorAll('.wizard-option').length : 0);
 
       if (this.currentWizardStep === 2) {
         this.generateWizardResult();
@@ -431,6 +465,38 @@ variables:
       this.currentWizardStep--;
       this.updateWizardStep();
     }
+  }
+
+  showWizardError(message) {
+    // Remove any existing error
+    const existingError = document.querySelector('.wizard-error');
+    if (existingError) {
+      existingError.remove();
+    }
+
+    // Create and show error message
+    const activePanel = document.querySelector('.wizard-panel.active');
+    const errorDiv = document.createElement('div');
+    errorDiv.className = 'wizard-error';
+    errorDiv.style.cssText = `
+      background-color: var(--color-error);
+      color: white;
+      padding: var(--space-3);
+      border-radius: var(--radius-md);
+      margin: var(--space-4) 0;
+      font-size: var(--text-sm);
+    `;
+    errorDiv.textContent = message;
+
+    const actions = activePanel.querySelector('.wizard-actions');
+    actions.parentNode.insertBefore(errorDiv, actions);
+
+    // Auto-hide error after 3 seconds
+    setTimeout(() => {
+      if (errorDiv.parentNode) {
+        errorDiv.remove();
+      }
+    }, 3000);
   }
 
   updateWizardStep() {
@@ -453,6 +519,21 @@ variables:
       panel.classList.remove('active');
       if (index === this.currentWizardStep) {
         panel.classList.add('active');
+
+        // Update button states for the active panel
+        const nextBtn = panel.querySelector('.wizard-btn:not(.wizard-btn-secondary)');
+        const hasSelection = this.wizardData[index] !== undefined;
+
+        if (nextBtn && !nextBtn.textContent.includes('Download')) {
+          nextBtn.disabled = !hasSelection;
+          nextBtn.style.opacity = hasSelection ? '1' : '0.5';
+        }
+
+        // Update Previous button
+        const prevBtn = panel.querySelector('.wizard-btn-secondary');
+        if (prevBtn) {
+          prevBtn.disabled = index === 0;
+        }
       }
     });
   }
