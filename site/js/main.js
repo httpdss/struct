@@ -44,14 +44,20 @@ function initializeDemoCarousel() {
 
       // Remove active class from all tabs and contents
       demoTabs.forEach(t => t.classList.remove('active'));
-      demoContents.forEach(content => content.classList.remove('active'));
+      demoContents.forEach(content => {
+        content.classList.remove('active');
+        content.classList.remove('fade-in');
+      });
 
       // Add active class to clicked tab and corresponding content
       tab.classList.add('active');
       const targetContent = document.getElementById(targetDemo);
       if (targetContent) {
         targetContent.classList.add('active');
-        targetContent.classList.add('fade-in');
+        // Use setTimeout to ensure the display change happens first
+        setTimeout(() => {
+          targetContent.classList.add('fade-in');
+        }, 10);
       }
     });
   });

@@ -15,6 +15,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: var(--space-8); /* Add proper spacing between sections */
 }
 
 .navbar-brand {
@@ -24,12 +25,15 @@
   font-weight: 700;
   font-size: var(--text-xl);
   color: var(--color-primary);
+  flex-shrink: 0; /* Prevent logo from shrinking */
 }
 
 .navbar-nav {
   display: flex;
   gap: var(--space-6);
   list-style: none;
+  margin-left: auto; /* Push navigation to the right side */
+  margin-right: var(--space-4); /* Add space before search/theme toggle */
 }
 
 .navbar-nav a {
@@ -407,6 +411,15 @@
   text-align: center;
 }
 
+.demo-content-item {
+  display: none;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+.demo-content-item.active {
+  display: block;
+}
+
 .demo-video {
   max-width: 100%;
   border-radius: var(--radius-md);
@@ -545,5 +558,74 @@
   to {
     transform: translateY(0);
     opacity: 1;
+  }
+}
+
+/* Responsive Navigation */
+@media (max-width: 1024px) {
+  .navbar-content {
+    gap: var(--space-6); /* Reduce gap on tablets */
+  }
+
+  .navbar-nav {
+    gap: var(--space-4); /* Reduce menu item spacing */
+    margin-right: var(--space-3);
+  }
+}
+
+@media (max-width: 768px) {
+  .navbar {
+    padding: var(--space-3) 0; /* Reduce navbar height on mobile */
+  }
+
+  .navbar-content {
+    gap: var(--space-4); /* Further reduce gap on mobile */
+    flex-wrap: nowrap; /* Prevent wrapping */
+  }
+
+  .navbar-brand {
+    font-size: var(--text-lg); /* Slightly smaller logo text */
+    gap: var(--space-2);
+  }
+
+  .navbar-nav {
+    gap: var(--space-3); /* Tighter spacing on mobile */
+    margin-right: var(--space-2);
+  }
+
+  .navbar-nav a {
+    font-size: var(--text-sm); /* Smaller menu text */
+    padding: var(--space-2) 0; /* Add vertical padding for better touch targets */
+  }
+}
+
+@media (max-width: 640px) {
+  .navbar-content {
+    gap: var(--space-3);
+  }
+
+  .navbar-nav {
+    gap: var(--space-2);
+    margin-right: var(--space-1);
+  }
+
+  /* Hide some menu items on very small screens if needed */
+  .navbar-nav li:nth-child(n+4) {
+    display: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .navbar-brand {
+    font-size: var(--text-base);
+  }
+
+  .navbar-nav {
+    gap: var(--space-1);
+  }
+
+  /* Show only essential menu items */
+  .navbar-nav li:nth-child(n+3) {
+    display: none;
   }
 }

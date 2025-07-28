@@ -37,17 +37,75 @@
   <link rel="icon" type="image/svg+xml" href="/images/favicon.svg">
   <link rel="icon" type="image/png" href="/images/favicon.png">
 
+  <!-- PWA Manifest -->
+  <link rel="manifest" href="/manifest.json">
+
+  <!-- Additional Meta Tags -->
+  <meta name="author" content="httpdss">
+  <meta name="robots" content="index, follow">
+  <meta name="language" content="en">
+  <meta name="revisit-after" content="7 days">
+  <meta name="theme-color" content="#00ff88">
+
+  <!-- Canonical URL -->
+  <link rel="canonical" href="https://httpdss.github.io/struct/">
+
+  <!-- Preconnect for Performance -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://api.github.com">
+
   <!-- Stylesheets -->
   <link rel="stylesheet" href="css/main.css">
   <link rel="stylesheet" href="css/components.css">
   <link rel="stylesheet" href="css/animations.css">
+  <link rel="stylesheet" href="css/advanced.css">
+  <link rel="stylesheet" href="css/phase3.css">
 
   <!-- Font Awesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
-    }
+
+  <!-- Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "STRUCT",
+    "applicationCategory": "DeveloperApplication",
+    "applicationSubCategory": "Code Generator",
+    "description": "Powerful, flexible tool for automating project structure creation through YAML configurations. Generate consistent project layouts, boilerplate code, and configurations with template variables.",
+    "operatingSystem": "Cross-platform",
+    "programmingLanguage": "Python",
+    "downloadUrl": "https://github.com/httpdss/struct",
+    "codeRepository": "https://github.com/httpdss/struct",
+    "url": "https://httpdss.github.io/struct/",
+    "author": {
+      "@type": "Organization",
+      "name": "httpdss",
+      "url": "https://github.com/httpdss"
+    },
+    "license": "https://opensource.org/licenses/Apache-2.0",
+    "keywords": ["project structure", "automation", "YAML", "template", "boilerplate", "code generator"],
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD",
+      "availability": "https://schema.org/InStock"
+    },
+    "featureList": [
+      "YAML-Based Configuration",
+      "Template Variables with Jinja2",
+      "Remote Content Fetching",
+      "Smart File Handling",
+      "Automation Hooks",
+      "Dry Run Mode"
+    ]
+  }
+  </script>
+    <!-- }
 
     .container {
-      max-width: 800px;
+      max-width: 800px; -->
 </head>
 
 <body>
@@ -67,11 +125,20 @@
         <li><a href="#features">Features</a></li>
         <li><a href="#installation">Installation</a></li>
         <li><a href="#demos">Demos</a></li>
-        <li><a href="#docs">Documentation</a></li>
+        <li><a href="#quick-reference">Reference</a></li>
+        <li><a href="#community">Community</a></li>
         <li><a href="https://github.com/httpdss/struct" target="_blank">
-          <i class="fab fa-github"></i> GitHub
+          <i class="fab fa-github"></i>
         </a></li>
       </ul>
+      <!-- Search -->
+      <div class="search-container md:block hidden">
+        <div class="search-icon">
+          <i class="fas fa-search"></i>
+        </div>
+        <input type="text" id="search-input" class="search-input" placeholder="Search docs... (Ctrl+K)">
+        <div id="search-results" class="search-results hidden"></div>
+      </div>
     </div>
   </nav>
 
@@ -99,8 +166,8 @@
   <!-- GitHub Stats -->
   <section class="py-8">
     <div class="container">
-      <div class="github-stats">
-        <!-- Stats will be loaded by JavaScript -->
+      <div class="github-stats-advanced">
+        <!-- Advanced stats will be loaded by JavaScript -->
       </div>
     </div>
   </section>
@@ -323,7 +390,23 @@ struct validate my-project.yaml</code></pre>
     </div>
   </section>
 
-  <!-- Documentation Section -->
+  <!-- Project Showcase -->
+  <section class="py-20">
+    <div class="container">
+      <div class="project-showcase animate-on-scroll stagger-parent">
+        <!-- Showcase will be loaded by JavaScript -->
+      </div>
+    </div>
+  </section>
+
+  <!-- Contributors Section -->
+  <section class="py-20 bg-secondary">
+    <div class="container">
+      <div class="contributors-showcase animate-on-scroll">
+        <!-- Contributors will be loaded by JavaScript -->
+      </div>
+    </div>
+  </section>  <!-- Documentation Section -->
   <section id="docs" class="py-20">
     <div class="container">
       <h2 class="text-center mb-12">📚 Documentation</h2>
@@ -386,6 +469,91 @@ struct validate my-project.yaml</code></pre>
     </div>
   </section>
 
+  <!-- Phase 3: Advanced Features -->
+
+  <!-- Quick Reference Guide -->
+  <section id="quick-reference" class="quick-reference">
+    <div class="container">
+      <div class="quick-reference-header">
+        <h2 class="quick-reference-title">Quick Reference</h2>
+        <p class="section-subtitle">Essential STRUCT commands and configuration patterns at your fingertips</p>
+      </div>
+      <div class="reference-grid">
+        <!-- Content will be populated by JavaScript -->
+      </div>
+    </div>
+  </section>
+
+  <!-- API Documentation Preview -->
+  <section id="api-preview" class="api-preview">
+    <div class="container">
+      <div class="api-preview-header">
+        <h2 class="api-preview-title">API Reference</h2>
+        <p class="section-subtitle">Comprehensive documentation for all STRUCT features and commands</p>
+      </div>
+      <div class="api-content">
+        <!-- Content will be populated by JavaScript -->
+      </div>
+    </div>
+  </section>
+
+  <!-- Getting Started Wizard -->
+  <section id="wizard" class="getting-started-wizard">
+    <div class="container">
+      <div class="wizard-header">
+        <h2 class="wizard-title">Getting Started Wizard</h2>
+        <p class="section-subtitle">Generate your first STRUCT configuration in minutes</p>
+      </div>
+      <div class="wizard-container">
+        <div class="wizard-content">
+          <!-- Content will be populated by JavaScript -->
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Community & Social Proof -->
+  <section id="community" class="community">
+    <div class="container community-content">
+      <div class="community-header">
+        <h2 class="community-title">Join Our Community</h2>
+        <p class="community-subtitle">Connect with developers using STRUCT to build amazing projects</p>
+      </div>
+      <div class="community-grid">
+        <!-- Content will be populated by JavaScript -->
+      </div>
+    </div>
+  </section>
+
+  <!-- Testimonials -->
+  <section id="testimonials" class="testimonials">
+    <div class="container">
+      <div class="testimonials-header">
+        <h2 class="testimonials-title">What Developers Say</h2>
+        <p class="section-subtitle">Real feedback from teams using STRUCT in production</p>
+      </div>
+      <div class="testimonials-grid">
+        <!-- Content will be populated by JavaScript -->
+      </div>
+    </div>
+  </section>
+
+  <!-- Project Showcase -->
+  <section id="project-showcase" class="project-showcase">
+    <div class="container">
+      <div class="showcase-header">
+        <h2 class="showcase-title">Built with STRUCT</h2>
+        <p class="section-subtitle">Discover projects and templates created by the community</p>
+      </div>
+      <div class="showcase-filters">
+        <!-- Content will be populated by JavaScript -->
+      </div>
+      <div class="showcase-grid">
+        <!-- Content will be populated by JavaScript -->
+      </div>
+    </div>
+  </section>
+
   <!-- Footer -->
   <footer class="footer">
     <div class="container">
@@ -426,6 +594,11 @@ struct validate my-project.yaml</code></pre>
 
   <!-- Scripts -->
   <script src="js/main.js"></script>
+  <script src="js/advanced.js"></script>
+  <script src="js/phase3.js"></script>
+  <script src="js/search.js"></script>
+  <script src="js/analytics.js"></script>
+  <script src="js/theme.js"></script>
 </body>
 
 </html>
