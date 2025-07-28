@@ -12,109 +12,100 @@
           'https://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
     })(window, document, 'script', 'dataLayer', 'GTM-M4X52F2D');</script>
   <!-- End Google Tag Manager -->
+
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>STRUCT - Automated Project Structure Generator</title>
+  <meta name="description" content="Powerful, flexible tool for automating project structure creation through YAML configurations. Generate consistent project layouts with template variables and remote content fetching.">
+  <meta name="keywords" content="project structure, automation, YAML, template, boilerplate, code generator, infrastructure">
+
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://struct.httpdss.com">
+  <meta property="og:title" content="STRUCT - Automated Project Structure Generator">
+  <meta property="og:description" content="Powerful, flexible tool for automating project structure creation through YAML configurations.">
+  <meta property="og:image" content="https://struct.httpdss.com/images/struct-banner.png">
+
+  <!-- Twitter -->
+  <meta property="twitter:card" content="summary_large_image">
+  <meta property="twitter:url" content="https://struct.httpdss.com">
+  <meta property="twitter:title" content="STRUCT - Automated Project Structure Generator">
+  <meta property="twitter:description" content="Powerful, flexible tool for automating project structure creation through YAML configurations.">
+  <meta property="twitter:image" content="https://struct.httpdss.com/images/struct-banner.png">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="/images/favicon.svg">
+  <link rel="icon" type="image/png" href="/images/favicon.png">
+
+  <!-- PWA Manifest -->
+  <link rel="manifest" href="/manifest.json">
+
+  <!-- Additional Meta Tags -->
+  <meta name="author" content="httpdss">
+  <meta name="robots" content="index, follow">
+  <meta name="language" content="en">
+  <meta name="revisit-after" content="7 days">
+  <meta name="theme-color" content="#00ff88">
+
+  <!-- Canonical URL -->
+  <link rel="canonical" href="https://httpdss.github.io/struct/">
+
+  <!-- Preconnect for Performance -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://api.github.com">
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/animations.css">
+  <link rel="stylesheet" href="css/advanced.css">
+  <link rel="stylesheet" href="css/phase3.css">
 
   <!-- Font Awesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
-  <style>
-    /* Reset and base styles */
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
 
-    body {
-      background-color: #121212;
-      color: #e0e0e0;
-      font-family: Arial, sans-serif;
-      line-height: 1.6;
-      padding: 20px;
-    }
-
-    header {
-      text-align: center;
-      padding: 40px 0;
-    }
-
-    header h1 {
-      font-size: 3em;
-      margin-bottom: 10px;
-      color: #ffffff;
-    }
-
-    header p {
-      font-size: 1.2em;
-      color: #bbbbbb;
-    }
+  <!-- Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "STRUCT",
+    "applicationCategory": "DeveloperApplication",
+    "applicationSubCategory": "Code Generator",
+    "description": "Powerful, flexible tool for automating project structure creation through YAML configurations. Generate consistent project layouts, boilerplate code, and configurations with template variables.",
+    "operatingSystem": "Cross-platform",
+    "programmingLanguage": "Python",
+    "downloadUrl": "https://github.com/httpdss/struct",
+    "codeRepository": "https://github.com/httpdss/struct",
+    "url": "https://httpdss.github.io/struct/",
+    "author": {
+      "@type": "Organization",
+      "name": "httpdss",
+      "url": "https://github.com/httpdss"
+    },
+    "license": "https://opensource.org/licenses/Apache-2.0",
+    "keywords": ["project structure", "automation", "YAML", "template", "boilerplate", "code generator"],
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD",
+      "availability": "https://schema.org/InStock"
+    },
+    "featureList": [
+      "YAML-Based Configuration",
+      "Template Variables with Jinja2",
+      "Remote Content Fetching",
+      "Smart File Handling",
+      "Automation Hooks",
+      "Dry Run Mode"
+    ]
+  }
+  </script>
+    <!-- }
 
     .container {
-      max-width: 800px;
-      margin: 0 auto;
-      text-align: center;
-    }
-
-    section {
-      margin: 40px 0;
-    }
-
-    section h2 {
-      font-size: 2em;
-      margin-bottom: 20px;
-      color: #ffffff;
-    }
-
-    ul {
-      list-style: none;
-      padding: 0;
-      text-align: left;
-    }
-
-    ul li {
-      background: #1e1e1e;
-      margin: 10px 0;
-      padding: 15px;
-      border-radius: 5px;
-    }
-
-    .btn {
-      display: inline-block;
-      padding: 15px 30px;
-      margin: 20px 10px;
-      font-size: 1em;
-      font-weight: bold;
-      text-decoration: none;
-      border-radius: 5px;
-      transition: background-color 0.3s ease;
-    }
-
-    .btn-github {
-      background-color: #24292e;
-      color: #ffffff;
-    }
-
-    .btn-github:hover {
-      background-color: #444c56;
-    }
-
-    .btn-paypal {
-      background-color: #ffc439;
-      color: #000000;
-    }
-
-    .btn-paypal:hover {
-      background-color: #ffb347;
-    }
-
-    footer {
-      margin-top: 40px;
-      text-align: center;
-      font-size: 0.9em;
-      color: #777777;
-    }
-  </style>
+      max-width: 800px; -->
 </head>
 
 <body>
@@ -122,44 +113,491 @@
   <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-M4X52F2D" height="0" width="0"
       style="display:none;visibility:hidden"></iframe></noscript>
   <!-- End Google Tag Manager (noscript) -->
-  <header>
-    <h1>STRUCT</h1>
-    <p>Automated Project Structure Generator</p>
-  </header>
-  <div class="container">
-    <p>
-      Welcome to the official website of STRUCT. Generate your project structures effortlessly using YAML
-      configurations.
-    </p>
 
-    <section id="features">
-      <h2>Features</h2>
-      <ul>
-        <li><strong>YAML Configuration:</strong> Define your project structure in a simple YAML file.</li>
-        <li><strong>Template Variables:</strong> Use placeholders and custom filters for dynamic content.</li>
-        <li><strong>Custom File Permissions:</strong> Set permissions directly from the YAML configuration.</li>
-        <li><strong>Remote Content Fetching:</strong> Include content from remote sources effortlessly.</li>
-        <li><strong>File Handling Strategies:</strong> Choose from overwrite, skip, append, rename, or backup options.
-        </li>
-        <li><strong>Dry Run:</strong> Preview actions without making changes.</li>
-        <li><strong>Configuration Validation:</strong> Validate your YAML file before execution.</li>
-        <li><strong>Verbose Logging:</strong> Access detailed logs for debugging and monitoring.</li>
+  <!-- Navigation -->
+  <nav class="navbar">
+    <div class="container navbar-content">
+      <div class="navbar-brand">
+        STRUCT
+      </div>
+      <ul class="navbar-nav">
+        <li><a href="#features">Features</a></li>
+        <li><a href="#installation">Installation</a></li>
+        <li><a href="#demos">Demos</a></li>
+        <li><a href="#quick-reference">Reference</a></li>
+        <li><a href="#community">Community</a></li>
+        <li><a href="https://github.com/httpdss/struct" target="_blank">
+          <i class="fab fa-github"></i>
+        </a></li>
       </ul>
-    </section>
-
-    <div>
-      <a class="btn btn-github" href="https://github.com/httpdss/struct" target="_blank">
-        <i class="fab fa-github"></i> Visit GitHub Repository
-      </a>
-
-      <a class="btn btn-paypal" href="https://www.paypal.me/httpdss" target="_blank">
-        <i class="fab fa-paypal"></i> Donate via PayPal
-      </a>
+      <!-- Search -->
+      <div class="search-container md:block hidden">
+        <div class="search-icon">
+          <i class="fas fa-search"></i>
+        </div>
+        <input type="text" id="search-input" class="search-input" placeholder="Search docs... (Ctrl+K)">
+        <div id="search-results" class="search-results hidden"></div>
+      </div>
     </div>
-  </div>
-  <footer>
-    <p>&copy; 2025 STRUCT. All rights reserved.</p>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="container hero-content">
+      <h1 class="hero-title">STRUCT</h1>
+      <p class="hero-subtitle">
+        Powerful, flexible tool for automating project structure creation through YAML configurations.
+        Generate consistent project layouts, boilerplate code, and configurations with template variables.
+      </p>
+      <div class="hero-actions">
+        <a href="#installation" class="btn btn-primary btn-lg">
+          <i class="fas fa-download"></i>
+          Get Started
+        </a>
+        <a href="https://github.com/httpdss/struct" target="_blank" class="btn btn-secondary btn-lg">
+          <i class="fab fa-github"></i>
+          View on GitHub
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- GitHub Stats -->
+  <section class="py-8">
+    <div class="container">
+      <div class="github-stats-advanced">
+        <!-- Advanced stats will be loaded by JavaScript -->
+      </div>
+    </div>
+  </section>
+
+  <!-- Features Section -->
+  <section id="features" class="py-20">
+    <div class="container">
+      <h2 class="text-center mb-12">✨ Key Features</h2>
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon">📝</div>
+          <h3 class="feature-title">YAML-Based Configuration</h3>
+          <p class="feature-description">
+            Define project structures in simple, readable YAML files with intuitive syntax and validation.
+          </p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🔧</div>
+          <h3 class="feature-title">Template Variables</h3>
+          <p class="feature-description">
+            Dynamic content with Jinja2 templating, interactive prompts, and custom filters for flexibility.
+          </p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🌐</div>
+          <h3 class="feature-title">Remote Content</h3>
+          <p class="feature-description">
+            Fetch files from GitHub, HTTP/HTTPS, S3, and Google Cloud Storage with automatic content handling.
+          </p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🛡️</div>
+          <h3 class="feature-title">Smart File Handling</h3>
+          <p class="feature-description">
+            Multiple strategies for managing existing files: overwrite, skip, backup, append, and more.
+          </p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🪝</div>
+          <h3 class="feature-title">Automation Hooks</h3>
+          <p class="feature-description">
+            Pre and post-generation shell commands for complete workflow automation and integration.
+          </p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🎯</div>
+          <h3 class="feature-title">Dry Run Mode</h3>
+          <p class="feature-description">
+            Preview changes before applying them with detailed output and validation checks.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Installation Section -->
+  <section id="installation" class="py-20 bg-secondary">
+    <div class="container">
+      <h2 class="text-center mb-12">🚀 Quick Installation</h2>
+      <div class="installation-tabs">
+        <div class="tab-buttons">
+          <button class="tab-button active" data-tab="pip-install">pip install</button>
+          <button class="tab-button" data-tab="docker-install">Docker</button>
+          <button class="tab-button" data-tab="source-install">From Source</button>
+        </div>
+        <div class="tab-content">
+          <div id="pip-install" class="tab-pane active">
+            <h3 class="mb-4">Install via pip</h3>
+            <div class="code-block">
+              <button class="copy-button">Copy</button>
+              <pre><code># Install from GitHub
+pip install git+https://github.com/httpdss/struct.git
+
+# Verify installation
+struct --version</code></pre>
+            </div>
+            <p class="text-secondary mt-4">
+              Requires Python 3.8+ and pip. This is the recommended installation method for most users.
+            </p>
+          </div>
+          <div id="docker-install" class="tab-pane">
+            <h3 class="mb-4">Run with Docker</h3>
+            <div class="code-block">
+              <button class="copy-button">Copy</button>
+              <pre><code># Pull and run with Docker
+docker run -v $(pwd):/workdir ghcr.io/httpdss/struct:main generate my-config.yaml ./output
+
+# Create an alias for easier usage
+alias struct='docker run -v $(pwd):/workdir ghcr.io/httpdss/struct:main'</code></pre>
+            </div>
+            <p class="text-secondary mt-4">
+              Perfect for CI/CD environments and when you don't want to install Python locally.
+            </p>
+          </div>
+          <div id="source-install" class="tab-pane">
+            <h3 class="mb-4">Install from Source</h3>
+            <div class="code-block">
+              <button class="copy-button">Copy</button>
+              <pre><code># Clone the repository
+git clone https://github.com/httpdss/struct.git
+cd struct
+
+# Install in development mode
+pip install -e .
+
+# Run tests
+python -m pytest tests/</code></pre>
+            </div>
+            <p class="text-secondary mt-4">
+              For contributors and users who want the latest development features.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Demo Section -->
+  <section id="demos" class="py-20">
+    <div class="container">
+      <h2 class="text-center mb-12">🎬 Interactive Demos</h2>
+      <div class="demo-carousel">
+        <div class="demo-tabs">
+          <button class="demo-tab active" data-demo="basic-usage">Basic Usage</button>
+          <button class="demo-tab" data-demo="yaml-config">YAML Config</button>
+          <button class="demo-tab" data-demo="mappings">Mappings</button>
+          <button class="demo-tab" data-demo="remote-content">Remote Content</button>
+          <button class="demo-tab" data-demo="advanced">Advanced Features</button>
+        </div>
+        <div class="demo-content">
+          <div id="basic-usage" class="demo-content-item active">
+            <h3 class="mb-4">Basic Project Generation</h3>
+            <img src="demos/basic-usage.gif" alt="Basic Usage Demo" class="demo-video" loading="lazy">
+            <p class="text-secondary">
+              See how easy it is to generate a complete project structure with a simple YAML configuration.
+            </p>
+          </div>
+          <div id="yaml-config" class="demo-content-item">
+            <h3 class="mb-4">YAML Configuration</h3>
+            <img src="demos/yaml-config.gif" alt="YAML Configuration Demo" class="demo-video" loading="lazy">
+            <p class="text-secondary">
+              Learn how to write effective YAML configurations with variables and templates.
+            </p>
+          </div>
+          <div id="mappings" class="demo-content-item">
+            <h3 class="mb-4">External Mappings</h3>
+            <img src="demos/mappings-demo.gif" alt="Mappings Demo" class="demo-video" loading="lazy">
+            <p class="text-secondary">
+              Discover how to use external data mappings for dynamic project generation.
+            </p>
+          </div>
+          <div id="remote-content" class="demo-content-item">
+            <h3 class="mb-4">Remote Content Fetching</h3>
+            <img src="demos/remote-content.gif" alt="Remote Content Demo" class="demo-video" loading="lazy">
+            <p class="text-secondary">
+              See how to fetch templates and content from GitHub, HTTP URLs, and cloud storage.
+            </p>
+          </div>
+          <div id="advanced" class="demo-content-item">
+            <h3 class="mb-4">Advanced Features</h3>
+            <img src="demos/advanced-features.gif" alt="Advanced Features Demo" class="demo-video" loading="lazy">
+            <p class="text-secondary">
+              Explore hooks, validation, dry-run mode, and other advanced capabilities.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Quick Start Section -->
+  <section class="py-20 bg-secondary">
+    <div class="container">
+      <h2 class="text-center mb-12">⚡ Quick Start</h2>
+      <div class="grid md:grid-cols-2 gap-8">
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">1. Create Configuration</h3>
+          </div>
+          <div class="card-content">
+            <div class="code-block">
+              <button class="copy-button">Copy</button>
+              <pre><code># my-project.yaml
+files:
+  - README.md:
+      content: |
+        # {{@ project_name @}}
+        Generated with STRUCT
+
+folders:
+  - src/:
+      struct: project/python
+
+variables:
+  - project_name:
+      description: "Project name"
+      type: string</code></pre>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">2. Generate Project</h3>
+          </div>
+          <div class="card-content">
+            <div class="code-block">
+              <button class="copy-button">Copy</button>
+              <pre><code># Generate structure
+struct generate my-project.yaml ./my-app
+
+# List available structures
+struct list
+
+# Validate configuration
+struct validate my-project.yaml</code></pre>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Project Showcase -->
+  <section class="py-20">
+    <div class="container">
+      <div class="project-showcase animate-on-scroll stagger-parent">
+        <!-- Showcase will be loaded by JavaScript -->
+      </div>
+    </div>
+  </section>
+
+  <!-- Contributors Section -->
+  <section class="py-20 bg-secondary">
+    <div class="container">
+      <div class="contributors-showcase animate-on-scroll">
+        <!-- Contributors will be loaded by JavaScript -->
+      </div>
+    </div>
+  </section>  <!-- Documentation Section -->
+  <section id="docs" class="py-20">
+    <div class="container">
+      <h2 class="text-center mb-12">📚 Documentation</h2>
+      <div class="grid md:grid-cols-3 gap-6">
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">
+              <i class="fas fa-rocket text-primary"></i>
+              Getting Started
+            </h3>
+          </div>
+          <div class="card-content">
+            <p class="card-description">
+              Installation guides, quick start tutorials, and basic usage examples to get you up and running.
+            </p>
+          </div>
+          <div class="card-footer">
+            <a href="https://github.com/httpdss/struct/blob/main/docs/quickstart.md" class="btn btn-ghost" target="_blank">
+              Read Guide →
+            </a>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">
+              <i class="fas fa-cogs text-primary"></i>
+              Configuration
+            </h3>
+          </div>
+          <div class="card-content">
+            <p class="card-description">
+              Complete YAML configuration reference, template variables, and file handling strategies.
+            </p>
+          </div>
+          <div class="card-footer">
+            <a href="https://github.com/httpdss/struct/blob/main/docs/configuration.md" class="btn btn-ghost" target="_blank">
+              View Reference →
+            </a>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">
+              <i class="fas fa-code text-primary"></i>
+              Examples
+            </h3>
+          </div>
+          <div class="card-content">
+            <p class="card-description">
+              Real-world examples, templates, and practical use cases for various project types.
+            </p>
+          </div>
+          <div class="card-footer">
+            <a href="https://github.com/httpdss/struct/tree/main/example" class="btn btn-ghost" target="_blank">
+              Browse Examples →
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Phase 3: Advanced Features -->
+
+  <!-- Quick Reference Guide -->
+  <section id="quick-reference" class="quick-reference">
+    <div class="container">
+      <div class="quick-reference-header">
+        <h2 class="quick-reference-title">Quick Reference</h2>
+        <p class="section-subtitle">Essential STRUCT commands and configuration patterns at your fingertips</p>
+      </div>
+      <div class="reference-grid">
+        <!-- Content will be populated by JavaScript -->
+      </div>
+    </div>
+  </section>
+
+  <!-- API Documentation Preview -->
+  <section id="api-preview" class="api-preview">
+    <div class="container">
+      <div class="api-preview-header">
+        <h2 class="api-preview-title">API Reference</h2>
+        <p class="section-subtitle">Comprehensive documentation for all STRUCT features and commands</p>
+      </div>
+      <div class="api-content">
+        <!-- Content will be populated by JavaScript -->
+      </div>
+    </div>
+  </section>
+
+  <!-- Getting Started Wizard -->
+  <section id="wizard" class="getting-started-wizard">
+    <div class="container">
+      <div class="wizard-header">
+        <h2 class="wizard-title">Getting Started Wizard</h2>
+        <p class="section-subtitle">Generate your first STRUCT configuration in minutes</p>
+      </div>
+      <div class="wizard-container">
+        <div class="wizard-content">
+          <!-- Content will be populated by JavaScript -->
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Community & Social Proof -->
+  <section id="community" class="community">
+    <div class="container community-content">
+      <div class="community-header">
+        <h2 class="community-title">Join Our Community</h2>
+        <p class="community-subtitle">Connect with developers using STRUCT to build amazing projects</p>
+      </div>
+      <div class="community-grid">
+        <!-- Content will be populated by JavaScript -->
+      </div>
+    </div>
+  </section>
+
+  <!-- Testimonials -->
+  <section id="testimonials" class="testimonials">
+    <div class="container">
+      <div class="testimonials-header">
+        <h2 class="testimonials-title">What Developers Say</h2>
+        <p class="section-subtitle">Real feedback from teams using STRUCT in production</p>
+      </div>
+      <div class="testimonials-grid">
+        <!-- Content will be populated by JavaScript -->
+      </div>
+    </div>
+  </section>
+
+  <!-- Project Showcase -->
+  <section id="project-showcase" class="project-showcase">
+    <div class="container">
+      <div class="showcase-header">
+        <h2 class="showcase-title">Built with STRUCT</h2>
+        <p class="section-subtitle">Discover projects and templates created by the community</p>
+      </div>
+      <div class="showcase-filters">
+        <!-- Content will be populated by JavaScript -->
+      </div>
+      <div class="showcase-grid">
+        <!-- Content will be populated by JavaScript -->
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-section">
+          <h3>Resources</h3>
+          <ul>
+            <li><a href="https://github.com/httpdss/struct/blob/main/docs/index.md" target="_blank">Documentation</a></li>
+            <li><a href="https://github.com/httpdss/struct/tree/main/example" target="_blank">Examples</a></li>
+            <li><a href="https://github.com/httpdss/struct/blob/main/docs/articles.md" target="_blank">Tutorials</a></li>
+            <li><a href="https://github.com/httpdss/struct/releases" target="_blank">Releases</a></li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h3>Community</h3>
+          <ul>
+            <li><a href="https://github.com/httpdss/struct" target="_blank">GitHub Repository</a></li>
+            <li><a href="https://github.com/httpdss/struct/discussions" target="_blank">Discussions</a></li>
+            <li><a href="https://github.com/httpdss/struct/issues" target="_blank">Issues</a></li>
+            <li><a href="https://github.com/httpdss/struct/blob/main/docs/contributing.md" target="_blank">Contributing</a></li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h3>Support</h3>
+          <ul>
+            <li><a href="https://patreon.com/structproject" target="_blank">Patreon</a></li>
+            <li><a href="https://www.paypal.me/httpdss" target="_blank">PayPal</a></li>
+            <li><a href="https://github.com/httpdss/struct/blob/main/docs/funding.md" target="_blank">Funding</a></li>
+            <li><a href="mailto:contact@httpdss.com">Contact</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2025 STRUCT Project. Released under MIT License.</p>
+      </div>
+    </div>
   </footer>
+
+  <!-- Scripts -->
+  <script src="js/main.js"></script>
+  <script src="js/advanced.js"></script>
+  <script src="js/phase3.js"></script>
+  <script src="js/search.js"></script>
+  <script src="js/analytics.js"></script>
+  <script src="js/theme.js"></script>
 </body>
 
 </html>

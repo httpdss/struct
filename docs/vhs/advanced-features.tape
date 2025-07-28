@@ -3,36 +3,58 @@ Output docs/vhs/advanced-features.gif
 Set Theme "Monokai Vivid"
 Set FontSize 14
 Set TypingSpeed 40ms
-Set WindowBar Colorful
-Set BorderRadius 8
-Set Margin 0
-Set Padding 10
 Set Width 1400
 Set Height 800
 Set Shell "bash"
 
-Type "# Create a test structure" Enter
-Type "mkdir -p existing-project && echo 'old content' > existing-project/README.md" Enter
-Sleep 1
-Type "" Enter
-Type "# Use dry-run to preview changes" Enter
-Type "struct generate --dry-run terraform/module ./existing-project" Enter
-Sleep 5
-Type "" Enter
-Type "# Validate a YAML configuration" Enter
-Type "cat > test-config.yaml << 'EOF'" Enter
-Type "files:" Enter
-Type "  - test.txt:" Enter
-Type "      content: 'Hello World'" Enter
-Type "EOF" Enter
-Sleep 2
-Type "struct validate test-config.yaml" Enter
-Sleep 3
-Type "" Enter
-Type "# Generate with backup strategy" Enter
-Type "struct generate --file-strategy=backup --backup=./backups terraform/module ./existing-project" Enter
-Sleep 5
-Type "" Enter
-Type "# Check backup was created" Enter
-Type "ls -la backups/ && echo && echo 'New content:' && head existing-project/README.md" Enter
-Sleep 3
+Type "# STRUCT Advanced Features Demo"
+Enter
+Sleep 1s
+
+Type "# Generate schema for VSCode autocompletion"
+Enter
+Type "mkdir -p .vscode"
+Enter
+Type "struct generate-schema --output .vscode/struct-schema.json"
+Enter
+Sleep 2s
+
+Type "# Show the generated schema"
+Enter
+Type "cat .vscode/struct-schema.json"
+Enter
+Sleep 3s
+
+Type "# Create config with remote content"
+Enter
+Type "cat > remote-demo.yaml << EOF"
+Enter
+Type "files:"
+Enter
+Type "  - LICENSE:"
+Enter
+Type "      file: https://raw.githubusercontent.com/licenses/license-templates/master/templates/mit.txt"
+Enter
+Type "  - .gitignore:"
+Enter
+Type "      file: https://raw.githubusercontent.com/github/gitignore/refs/heads/main/Python.gitignore"
+Enter
+Type "EOF"
+Enter
+Sleep 2s
+
+Type "# Generate with remote content"
+Enter
+Type "struct generate remote-demo.yaml ./remote-project"
+Enter
+Sleep 3s
+
+Type "# Check what was downloaded"
+Enter
+Type "ls -la remote-project/"
+Enter
+Sleep 2s
+
+Type "# Advanced features make STRUCT incredibly powerful!"
+Enter
+Sleep 2s

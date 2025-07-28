@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+
+  <!-- Main Page -->
+  <url>
+    <loc>https://httpdss.github.io/struct/</loc>
+    <lastmod>2025-07-28</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+
+    <!-- Demo Images -->
+    <image:image>
+      <image:loc>https://httpdss.github.io/struct/demos/basic-usage.gif</image:loc>
+      <image:caption>STRUCT Basic Usage Demo</image:caption>
+      <image:title>Basic Project Generation with STRUCT</image:title>
+    </image:image>
+
+    <image:image>
+      <image:loc>https://httpdss.github.io/struct/demos/yaml-config.gif</image:loc>
+      <image:caption>STRUCT YAML Configuration Demo</image:caption>
+      <image:title>YAML Configuration Creation</image:title>
+    </image:image>
+
+    <image:image>
+      <image:loc>https://httpdss.github.io/struct/demos/mappings-demo.gif</image:loc>
+      <image:caption>STRUCT Mappings Demo</image:caption>
+      <image:title>External Mappings Usage</image:title>
+    </image:image>
+
+    <image:image>
+      <image:loc>https://httpdss.github.io/struct/demos/remote-content.gif</image:loc>
+      <image:caption>STRUCT Remote Content Demo</image:caption>
+      <image:title>Remote Content Fetching</image:title>
+    </image:image>
+
+    <image:image>
+      <image:loc>https://httpdss.github.io/struct/demos/advanced-features.gif</image:loc>
+      <image:caption>STRUCT Advanced Features Demo</image:caption>
+      <image:title>Advanced Features and Hooks</image:title>
+    </image:image>
+  </url>
+
+  <!-- GitHub Repository (external) -->
+  <url>
+    <loc>https://github.com/httpdss/struct</loc>
+    <lastmod>2025-07-28</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <!-- Documentation (external) -->
+  <url>
+    <loc>https://github.com/httpdss/struct/blob/main/docs/index.md</loc>
+    <lastmod>2025-07-28</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- Installation Guide (external) -->
+  <url>
+    <loc>https://github.com/httpdss/struct/blob/main/docs/installation.md</loc>
+    <lastmod>2025-07-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- Quick Start Guide (external) -->
+  <url>
+    <loc>https://github.com/httpdss/struct/blob/main/docs/quickstart.md</loc>
+    <lastmod>2025-07-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- Examples (external) -->
+  <url>
+    <loc>https://github.com/httpdss/struct/tree/main/example</loc>
+    <lastmod>2025-07-28</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+</urlset>

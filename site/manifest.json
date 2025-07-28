@@ -1,0 +1,110 @@
+{
+  "name": "STRUCT - Automated Project Structure Generator",
+  "short_name": "STRUCT",
+  "description": "Powerful, flexible tool for automating project structure creation through YAML configurations",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0a0a0a",
+  "theme_color": "#00ff88",
+  "orientation": "portrait-primary",
+  "lang": "en",
+  "scope": "/",
+  "categories": ["developer", "productivity", "utilities"],
+  "icons": [
+    {
+      "src": "/images/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/images/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/images/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/images/icon-maskable-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "/images/icon-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "GitHub Repository",
+      "short_name": "GitHub",
+      "description": "View STRUCT on GitHub",
+      "url": "https://github.com/httpdss/struct",
+      "icons": [
+        {
+          "src": "/images/github-icon.png",
+          "sizes": "96x96"
+        }
+      ]
+    },
+    {
+      "name": "Documentation",
+      "short_name": "Docs",
+      "description": "Read STRUCT documentation",
+      "url": "https://github.com/httpdss/struct/blob/main/docs/index.md",
+      "icons": [
+        {
+          "src": "/images/docs-icon.png",
+          "sizes": "96x96"
+        }
+      ]
+    },
+    {
+      "name": "Quick Start",
+      "short_name": "Start",
+      "description": "Quick start guide",
+      "url": "https://github.com/httpdss/struct/blob/main/docs/quickstart.md",
+      "icons": [
+        {
+          "src": "/images/quickstart-icon.png",
+          "sizes": "96x96"
+        }
+      ]
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/demos/basic-usage.gif",
+      "sizes": "800x450",
+      "type": "image/gif",
+      "label": "Basic usage demonstration"
+    },
+    {
+      "src": "/demos/yaml-config.gif",
+      "sizes": "800x450",
+      "type": "image/gif",
+      "label": "YAML configuration creation"
+    }
+  ],
+  "related_applications": [
+    {
+      "platform": "web",
+      "url": "https://github.com/httpdss/struct"
+    }
+  ],
+  "prefer_related_applications": false,
+  "edge_side_panel": {
+    "preferred_width": 400
+  },
+  "launch_handler": {
+    "client_mode": "focus-existing"
+  }
+}

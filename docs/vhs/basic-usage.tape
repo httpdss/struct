@@ -1,28 +1,47 @@
-Output docs/vhs/basic-usage.gif
+Output docs/vhs/usage.gif
 
-Set Theme "Monokai Vivid"
+Set Theme "Dracula"
 Set FontSize 14
-Set TypingSpeed 40ms
-Set WindowBar Colorful
-Set BorderRadius 8
-Set Margin 0
-Set Padding 10
-Set Width 1400
-Set Height 800
+Set Width 1200
+Set Height 600
 Set Shell "bash"
 
-Type "# Explore available structures" Enter
-Type "struct list" Enter
-Sleep 3
-Type "" Enter
-Type "# Get information about a specific structure" Enter
-Type "struct info terraform/module" Enter
-Sleep 5
-Type "" Enter
-Type "# Generate a simple project structure" Enter
-Type "struct generate terraform/module ./my-terraform-module" Enter
-Sleep 8
-Type "" Enter
-Type "# Verify the generated structure" Enter
-Type "tree my-terraform-module" Enter
-Sleep 5
+Type "# STRUCT - Basic Usage Demo"
+Enter
+Sleep 1s
+
+Type "# First, let's see what structures are available"
+Enter
+Sleep 500ms
+
+Type "struct list"
+Enter
+Sleep 2s
+
+Type "# Let's generate a simple Python project"
+Enter
+Sleep 500ms
+
+Type "struct generate project/python ./my-python-app"
+Enter
+Sleep 3s
+
+Type "# Check what was created"
+Enter
+Sleep 500ms
+
+Type "ls -la my-python-app/"
+Enter
+Sleep 2s
+
+Type "# View the project structure"
+Enter
+Sleep 500ms
+
+Type "tree my-python-app/ || find my-python-app/ -type f"
+Enter
+Sleep 2s
+
+Type "# That's it! STRUCT made it easy to bootstrap a project"
+Enter
+Sleep 1s
