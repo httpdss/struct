@@ -757,23 +757,29 @@ variables:
   createTestimonials() {
     const testimonials = [
       {
-        content: "STRUCT has completely transformed how we scaffold new projects. What used to take hours of manual setup now takes minutes. The YAML configuration is intuitive and the template system is incredibly powerful.",
-        author: "Sarah Chen",
-        role: "Senior DevOps Engineer",
-        avatar: "https://images.unsplash.com/photo-1494790108755-2616b612b5bc?w=100&h=100&fit=crop&crop=face"
+        content:
+          'STRUCT has completely transformed how we scaffold new projects. What used to take hours of manual setup now takes minutes. The YAML configuration is intuitive and the template system is incredibly powerful.',
+        author: 'Sarah Chen',
+        role: 'Senior DevOps Engineer',
+        avatar:
+          'https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=100&h=100&fit=crop&crop=face',
       },
       {
-        content: "The best project structure generator I've used. The ability to fetch content from remote sources and the Jinja2 templating makes it perfect for creating consistent, enterprise-ready project layouts.",
-        author: "Marcus Rodriguez",
-        role: "Platform Architect",
-        avatar: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop&crop=face"
+        content:
+          "The best project structure generator I've used. The ability to fetch content from remote sources and the Jinja2 templating makes it perfect for creating consistent, enterprise-ready project layouts.",
+        author: 'Marcus Rodriguez',
+        role: 'Platform Architect',
+        avatar:
+          'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop&crop=face',
       },
       {
-        content: "STRUCT's flexibility is unmatched. We use it for everything from microservices to Terraform modules. The hook system allows us to integrate it perfectly into our CI/CD pipeline.",
-        author: "Alex Thompson",
-        role: "Lead Developer",
-        avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=face"
-      }
+        content:
+          "STRUCT's flexibility is unmatched. We use it for everything from microservices to Terraform modules. The hook system allows us to integrate it perfectly into our CI/CD pipeline.",
+        author: 'Alex Thompson',
+        role: 'Lead Developer',
+        avatar:
+          'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=face',
+      },
     ];
 
     const testimonialsGrid = document.querySelector('#testimonials .testimonials-grid');

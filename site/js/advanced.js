@@ -413,7 +413,7 @@ class StructSite {
 
     // Initialize service worker if supported
     if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('/sw.js').catch(err => {
+      navigator.serviceWorker.register('/struct/sw.js').catch((err) => {
         console.log('ServiceWorker registration failed:', err);
       });
     }
