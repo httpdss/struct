@@ -676,7 +676,7 @@ variables:
         title: 'Documentation',
         description: 'Comprehensive guides, tutorials, and API documentation',
         action: 'Read Docs',
-        link: 'https://github.com/httpdss/struct/blob/main/docs/index.md',
+        link: 'https://httpdss.github.io/struct/docs/',
       },
       {
         icon: 'fas fa-heart',
