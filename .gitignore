@@ -5,3 +5,6 @@ __pycache__
 *.log
 example_project/
 build/*
+
+# MkDocs generated documentation
+site/docs/

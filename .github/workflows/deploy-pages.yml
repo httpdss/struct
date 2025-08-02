@@ -5,6 +5,9 @@ on:
     branches: ["main"]
     paths:
       - "site/**"
+      - "docs/**"
+      - "mkdocs.yml"
+      - "requirements.docs.txt"
 
   workflow_dispatch:
 
@@ -26,6 +29,22 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Needed for git-revision-date-localized plugin
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+          cache: 'pip'
+
+      - name: Install MkDocs dependencies
+        run: |
+          pip install -r requirements.docs.txt
+
+      - name: Build MkDocs documentation
+        run: |
+          mkdocs build
 
       - name: Setup Pages
         uses: actions/configure-pages@v5

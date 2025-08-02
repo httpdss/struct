@@ -1,0 +1,83 @@
+site_name: STRUCT Documentation
+site_description: Automated Project Structure Generator
+site_url: https://httpdss.github.io/struct/
+repo_url: https://github.com/httpdss/struct
+repo_name: httpdss/struct
+
+theme:
+  name: material
+  palette:
+    # Palette toggle for light mode
+    - scheme: default
+      primary: blue
+      accent: blue
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    # Palette toggle for dark mode
+    - scheme: slate
+      primary: blue
+      accent: blue
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - navigation.expand
+    - navigation.top
+    - search.highlight
+    - search.share
+    - content.code.copy
+    - content.code.annotate
+
+docs_dir: docs
+site_dir: site/docs
+
+# Navigation structure based on existing docs
+nav:
+  - Home: index.md
+  - Getting Started:
+    - Installation: installation.md
+    - Quick Start: quickstart.md
+    - Usage: usage.md
+  - Configuration:
+    - YAML Configuration: configuration.md
+    - Template Variables: template-variables.md
+    - File Handling: file-handling.md
+    - Mappings: mappings.md
+  - Advanced Features:
+    - Custom Structures: structures.md
+    - Hooks: hooks.md
+    - GitHub Integration: github-integration.md
+    - Schema Reference: schema.md
+  - Development:
+    - Development Setup: development.md
+    - Command-Line Completion: completion.md
+    - Contributing: contributing.md
+  - Reference:
+    - Examples: examples/index.md
+    - Articles and Tutorials: articles.md
+    - Known Issues: known-issues.md
+    - Funding: funding.md
+
+markdown_extensions:
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.tabbed:
+      alternate_style: true
+  - attr_list
+  - md_in_html
+  - tables
+  - toc:
+      permalink: true
+
+plugins:
+  - search
+  - git-revision-date-localized:
+      enable_creation_date: true
