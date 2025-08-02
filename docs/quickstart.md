@@ -45,15 +45,34 @@ struct generate structure.yaml .
 
 > **Note**: The `file://` protocol is automatically added for `.yaml` files, so `structure.yaml` and `file://structure.yaml` work identically.
 
+## Discovering Available Structures
+
+Before generating, see what structures are available:
+
+```sh
+struct list
+```
+
+This shows all built-in structures you can use.
+
+!!! tip "Auto-Completion"
+    If you've enabled [auto-completion](completion.md), you can press `Tab` after `struct generate ` to see all available structures!
+
 ## First Example
 
 After installing STRUCT, try this simple example:
 
 ```sh
-struct generate terraform-module ./my-terraform-module
+struct generate terraform/modules/generic ./my-terraform-module
 ```
 
 This will create a new terraform module structure in the `./my-terraform-module` directory.
+
+Or try a simple project structure:
+
+```sh
+struct generate project/nodejs ./my-node-app
+```
 
 ## Next Steps
 

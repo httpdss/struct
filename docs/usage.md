@@ -18,10 +18,25 @@ struct -h
 
 ## Generate Command
 
+### Finding Available Structures
+
+Use the `list` command to see all available structures:
+
+```sh
+struct list
+```
+
+Or if you have [auto-completion](completion.md) enabled, use `Tab` to see all options:
+
+```sh
+struct generate <Tab>
+# Shows all available structures
+```
+
 ### Simple Example
 
 ```sh
-struct generate terraform-module ./my-terraform-module
+struct generate terraform/modules/generic ./my-terraform-module
 ```
 
 ### YAML File Usage
