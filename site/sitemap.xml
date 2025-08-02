@@ -52,91 +52,91 @@
   <!-- Generated Documentation Pages -->
 
   <url>
-    <loc>https://httpdss.github.io/struct/docs/configuration/</loc>
+    <loc>https://httpdss.github.io/struct/docs/configuration</loc>
     <lastmod>2025-08-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
 
   <url>
-    <loc>https://httpdss.github.io/struct/docs/hooks/</loc>
+    <loc>https://httpdss.github.io/struct/docs/hooks</loc>
     <lastmod>2025-08-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
 
   <url>
-    <loc>https://httpdss.github.io/struct/docs/development/</loc>
+    <loc>https://httpdss.github.io/struct/docs/development</loc>
     <lastmod>2025-08-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
 
   <url>
-    <loc>https://httpdss.github.io/struct/docs/vhs/</loc>
+    <loc>https://httpdss.github.io/struct/docs/vhs</loc>
     <lastmod>2025-08-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
 
   <url>
-    <loc>https://httpdss.github.io/struct/docs/template-variables/</loc>
+    <loc>https://httpdss.github.io/struct/docs/template-vriables</loc>
     <lastmod>2025-08-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
 
   <url>
-    <loc>https://httpdss.github.io/struct/docs/known-issues/</loc>
+    <loc>https://httpdss.github.io/struct/docs/knownissues</loc>
     <lastmod>2025-08-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
 
   <url>
-    <loc>https://httpdss.github.io/struct/docs/articles/</loc>
+    <loc>https://httpdss.github.io/struct/docs/articles</loc>
     <lastmod>2025-08-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
 
   <url>
-    <loc>https://httpdss.github.io/struct/docs/404/</loc>
+    <loc>https://httpdss.github.io/struct/docs/404</loc>
     <lastmod>2025-08-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
 
   <url>
-    <loc>https://httpdss.github.io/struct/docs/installation/</loc>
+    <loc>https://httpdss.github.io/struct/docs/installtion</loc>
     <lastmod>2025-08-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
 
   <url>
-    <loc>https://httpdss.github.io/struct/docs/schema/</loc>
+    <loc>https://httpdss.github.io/struct/docs/schema</loc>
     <lastmod>2025-08-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
 
   <url>
-    <loc>https://httpdss.github.io/struct/docs/usage/</loc>
+    <loc>https://httpdss.github.io/struct/docs/usage</loc>
     <lastmod>2025-08-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
 
   <url>
-    <loc>https://httpdss.github.io/struct/docs/completion/</loc>
+    <loc>https://httpdss.github.io/struct/docs/completion</loc>
     <lastmod>2025-08-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
 
   <url>
-    <loc>https://httpdss.github.io/struct/docs/structures/</loc>
+    <loc>https://httpdss.github.io/struct/docs/structures</loc>
     <lastmod>2025-08-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -150,21 +150,21 @@
   </url>
 
   <url>
-    <loc>https://httpdss.github.io/struct/docs/github-integration/</loc>
+    <loc>https://httpdss.github.io/struct/docs/github-integration</loc>
     <lastmod>2025-08-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
 
   <url>
-    <loc>https://httpdss.github.io/struct/docs/examples/</loc>
+    <loc>https://httpdss.github.io/struct/docs/examples</loc>
     <lastmod>2025-08-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
 
   <url>
-    <loc>https://httpdss.github.io/struct/docs/file-handling/</loc>
+    <loc>https://httpdss.github.io/struct/docs/file-handlng</loc>
     <lastmod>2025-08-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -178,7 +178,7 @@
   </url>
 
   <url>
-    <loc>https://httpdss.github.io/struct/docs/mappings/</loc>
+    <loc>https://httpdss.github.io/struct/docs/mappings//loc>
     <lastmod>2025-08-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -186,7 +186,7 @@
 
   <url>
     <loc>https://httpdss.github.io/struct/docs/quickstart/</loc>
-    <lastmod>2025-08-02</lastmod>
+    <lastmod>2025-08-02</lastmod
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
