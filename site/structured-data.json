@@ -53,11 +53,11 @@
     "Cross-platform Support"
   ],
   "requirements": "Python 3.8+",
-  "installUrl": "https://github.com/httpdss/struct#installation",
+  "installUrl": "https://httpdss.github.io/struct/docs/installation/",
   "supportingData": {
     "@type": "Dataset",
     "name": "STRUCT Documentation",
     "description": "Complete documentation and examples for STRUCT",
-    "url": "https://github.com/httpdss/struct/blob/main/docs/"
+    "url": "https://httpdss.github.io/struct/docs/"
   }
 }

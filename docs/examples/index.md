@@ -16,28 +16,28 @@ files:
   - README.md:
       content: |
         # {{@ project_name | default('My Project') @}}
-        
+
         Welcome to the project!
-        
+
         ## Getting Started
-        
+
         1. Install dependencies
         2. Run the application
         3. Enjoy!
-  
+
   - .gitignore:
       content: |
         node_modules/
         *.log
         .env
         dist/
-        
+
   - LICENSE:
       content: |
         MIT License
-        
+
         Copyright (c) {{@ year | default('2024') @}} {{@ author | default('Project Author') @}}
-        
+
 folders:
   - src/:
       struct:
@@ -45,20 +45,20 @@ folders:
   - docs/:
       struct:
         - basic/folder
-        
+
 variables:
   - project_name:
-      description: "Name of the project"
+      description: 'Name of the project'
       type: string
-      default: "My Project"
+      default: 'My Project'
   - author:
-      description: "Project author"
+      description: 'Project author'
       type: string
-      default: "Project Author"
+      default: 'Project Author'
   - year:
-      description: "Copyright year"
+      description: 'Copyright year'
       type: string
-      default: "2024"
+      default: '2024'
 ```
 
 ### Template Variables
@@ -79,7 +79,7 @@ files:
           "author": "{{@ author @}}",
           "license": "{{@ license | default('MIT') @}}"
         }
-  
+
   - src/config.js:
       content: |
         module.exports = {
@@ -87,36 +87,36 @@ files:
           version: '{{@ version | default('1.0.0') @}}',
           environment: '{{@ environment | default('development') @}}'
         };
-        
+
 variables:
   - package_name:
-      description: "NPM package name"
+      description: 'NPM package name'
       type: string
       required: true
   - app_name:
-      description: "Application display name"
+      description: 'Application display name'
       type: string
       required: true
   - description:
-      description: "Project description"
+      description: 'Project description'
       type: string
       required: true
   - author:
-      description: "Package author"
+      description: 'Package author'
       type: string
       required: true
   - version:
-      description: "Initial version"
+      description: 'Initial version'
       type: string
-      default: "1.0.0"
+      default: '1.0.0'
   - license:
-      description: "License type"
+      description: 'License type'
       type: string
-      default: "MIT"
+      default: 'MIT'
   - environment:
-      description: "Target environment"
+      description: 'Target environment'
       type: string
-      default: "development"
+      default: 'development'
 ```
 
 ### Remote Files
@@ -129,28 +129,28 @@ Fetching content from external sources:
 
 files:
   - .gitignore:
-      remote: "https://raw.githubusercontent.com/github/gitignore/main/Node.gitignore"
-  
+      remote: 'https://raw.githubusercontent.com/github/gitignore/main/Node.gitignore'
+
   - CODE_OF_CONDUCT.md:
-      remote: "https://raw.githubusercontent.com/contributor-covenant/contributor-covenant/main/CODE_OF_CONDUCT.md"
-  
+      remote: 'https://raw.githubusercontent.com/contributor-covenant/contributor-covenant/main/CODE_OF_CONDUCT.md'
+
   - CONTRIBUTING.md:
       content: |
         # Contributing to {{@ project_name @}}
-        
+
         Thank you for your interest in contributing!
-        
+
         ## Development Setup
-        
+
         1. Fork the repository
         2. Clone your fork
         3. Install dependencies
         4. Make your changes
         5. Submit a pull request
-        
+
 variables:
   - project_name:
-      description: "Project name"
+      description: 'Project name'
       type: string
       required: true
 ```
@@ -161,7 +161,7 @@ variables:
 
 Complete Python application structure:
 
-```yaml
+````yaml
 # Example: Python Project
 # Use case: Full Python application with proper structure
 
@@ -169,31 +169,31 @@ files:
   - README.md:
       content: |
         # {{@ project_name @}}
-        
+
         {{@ description @}}
-        
+
         ## Installation
-        
+
         ```bash
         pip install -r requirements.txt
         ```
-        
+
         ## Usage
-        
+
         ```bash
         python -m {{@ package_name @}}
         ```
-  
+
   - requirements.txt:
       content: |
         click>=8.0.0
         requests>=2.25.0
         pytest>=6.0.0
-  
+
   - setup.py:
       content: |
         from setuptools import setup, find_packages
-        
+
         setup(
             name="{{@ package_name @}}",
             version="{{@ version | default('0.1.0') @}}",
@@ -210,56 +210,56 @@ files:
                 ],
             },
         )
-  
-  - "{{@ package_name @}}/__init__.py":
+
+  - '{{@ package_name @}}/__init__.py':
       content: |
         """{{@ description @}}"""
         __version__ = "{{@ version | default('0.1.0') @}}"
-  
-  - "{{@ package_name @}}/main.py":
+
+  - '{{@ package_name @}}/main.py':
       content: |
         """Main application module."""
-        
+
         def main():
             """Main entry point."""
             print("Hello from {{@ project_name @}}!")
-        
+
         if __name__ == "__main__":
             main()
-  
+
   - tests/test_main.py:
       content: |
         """Tests for main module."""
         import pytest
         from {{@ package_name @}} import main
-        
+
         def test_main():
             """Test main function."""
             # Add your tests here
             assert True
-            
+
 variables:
   - project_name:
-      description: "Project name"
+      description: 'Project name'
       type: string
       required: true
   - package_name:
-      description: "Python package name"
+      description: 'Python package name'
       type: string
       required: true
   - description:
-      description: "Project description"
+      description: 'Project description'
       type: string
       required: true
   - author:
-      description: "Project author"
+      description: 'Project author'
       type: string
       required: true
   - version:
-      description: "Initial version"
+      description: 'Initial version'
       type: string
-      default: "0.1.0"
-```
+      default: '0.1.0'
+````
 
 ### Node.js API
 
@@ -294,59 +294,59 @@ files:
             "supertest": "^6.3.0"
           }
         }
-  
+
   - src/app.js:
       content: |
         const express = require('express');
         const cors = require('cors');
         const helmet = require('helmet');
         require('dotenv').config();
-        
+
         const app = express();
         const PORT = process.env.PORT || 3000;
-        
+
         // Middleware
         app.use(helmet());
         app.use(cors());
         app.use(express.json());
-        
+
         // Routes
         app.get('/', (req, res) => {
           res.json({ message: 'Welcome to {{@ project_name @}} API' });
         });
-        
+
         app.get('/api/health', (req, res) => {
           res.json({ status: 'OK', timestamp: new Date().toISOString() });
         });
-        
+
         app.listen(PORT, () => {
           console.log(`{{@ project_name @}} API running on port ${PORT}`);
         });
-        
+
         module.exports = app;
-  
+
   - .env.example:
       content: |
         PORT=3000
         NODE_ENV=development
-        
+
 variables:
   - project_name:
-      description: "Project name"
+      description: 'Project name'
       type: string
       required: true
   - package_name:
-      description: "NPM package name"
+      description: 'NPM package name'
       type: string
       required: true
   - description:
-      description: "API description"
+      description: 'API description'
       type: string
       required: true
   - version:
-      description: "Initial version"
+      description: 'Initial version'
       type: string
-      default: "1.0.0"
+      default: '1.0.0'
 ```
 
 ## Usage
@@ -399,7 +399,7 @@ files:
 
 variables:
   - example_var:
-      description: "Example variable"
+      description: 'Example variable'
       type: string
-      default: "example_value"
+      default: 'example_value'
 ```

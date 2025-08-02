@@ -59,7 +59,7 @@
       "name": "Documentation",
       "short_name": "Docs",
       "description": "Read STRUCT documentation",
-      "url": "https://github.com/httpdss/struct/blob/main/docs/index.md",
+      "url": "https://httpdss.github.io/struct/docs/",
       "icons": [
         {
           "src": "/images/docs-icon.png",
@@ -71,7 +71,7 @@
       "name": "Quick Start",
       "short_name": "Start",
       "description": "Quick start guide",
-      "url": "https://github.com/httpdss/struct/blob/main/docs/quickstart.md",
+      "url": "https://httpdss.github.io/struct/docs/quickstart/",
       "icons": [
         {
           "src": "/images/quickstart-icon.png",
