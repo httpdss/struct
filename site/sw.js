@@ -2,25 +2,25 @@
 
 const CACHE_NAME = 'struct-site-v1';
 const STATIC_CACHE_URLS = [
-  '/',
-  '/index.html',
-  '/css/main.css',
-  '/css/components.css',
-  '/css/animations.css',
-  '/css/advanced.css',
-  '/js/main.js',
-  '/js/advanced.js',
-  '/images/favicon.svg',
+  '/struct/',
+  '/struct/index.html',
+  '/struct/css/main.css',
+  '/struct/css/components.css',
+  '/struct/css/animations.css',
+  '/struct/css/advanced.css',
+  '/struct/js/main.js',
+  '/struct/js/advanced.js',
+  '/struct/images/favicon.svg',
   'https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Fira+Code:wght@300;400;500&display=swap',
-  'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css'
+  'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css',
 ];
 
 const DEMO_CACHE_URLS = [
-  '/demos/basic-usage.gif',
-  '/demos/yaml-config.gif',
-  '/demos/mappings-demo.gif',
-  '/demos/remote-content.gif',
-  '/demos/advanced-features.gif'
+  '/struct/demos/basic-usage.gif',
+  '/struct/demos/yaml-config.gif',
+  '/struct/demos/mappings-demo.gif',
+  '/struct/demos/remote-content.gif',
+  '/struct/demos/advanced-features.gif',
 ];
 
 // Install event - cache static assets
