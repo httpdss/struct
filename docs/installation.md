@@ -8,6 +8,13 @@ Install STRUCT with pip:
 pip install git+https://github.com/httpdss/struct.git
 ```
 
+!!! tip "Enable Auto-Completion"
+    After installation, enable command-line auto-completion for better productivity:
+    ```sh
+    eval "$(register-python-argcomplete struct)"
+    ```
+    For permanent setup, see the [Command-Line Completion](completion.md) guide.
+
 ## From Source
 
 Clone the repository and install locally. See the [Development](development.md) page for details.

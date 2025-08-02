@@ -1,8 +1,26 @@
 # Command-Line Auto-Completion
 
-This project uses [argcomplete](https://kislyuk.github.io/argcomplete/) to provide command-line auto-completion for the `struct` script. Follow these steps to enable auto-completion:
+STRUCT provides intelligent auto-completion for commands, options, and **structure names** using [argcomplete](https://kislyuk.github.io/argcomplete/). This makes discovering and using available structures much faster and more user-friendly.
 
-## Installation
+!!! tip "New Feature: Structure Name Completion"
+    STRUCT now automatically completes structure names when using `struct generate`, showing all 47+ available structures from both built-in and custom paths!
+
+## Quick Setup
+
+For most users, this simple setup will enable full completion:
+
+```sh
+# Install (if not already installed)
+pip install argcomplete
+
+# Enable completion for current session
+eval "$(register-python-argcomplete struct)"
+
+# Make permanent - add to your ~/.zshrc or ~/.bashrc
+echo 'eval "$(register-python-argcomplete struct)"' >> ~/.zshrc
+```
+
+## Detailed Installation
 
 ### 1. Install argcomplete
 
@@ -10,9 +28,9 @@ This project uses [argcomplete](https://kislyuk.github.io/argcomplete/) to provi
 pip install argcomplete
 ```
 
-### 2. Enable Global Completion
+### 2. Enable Global Completion (Optional)
 
-This step is usually done once per system:
+This step is optional but can be done once per system:
 
 ```sh
 activate-global-python-argcomplete
@@ -59,15 +77,41 @@ source ~/.config/fish/config.fish
 
 After completing the setup, you can use auto-completion by typing part of a command and pressing `Tab`:
 
+### Command Completion
 ```sh
 struct <Tab>
 # Shows: generate, generate-schema, validate, info, list
+```
 
+### Structure Name Completion ✨
+```sh
+# Complete structure names - shows all available structures!
 struct generate <Tab>
-# Shows available structure names and options
+# Shows: ansible-playbook, docker-files, github/workflows/codeql, project/nodejs, etc.
 
+# Partial completion works too
+struct generate git<Tab>
+# Shows: git-hooks, github/workflows/codeql, github/templates, etc.
+
+# Works with nested structures
+struct generate github/<Tab>
+# Shows: github/workflows/codeql, github/templates, github/prompts/generic, etc.
+```
+
+### Custom Structure Paths
+```sh
+# Completion works with custom structure paths
+struct generate --structures-path /custom/path <Tab>
+# Shows structures from both custom path and built-in structures
+```
+
+### Option Completion
+```sh
 struct generate --<Tab>
-# Shows: --log, --dry-run, --backup, --file-strategy, etc.
+# Shows: --log, --dry-run, --backup, --file-strategy, --structures-path, etc.
+
+struct generate --log <Tab>
+# Shows: DEBUG, INFO, WARNING, ERROR, CRITICAL
 ```
 
 ## Advanced Configuration
@@ -180,32 +224,64 @@ eval "$(register-python-argcomplete struct-wrapper.sh)"
 
 ## Supported Completions
 
-STRUCT provides completion for:
+STRUCT provides intelligent completion for:
 
-- **Commands**: `generate`, `validate`, `list`, etc.
-- **Options**: `--log`, `--dry-run`, `--backup`, etc.
-- **Structure names**: All available built-in and custom structures
+- **Commands**: `generate`, `validate`, `list`, `info`, `generate-schema`
+- **Options**: `--log`, `--dry-run`, `--backup`, `--file-strategy`, `--structures-path`, etc.
+- **Structure names**: All 47+ available built-in and custom structures
+  - Built-in structures: `ansible-playbook`, `docker-files`, `helm-chart`, etc.
+  - Nested structures: `github/workflows/codeql`, `project/nodejs`, `terraform/apps/generic`, etc.
+  - Custom structures: From `--structures-path` directories
 - **File paths**: Local files and directories
-- **Enum values**: Log levels, file strategies, etc.
+- **Enum values**: Log levels (`DEBUG`, `INFO`, etc.), file strategies (`overwrite`, `skip`, etc.)
+
+## How Structure Completion Works
+
+The structure name completion feature:
+
+1. **Dynamically discovers** all available structure files (`.yaml` files)
+2. **Scans multiple locations**:
+   - Built-in structures in `struct_module/contribs/`
+   - Custom structures from `--structures-path` if specified
+3. **Returns clean names** without `.yaml` extensions
+4. **Supports nested directories** like `github/workflows/codeql`
+5. **Updates automatically** when new structures are added
 
 ## Example Session
 
 ```sh
+# Command completion
 $ struct <Tab>
 generate        generate-schema info           list           validate
 
+# Structure name completion (NEW!)
 $ struct generate <Tab>
-configs/        docker-files    project/       terraform/
+ansible-playbook     configs/codeowners    github/workflows/codeql  project/nodejs
+chef-cookbook        docker-files          helm-chart               terraform/apps/generic
+ci-cd-pipelines      git-hooks            kubernetes-manifests      vagrant-files
 
-$ struct generate terraform/<Tab>
-terraform/app   terraform/module
+# Partial completion
+$ struct generate proj<Tab>
+project/custom-structures  project/go      project/nodejs  project/ruby
+project/generic           project/java    project/python  project/rust
 
+# Nested structure completion
+$ struct generate github/<Tab>
+github/chatmodes/plan       github/prompts/react-form    github/workflows/codeql
+github/instructions/generic github/prompts/security-api  github/workflows/labeler
+github/prompts/generic      github/workflows/pre-commit  github/workflows/stale
+
+# Option completion
 $ struct generate --<Tab>
 --backup        --dry-run       --file-strategy --log
---log-file      --mappings-file --structures-path
+--log-file      --mappings-file --structures-path --vars
 
+# Enum value completion
 $ struct generate --log <Tab>
-DEBUG    ERROR    INFO     WARNING
+DEBUG    ERROR    INFO     WARNING  CRITICAL
+
+$ struct generate --file-strategy <Tab>
+append    backup    overwrite    rename    skip
 ```
 
 This makes working with STRUCT much more efficient and user-friendly!

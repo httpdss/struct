@@ -3,7 +3,7 @@ import os
 import yaml
 import argparse
 from struct_module.file_item import FileItem
-from struct_module.completers import file_strategy_completer
+from struct_module.completers import file_strategy_completer, structures_completer
 from struct_module.template_renderer import TemplateRenderer
 
 import subprocess
@@ -12,7 +12,8 @@ import subprocess
 class GenerateCommand(Command):
   def __init__(self, parser):
     super().__init__(parser)
-    parser.add_argument('structure_definition', type=str, help='Path to the YAML configuration file')
+    structure_arg = parser.add_argument('structure_definition', type=str, help='Path to the YAML configuration file')
+    structure_arg.completer = structures_completer
     parser.add_argument('base_path', type=str, help='Base path where the structure will be created')
     parser.add_argument('-s', '--structures-path', type=str, help='Path to structure definitions')
     parser.add_argument('-n', '--input-store', type=str, help='Path to the input store', default='/tmp/struct/input.json')
