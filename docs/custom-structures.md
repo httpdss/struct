@@ -27,7 +27,7 @@ folders:
       - category1/structure1
       - category2/structure2
     with:
-      var_in_structure1: "value"
+      var_in_structure1: 'value'
 ```
 
 For this to work, you will need to set the path to the custom structures repository using the `-s` option when running STRUCT:
@@ -35,4 +35,3 @@ For this to work, you will need to set the path to the custom structures reposit
 ```sh
 struct generate -s ~/path/to/custom-structures/structures file://.struct.yaml ./output
 ```
-

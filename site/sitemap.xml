@@ -49,40 +49,8 @@
     <priority>0.9</priority>
   </url>
 
-  <!-- Documentation (external) -->
-  <url>
-    <loc>https://github.com/httpdss/struct/blob/main/docs/index.md</loc>
-    <lastmod>2025-07-28</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <!-- Installation Guide (external) -->
-  <url>
-    <loc>https://github.com/httpdss/struct/blob/main/docs/installation.md</loc>
-    <lastmod>2025-07-28</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <!-- Quick Start Guide (external) -->
-  <url>
-    <loc>https://github.com/httpdss/struct/blob/main/docs/quickstart.md</loc>
-    <lastmod>2025-07-28</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <!-- Examples (external) -->
-  <url>
-    <loc>https://github.com/httpdss/struct/tree/main/example</loc>
-    <lastmod>2025-07-28</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-
   <!-- Generated Documentation Pages -->
-  
+
   <url>
     <loc>https://httpdss.github.io/struct/docs/configuration/</loc>
     <lastmod>2025-08-02</lastmod>

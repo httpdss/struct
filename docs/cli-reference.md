@@ -203,4 +203,3 @@ Generate JSON schema and save to file:
 ```sh
 struct generate-schema -o schema.json
 ```
-

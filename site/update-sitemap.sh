@@ -36,12 +36,12 @@ echo "" >> "$temp_file"
 while IFS= read -r file; do
   # Convert file path to URL path
   url_path=${file#docs/}
-  
+
   # Remove index.html from path for cleaner URLs
   if [[ "$url_path" == */index.html ]]; then
     url_path=${url_path%/index.html}/
   fi
-  
+
   # Add URL entry
   echo "  <url>" >> "$temp_file"
   echo "    <loc>$BASE_URL/$file</loc>" >> "$temp_file"
