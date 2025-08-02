@@ -12,31 +12,31 @@
   "categories": ["developer", "productivity", "utilities"],
   "icons": [
     {
-      "src": "/images/favicon.svg",
+      "src": "/struct/images/favicon.svg",
       "sizes": "any",
       "type": "image/svg+xml",
       "purpose": "any maskable"
     },
     {
-      "src": "/images/icon-192.png",
+      "src": "/struct//images/icon-192.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "/images/icon-512.png",
+      "src": "/struct/images/icon-512.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "/images/icon-maskable-192.png",
+      "src": "/struct/images/icon-maskable-192.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "maskable"
     },
     {
-      "src": "/images/icon-maskable-512.png",
+      "src": "/struct/images/icon-maskable-512.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "maskable"
@@ -50,7 +50,7 @@
       "url": "https://github.com/httpdss/struct",
       "icons": [
         {
-          "src": "/images/github-icon.png",
+          "src": "/struct/images/github-icon.png",
           "sizes": "96x96"
         }
       ]
@@ -59,10 +59,10 @@
       "name": "Documentation",
       "short_name": "Docs",
       "description": "Read STRUCT documentation",
-      "url": "https://httpdss.github.io/struct/docs/",
+      "url": "https://httpdss.github.io/struct/docs",
       "icons": [
         {
-          "src": "/images/docs-icon.png",
+          "src": "/struct/images/docs-icon.png",
           "sizes": "96x96"
         }
       ]
@@ -71,10 +71,10 @@
       "name": "Quick Start",
       "short_name": "Start",
       "description": "Quick start guide",
-      "url": "https://httpdss.github.io/struct/docs/quickstart/",
+      "url": "https://httpdss.github.io/struct/docs/quickstart",
       "icons": [
         {
-          "src": "/images/quickstart-icon.png",
+          "src": "/struct/images/quickstart-icon.png",
           "sizes": "96x96"
         }
       ]
@@ -82,13 +82,13 @@
   ],
   "screenshots": [
     {
-      "src": "/demos/basic-usage.gif",
+      "src": "/struct/demos/basic-usage.gif",
       "sizes": "800x450",
       "type": "image/gif",
       "label": "Basic usage demonstration"
     },
     {
-      "src": "/demos/yaml-config.gif",
+      "src": "/struct/demos/yaml-config.gif",
       "sizes": "800x450",
       "type": "image/gif",
       "label": "YAML configuration creation"
