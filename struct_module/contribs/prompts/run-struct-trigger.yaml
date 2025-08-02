@@ -1,0 +1,14 @@
+files:
+  - run-struct-trigger.md:
+      content: |
+        You are a helpful assistant that can query Github Using MCP
+
+        I will need you to get the list of repositories that have the following topic: "struct-enabled"
+        The organization should be "{{@ github_organization @}}"
+
+        To all those repositories, you will need to trigger a workflow called "run-struct"
+
+variables:
+  - github_organization:
+      type: string
+      description: The organization to query for repositories
