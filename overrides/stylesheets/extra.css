@@ -1,0 +1,287 @@
+/* STRUCT MkDocs Custom Theme - Matching main site styling */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Fira+Code:wght@300;400;500&display=swap');
+
+/* CSS Custom Properties - Matching main site */
+:root {
+  /* Colors from main site */
+  --md-primary-fg-color: #00ff88;
+  --md-primary-fg-color--light: #00ff88;
+  --md-primary-fg-color--dark: #00cc6a;
+  --md-accent-fg-color: #0066ff;
+  --md-accent-fg-color--transparent: rgba(0, 102, 255, 0.1);
+
+  /* Dark theme colors */
+  --md-default-bg-color: #0a0a0a;
+  --md-default-fg-color: #ffffff;
+  --md-default-fg-color--light: #b0b0b0;
+  --md-default-fg-color--lighter: #888888;
+  --md-default-fg-color--lightest: #666666;
+
+  /* Code colors */
+  --md-code-bg-color: #1a1a1a;
+  --md-code-fg-color: #00ff88;
+
+  /* Typography */
+  --md-text-font: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI',
+    sans-serif;
+  --md-code-font: 'Fira Code', 'SF Mono', Monaco, 'Cascadia Code', monospace;
+}
+
+/* Base styling overrides */
+[data-md-color-scheme='slate'] {
+  --md-hue: 232;
+  --md-default-bg-color: #0a0a0a;
+  --md-default-fg-color: #ffffff;
+  --md-default-fg-color--light: #b0b0b0;
+  --md-default-fg-color--lighter: #888888;
+  --md-default-fg-color--lightest: #666666;
+  --md-code-bg-color: #1a1a1a;
+  --md-code-fg-color: #00ff88;
+}
+
+/* Body and container styling */
+body {
+  font-family: var(--md-text-font);
+  background-color: var(--md-default-bg-color);
+  color: var(--md-default-fg-color);
+}
+
+.md-container {
+  background-color: var(--md-default-bg-color);
+}
+
+.md-main {
+  background-color: var(--md-default-bg-color);
+}
+
+/* Header styling */
+.md-header {
+  background-color: #1a1a1a;
+  color: var(--md-default-fg-color);
+  border-bottom: 1px solid #333333;
+}
+
+.md-header__title {
+  color: var(--md-primary-fg-color);
+  font-weight: 600;
+}
+
+/* Navigation styling */
+.md-nav {
+  background-color: var(--md-default-bg-color);
+}
+
+.md-nav__title {
+  color: var(--md-default-fg-color);
+  font-weight: 600;
+}
+
+.md-nav__item .md-nav__link {
+  color: var(--md-default-fg-color--light);
+}
+
+.md-nav__item .md-nav__link:hover {
+  color: var(--md-primary-fg-color);
+}
+
+.md-nav__item .md-nav__link--active {
+  color: var(--md-primary-fg-color);
+}
+
+/* Content area styling */
+.md-content {
+  background-color: var(--md-default-bg-color);
+}
+
+.md-typeset {
+  color: var(--md-default-fg-color);
+}
+
+/* Headings */
+.md-typeset h1,
+.md-typeset h2,
+.md-typeset h3,
+.md-typeset h4,
+.md-typeset h5,
+.md-typeset h6 {
+  color: var(--md-default-fg-color);
+  font-weight: 600;
+}
+
+.md-typeset h1 {
+  color: var(--md-primary-fg-color);
+}
+
+/* Paragraphs and text */
+.md-typeset p {
+  color: var(--md-default-fg-color--light);
+}
+
+/* Links */
+.md-typeset a {
+  color: var(--md-accent-fg-color);
+}
+
+.md-typeset a:hover {
+  color: var(--md-primary-fg-color);
+}
+
+/* Code styling */
+.md-typeset code {
+  background-color: var(--md-code-bg-color);
+  color: var(--md-code-fg-color);
+  border: 1px solid #333333;
+  border-radius: 4px;
+  padding: 2px 8px;
+  font-family: var(--md-code-font);
+}
+
+.md-typeset pre {
+  background-color: var(--md-code-bg-color);
+  border: 1px solid #333333;
+  border-radius: 8px;
+}
+
+.md-typeset pre code {
+  background: none;
+  border: none;
+  color: var(--md-default-fg-color);
+}
+
+/* Search styling */
+.md-search__form {
+  background-color: #1a1a1a;
+  border: 1px solid #333333;
+}
+
+.md-search__input {
+  background-color: transparent;
+  color: var(--md-default-fg-color);
+}
+
+.md-search__input::placeholder {
+  color: var(--md-default-fg-color--lighter);
+}
+
+/* Footer */
+.md-footer {
+  background-color: #1a1a1a;
+  border-top: 1px solid #333333;
+}
+
+.md-footer__meta {
+  background-color: #0a0a0a;
+}
+
+/* Sidebar */
+.md-sidebar {
+  background-color: var(--md-default-bg-color);
+}
+
+.md-sidebar--secondary {
+  background-color: var(--md-default-bg-color);
+}
+
+/* Tables */
+.md-typeset table:not([class]) {
+  border: 1px solid #333333;
+}
+
+.md-typeset table:not([class]) th {
+  background-color: #1a1a1a;
+  color: var(--md-default-fg-color);
+  border-bottom: 1px solid #333333;
+}
+
+.md-typeset table:not([class]) td {
+  border-top: 1px solid #333333;
+  color: var(--md-default-fg-color--light);
+}
+
+/* Admonitions */
+.md-typeset .admonition {
+  border-left: 4px solid var(--md-primary-fg-color);
+  background-color: #1a1a1a;
+  border-radius: 0 8px 8px 0;
+}
+
+.md-typeset .admonition-title {
+  color: var(--md-default-fg-color);
+  font-weight: 600;
+}
+
+/* Buttons and form elements */
+.md-button {
+  background-color: var(--md-primary-fg-color);
+  color: #0a0a0a;
+  border-radius: 8px;
+  font-weight: 500;
+}
+
+.md-button:hover {
+  background-color: var(--md-primary-fg-color--dark);
+}
+
+/* Tabs */
+.md-tabs {
+  background-color: #1a1a1a;
+  border-bottom: 1px solid #333333;
+}
+
+.md-tabs__item {
+  color: var(--md-default-fg-color--light);
+}
+
+.md-tabs__link:hover {
+  color: var(--md-primary-fg-color);
+}
+
+.md-tabs__link--active {
+  color: var(--md-primary-fg-color);
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #1a1a1a;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #333333;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #888888;
+}
+
+/* Responsive adjustments */
+@media screen and (max-width: 76.1875em) {
+  .md-nav--primary .md-nav__title {
+    background-color: var(--md-primary-fg-color);
+    color: #0a0a0a;
+  }
+}
+
+/* Additional Material theme overrides for better integration */
+.md-typeset .highlight {
+  background-color: var(--md-code-bg-color);
+  border: 1px solid #333333;
+  border-radius: 8px;
+}
+
+.md-typeset .highlight pre {
+  background: none;
+  border: none;
+}
+
+/* Make sure dark mode is properly applied */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --md-default-bg-color: #0a0a0a;
+    --md-default-fg-color: #ffffff;
+  }
+}

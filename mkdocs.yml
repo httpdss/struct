@@ -7,17 +7,26 @@ repo_name: httpdss/struct
 theme:
   name: material
   palette:
+    # Palette toggle for dark mode (default)
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: teal
+      accent: indigo
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
     # Palette toggle for light mode
-    - scheme: default
-      primary: blue
-      accent: blue
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: teal
+      accent: indigo
       toggle:
         icon: material/brightness-7
         name: Switch to dark mode
-    # Palette toggle for dark mode
+    # Default dark mode fallback
     - scheme: slate
-      primary: blue
-      accent: blue
+      primary: teal
+      accent: indigo
       toggle:
         icon: material/brightness-4
         name: Switch to light mode
@@ -30,6 +39,7 @@ theme:
     - search.share
     - content.code.copy
     - content.code.annotate
+  custom_dir: overrides
 
 docs_dir: docs
 site_dir: site/docs
@@ -81,3 +91,6 @@ plugins:
   - search
   - git-revision-date-localized:
       enable_creation_date: true
+
+extra_css:
+  - stylesheets/extra.css
