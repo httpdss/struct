@@ -1,6 +1,7 @@
 from struct_module.commands import Command
 import os
 import yaml
+import asyncio
 from struct_module.file_item import FileItem
 from struct_module.utils import project_path
 
@@ -9,11 +10,15 @@ class ListCommand(Command):
   def __init__(self, parser):
     super().__init__(parser)
     parser.add_argument('-s', '--structures-path', type=str, help='Path to structure definitions')
+    parser.add_argument('--mcp', action='store_true', help='Enable MCP (Model Context Protocol) integration')
     parser.set_defaults(func=self.execute)
 
   def execute(self, args):
     self.logger.info(f"Listing available structures")
-    self._list_structures(args)
+    if args.mcp:
+      self._list_structures_mcp(args)
+    else:
+      self._list_structures(args)
 
   def _list_structures(self, args):
     this_file = os.path.dirname(os.path.realpath(__file__))
@@ -44,3 +49,28 @@ class ListCommand(Command):
 
     print("\nUse 'struct generate' to generate the structure")
     print("Note: Structures with '+' sign are custom structures")
+
+  def _list_structures_mcp(self, args):
+    """List structures using MCP integration."""
+    try:
+      from struct_module.mcp_server import StructMCPServer
+
+      async def run_mcp_list():
+        server = StructMCPServer()
+        arguments = {}
+        if args.structures_path:
+          arguments["structures_path"] = args.structures_path
+
+        result = await server._handle_list_structures(arguments)
+        return result.content[0].text
+
+      result_text = asyncio.run(run_mcp_list())
+      print(result_text)
+
+    except ImportError:
+      self.logger.error("MCP support not available. Install with: pip install mcp")
+      self._list_structures(args)
+    except Exception as e:
+      self.logger.error(f"MCP integration error: {e}")
+      self.logger.info("Falling back to standard list mode")
+      self._list_structures(args)

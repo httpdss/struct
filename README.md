@@ -15,6 +15,7 @@
 - **🪝 Automation Hooks** - Pre and post-generation shell commands
 - **🎯 Dry Run Mode** - Preview changes before applying them
 - **✅ Validation & Schema** - Built-in YAML validation and IDE support
+- **🤖 MCP Integration** - Model Context Protocol support for AI-assisted development workflows
 
 ## 🚀 Quick Start
 
@@ -39,7 +40,40 @@ struct list
 
 # Validate a configuration
 struct validate my-config.yaml
+
+# Start MCP server for AI integration
+struct mcp --server
+ ```
+
+### 🤖 MCP Integration Quick Start
+
+Struct supports MCP (Model Context Protocol) for seamless AI tool integration:
+
+```bash
+# 1. Start the MCP server
+struct mcp --server
+
+# 2. Configure your AI tool (Claude Desktop example)
+# Add to ~/.config/claude/claude_desktop_config.json:
+{
+  "mcpServers": {
+    "struct": {
+      "command": "struct",
+      "args": ["mcp", "--server"]
+    }
+  }
+}
+
+# 3. Use MCP tools in your AI conversations:
+# - list_structures: Get all available structures
+# - get_structure_info: Get details about a structure
+# - generate_structure: Generate project structures
+# - validate_structure: Validate YAML configs
 ```
+
+**Supported MCP Clients:** Claude Desktop, Cline/Continue, Custom clients
+
+[📖 Full MCP Integration Guide](docs/mcp-integration.md)
 
 ### Example Configuration
 
@@ -87,6 +121,7 @@ Our comprehensive documentation is organized into the following sections:
 - **[Hooks](docs/hooks.md)** - Pre and post-generation automation
 - **[Mappings](docs/mappings.md)** - External data integration
 - **[GitHub Integration](docs/github-integration.md)** - Automation with GitHub Actions
+- **[MCP Integration](docs/mcp-integration.md)** - Model Context Protocol for AI-assisted workflows
 - **[Command-Line Completion](docs/completion.md)** - Enhanced CLI experience
 
 ### 👩‍💻 Development

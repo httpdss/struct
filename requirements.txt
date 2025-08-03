@@ -11,3 +11,4 @@ google-cloud
 google-api-core
 cachetools
 pydantic-ai
+mcp
