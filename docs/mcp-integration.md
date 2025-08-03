@@ -97,7 +97,7 @@ The existing `list` and `info` commands now support an optional `--mcp` flag:
 # List structures with MCP support
 struct list --mcp
 
-# Get structure info with MCP support  
+# Get structure info with MCP support
 struct info project/python --mcp
 ```
 
@@ -176,15 +176,15 @@ async def main():
         command="struct",
         args=["mcp", "--server"]
     )
-    
+
     async with stdio_client(server_params) as (read, write):
         async with ClientSession(read, write) as session:
             await session.initialize()
-            
+
             # List available tools
             tools = await session.list_tools()
             print(f"Available tools: {[tool.name for tool in tools.tools]}")
-            
+
             # Call a tool
             result = await session.call_tool("list_structures", {})
             print(result.content[0].text)

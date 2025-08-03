@@ -65,7 +65,7 @@ struct mcp --server
 }
 
 # 3. Use MCP tools in your AI conversations:
-# - list_structures: Get all available structures  
+# - list_structures: Get all available structures
 # - get_structure_info: Get details about a structure
 # - generate_structure: Generate project structures
 # - validate_structure: Validate YAML configs
