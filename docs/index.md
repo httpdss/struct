@@ -22,6 +22,7 @@ Welcome to the comprehensive documentation for STRUCT - the Automated Project St
 - [Hooks](hooks.md) - Pre and post-generation automation
 - [Mappings](mappings.md) - Using external data mappings
 - [GitHub Integration](github-integration.md) - Automation with GitHub Actions
+- [MCP Integration](mcp-integration.md) - Model Context Protocol for AI-assisted workflows
 
 ### Development
 
