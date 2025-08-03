@@ -1,5 +1,6 @@
 import os
 import yaml
+import asyncio
 
 from struct_module.commands import Command
 
@@ -9,13 +10,17 @@ class InfoCommand(Command):
       super().__init__(parser)
       parser.add_argument('structure_definition', type=str, help='Name of the structure definition')
       parser.add_argument('-s', '--structures-path', type=str, help='Path to structure definitions')
+      parser.add_argument('--mcp', action='store_true', help='Enable MCP (Model Context Protocol) integration')
 
       parser.set_defaults(func=self.execute)
 
     def execute(self, args):
       self.logger.info(f"Getting info for structure {args.structure_definition}")
 
-      self._get_info(args)
+      if args.mcp:
+        self._get_info_mcp(args)
+      else:
+        self._get_info(args)
 
     def _get_info(self, args):
       if args.structure_definition.startswith("file://") and args.structure_definition.endswith(".yaml"):
@@ -52,3 +57,30 @@ class InfoCommand(Command):
         for folder in config.get('folders', []):
           print(f"     - {folder}")
           # print(f"     - {folder}: {folder.get('struct', 'No structure')}")
+
+    def _get_info_mcp(self, args):
+      """Get structure info using MCP integration."""
+      try:
+        from struct_module.mcp_server import StructMCPServer
+
+        async def run_mcp_info():
+          server = StructMCPServer()
+          arguments = {
+            "structure_name": args.structure_definition
+          }
+          if args.structures_path:
+            arguments["structures_path"] = args.structures_path
+
+          result = await server._handle_get_structure_info(arguments)
+          return result.content[0].text
+
+        result_text = asyncio.run(run_mcp_info())
+        print(result_text)
+
+      except ImportError:
+        self.logger.error("MCP support not available. Install with: pip install mcp")
+        self._get_info(args)
+      except Exception as e:
+        self.logger.error(f"MCP integration error: {e}")
+        self.logger.info("Falling back to standard info mode")
+        self._get_info(args)

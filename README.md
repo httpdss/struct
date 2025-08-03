@@ -15,6 +15,7 @@
 - **🪝 Automation Hooks** - Pre and post-generation shell commands
 - **🎯 Dry Run Mode** - Preview changes before applying them
 - **✅ Validation & Schema** - Built-in YAML validation and IDE support
+- **🤖 MCP Integration** - Model Context Protocol support for AI-assisted development workflows
 
 ## 🚀 Quick Start
 
@@ -39,6 +40,9 @@ struct list
 
 # Validate a configuration
 struct validate my-config.yaml
+
+# Start MCP server for AI integration
+struct mcp --server
 ```
 
 ### Example Configuration
@@ -87,6 +91,7 @@ Our comprehensive documentation is organized into the following sections:
 - **[Hooks](docs/hooks.md)** - Pre and post-generation automation
 - **[Mappings](docs/mappings.md)** - External data integration
 - **[GitHub Integration](docs/github-integration.md)** - Automation with GitHub Actions
+- **[MCP Integration](docs/mcp-integration.md)** - Model Context Protocol for AI-assisted workflows
 - **[Command-Line Completion](docs/completion.md)** - Enhanced CLI experience
 
 ### 👩‍💻 Development
