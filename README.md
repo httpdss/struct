@@ -43,7 +43,37 @@ struct validate my-config.yaml
 
 # Start MCP server for AI integration
 struct mcp --server
+ ```
+
+### 🤖 MCP Integration Quick Start
+
+Struct supports MCP (Model Context Protocol) for seamless AI tool integration:
+
+```bash
+# 1. Start the MCP server
+struct mcp --server
+
+# 2. Configure your AI tool (Claude Desktop example)
+# Add to ~/.config/claude/claude_desktop_config.json:
+{
+  "mcpServers": {
+    "struct": {
+      "command": "struct",
+      "args": ["mcp", "--server"]
+    }
+  }
+}
+
+# 3. Use MCP tools in your AI conversations:
+# - list_structures: Get all available structures  
+# - get_structure_info: Get details about a structure
+# - generate_structure: Generate project structures
+# - validate_structure: Validate YAML configs
 ```
+
+**Supported MCP Clients:** Claude Desktop, Cline/Continue, Custom clients
+
+[📖 Full MCP Integration Guide](docs/mcp-integration.md)
 
 ### Example Configuration
 
