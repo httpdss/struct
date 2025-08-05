@@ -1,0 +1,23 @@
+[build]
+  publish = "site"
+  command = "mkdocs build"
+
+[build.environment]
+  PYTHON_VERSION = "3.11"
+
+[[redirects]]
+  from = "https://httpdss.github.io/struct/*"
+  to = "https://structio.netlify.app/:splat"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "https://httpdss.github.io/struct"
+  to = "https://structio.netlify.app/"
+  status = 301
+  force = true
+
+[dev]
+  command = "mkdocs serve"
+  port = 8000
+  publish = "site"

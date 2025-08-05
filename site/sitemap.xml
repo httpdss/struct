@@ -1,208 +1,95 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
-        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
-
-  <!-- Main Page -->
-  <url>
-    <loc>https://httpdss.github.io/struct/</loc>
-    <lastmod>2025-07-28</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>1.0</priority>
-
-    <!-- Demo Images -->
-    <image:image>
-      <image:loc>https://httpdss.github.io/struct/demos/basic-usage.gif</image:loc>
-      <image:caption>STRUCT Basic Usage Demo</image:caption>
-      <image:title>Basic Project Generation with STRUCT</image:title>
-    </image:image>
-
-    <image:image>
-      <image:loc>https://httpdss.github.io/struct/demos/yaml-config.gif</image:loc>
-      <image:caption>STRUCT YAML Configuration Demo</image:caption>
-      <image:title>YAML Configuration Creation</image:title>
-    </image:image>
-
-    <image:image>
-      <image:loc>https://httpdss.github.io/struct/demos/mappings-demo.gif</image:loc>
-      <image:caption>STRUCT Mappings Demo</image:caption>
-      <image:title>External Mappings Usage</image:title>
-    </image:image>
-
-    <image:image>
-      <image:loc>https://httpdss.github.io/struct/demos/remote-content.gif</image:loc>
-      <image:caption>STRUCT Remote Content Demo</image:caption>
-      <image:title>Remote Content Fetching</image:title>
-    </image:image>
-
-    <image:image>
-      <image:loc>https://httpdss.github.io/struct/demos/advanced-features.gif</image:loc>
-      <image:caption>STRUCT Advanced Features Demo</image:caption>
-      <image:title>Advanced Features and Hooks</image:title>
-    </image:image>
-  </url>
-
-  <!-- Generated Documentation Pages -->
-
-  <url>
-    <loc>https://httpdss.github.io/struct/docs/configuration</loc>
-    <lastmod>2025-08-02</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <url>
-    <loc>https://httpdss.github.io/struct/docs/hooks</loc>
-    <lastmod>2025-08-02</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <url>
-    <loc>https://httpdss.github.io/struct/docs/development</loc>
-    <lastmod>2025-08-02</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <url>
-    <loc>https://httpdss.github.io/struct/docs/vhs/index.html</loc>
-    <lastmod>2025-08-02</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <url>
-    <loc>https://httpdss.github.io/struct/docs/template-vriables</loc>
-    <lastmod>2025-08-02</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <url>
-    <loc>https://httpdss.github.io/struct/docs/known-issues</loc>
-    <lastmod>2025-08-02</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <url>
-    <loc>https://httpdss.github.io/struct/docs/articles</loc>
-    <lastmod>2025-08-02</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <url>
-    <loc>https://httpdss.github.io/struct/docs/404</loc>
-    <lastmod>2025-08-02</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <url>
-    <loc>https://httpdss.github.io/struct/docs/installtion</loc>
-    <lastmod>2025-08-02</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <url>
-    <loc>https://httpdss.github.io/struct/docs/schema</loc>
-    <lastmod>2025-08-02</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <url>
-    <loc>https://httpdss.github.io/struct/docs/usage</loc>
-    <lastmod>2025-08-02</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <url>
-    <loc>https://httpdss.github.io/struct/docs/completion</loc>
-    <lastmod>2025-08-02</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <url>
-    <loc>https://httpdss.github.io/struct/docs/structures</loc>
-    <lastmod>2025-08-02</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <url>
-    <loc>https://httpdss.github.io/struct/docs/contributing</loc>
-    <lastmod>2025-08-02</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <url>
-    <loc>https://httpdss.github.io/struct/docs/github-integration</loc>
-    <lastmod>2025-08-02</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <url>
-    <loc>https://httpdss.github.io/struct/docs/examples/index.html</loc>
-    <lastmod>2025-08-02</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <url>
-    <loc>https://httpdss.github.io/struct/docs/file-handling</loc>
-    <lastmod>2025-08-02</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <url>
-    <loc>https://httpdss.github.io/struct/docs/</loc>
-    <lastmod>2025-08-02</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <url>
-    <loc>https://httpdss.github.io/struct/docs/mappings</loc>
-    <lastmod>2025-08-02</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <url>
-    <loc>https://httpdss.github.io/struct/docs/quickstart</loc>
-    <lastmod>2025-08-02</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <url>
-    <loc>https://httpdss.github.io/struct/docs/funding</loc>
-    <lastmod>2025-08-02</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <!-- New Documentation Pages (will be built) -->
-  <url>
-    <loc>https://httpdss.github.io/struct/docs/cli-reference</loc>
-    <lastmod>2025-08-02</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-
-  <url>
-    <loc>https://httpdss.github.io/struct/docs/custom-structures</loc>
-    <lastmod>2025-08-02</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+    <url>
+         <loc>https://structio.netlify.app/</loc>
+         <lastmod>2025-08-05</lastmod>
+    </url>
+    <url>
+         <loc>https://structio.netlify.app/articles/</loc>
+         <lastmod>2025-08-05</lastmod>
+    </url>
+    <url>
+         <loc>https://structio.netlify.app/cli-reference/</loc>
+         <lastmod>2025-08-05</lastmod>
+    </url>
+    <url>
+         <loc>https://structio.netlify.app/completion/</loc>
+         <lastmod>2025-08-05</lastmod>
+    </url>
+    <url>
+         <loc>https://structio.netlify.app/configuration/</loc>
+         <lastmod>2025-08-05</lastmod>
+    </url>
+    <url>
+         <loc>https://structio.netlify.app/contributing/</loc>
+         <lastmod>2025-08-05</lastmod>
+    </url>
+    <url>
+         <loc>https://structio.netlify.app/custom-structures/</loc>
+         <lastmod>2025-08-05</lastmod>
+    </url>
+    <url>
+         <loc>https://structio.netlify.app/development/</loc>
+         <lastmod>2025-08-05</lastmod>
+    </url>
+    <url>
+         <loc>https://structio.netlify.app/file-handling/</loc>
+         <lastmod>2025-08-05</lastmod>
+    </url>
+    <url>
+         <loc>https://structio.netlify.app/funding/</loc>
+         <lastmod>2025-08-05</lastmod>
+    </url>
+    <url>
+         <loc>https://structio.netlify.app/github-integration/</loc>
+         <lastmod>2025-08-05</lastmod>
+    </url>
+    <url>
+         <loc>https://structio.netlify.app/hooks/</loc>
+         <lastmod>2025-08-05</lastmod>
+    </url>
+    <url>
+         <loc>https://structio.netlify.app/installation/</loc>
+         <lastmod>2025-08-05</lastmod>
+    </url>
+    <url>
+         <loc>https://structio.netlify.app/known-issues/</loc>
+         <lastmod>2025-08-05</lastmod>
+    </url>
+    <url>
+         <loc>https://structio.netlify.app/mappings/</loc>
+         <lastmod>2025-08-05</lastmod>
+    </url>
+    <url>
+         <loc>https://structio.netlify.app/mcp-integration/</loc>
+         <lastmod>2025-08-05</lastmod>
+    </url>
+    <url>
+         <loc>https://structio.netlify.app/quickstart/</loc>
+         <lastmod>2025-08-05</lastmod>
+    </url>
+    <url>
+         <loc>https://structio.netlify.app/schema/</loc>
+         <lastmod>2025-08-05</lastmod>
+    </url>
+    <url>
+         <loc>https://structio.netlify.app/structures/</loc>
+         <lastmod>2025-08-05</lastmod>
+    </url>
+    <url>
+         <loc>https://structio.netlify.app/template-variables/</loc>
+         <lastmod>2025-08-05</lastmod>
+    </url>
+    <url>
+         <loc>https://structio.netlify.app/usage/</loc>
+         <lastmod>2025-08-05</lastmod>
+    </url>
+    <url>
+         <loc>https://structio.netlify.app/examples/</loc>
+         <lastmod>2025-08-05</lastmod>
+    </url>
+    <url>
+         <loc>https://structio.netlify.app/vhs/</loc>
+         <lastmod>2025-08-05</lastmod>
+    </url>
 </urlset>

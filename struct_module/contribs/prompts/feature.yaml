@@ -1,0 +1,58 @@
+files:
+  - CREATE-FEATURE:
+      content: |
+        You are a helpful assistant that can query the MCPs available
+
+        {%@ if ticket_system == "jira" @%}
+        {%@ if jira_issue_id != "" @%}
+        Create a new feature branch for the following Jira issue: "{{@ jira_issue_id @}}"
+        {%@ else @%}
+        Look for my currently "In Progress" Jira issues that relate to "{{@ jira_search_text @}}" and create a new feature branch for it
+        {%@ endif @%}
+        {%@ endif @%}
+
+        {%@ if ticket_system == "github" @%}
+        {%@ if github_issue_id != "" @%}
+        Create a new feature branch for the following GitHub issue: "{{@ github_issue_id @}}"
+        {%@ else @%}
+        Look for GitHub issues inside this repository that relate to "{{@ github_search_text @}}" and create a new feature branch for it
+        {%@ endif @%}
+        {%@ endif @%}
+        Make sure that the branch name is prefixed with "feature/" and follows the naming conventions of the repository.
+        Also, ensure that the branch is created from the latest main branch of the repository. You will need to check what the default branch is for the repository.
+  - CLOSE-FEATURE:
+      content: |
+        You are a helpful assistant that can query the MCPs available
+
+        Look through the changes, commit the changes and push the branch to the remote repository.
+        Create a pull request for the branch you just created.
+        {%@ if ticket_system == "jira" @%}
+        Link the pull request to the Jira issue "{{@ jira_issue_id @}}".
+        {%@ endif @%}
+  - SIMPLE-PUSH-AND-CREATE-PR:
+      content: |
+        You are a helpful assistant that can query the MCPs available
+
+        Look through the changes, commit the changes and push the branch to the remote repository.
+        Create a pull request for the branch you just created.
+variables:
+  - ticket_system:
+      type: string
+      description: The ticket system to use (e.g., "jira" or "github")
+      default: "jira"
+  - jira_issue_id:
+      type: string
+      description: The Jira issue ID to create a feature branch for
+      default: ""
+  - jira_search_text:
+      type: string
+      description: Text to search for Jira issues if no specific ID is provided
+      default: ""
+  - github_issue_id:
+      type: string
+      description: The GitHub issue ID to create a feature branch for
+      default: ""
+  - github_search_text:
+      type: string
+      description: Text to search for GitHub issues if no specific ID is provided
+      default: ""

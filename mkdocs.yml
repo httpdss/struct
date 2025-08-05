@@ -1,6 +1,6 @@
 site_name: STRUCT Documentation
 site_description: Automated Project Structure Generator
-site_url: https://httpdss.github.io/struct/
+site_url: https://structio.netlify.app/
 repo_url: https://github.com/httpdss/struct
 repo_name: httpdss/struct
 
@@ -42,7 +42,7 @@ theme:
   custom_dir: overrides
 
 docs_dir: docs
-site_dir: site/docs
+site_dir: site
 
 # Navigation structure based on existing docs
 nav:

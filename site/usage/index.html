@@ -10,26 +10,28 @@
 
 
 
-        <link rel="canonical" href="https://structio.netlify.app/">
+        <link rel="canonical" href="https://structio.netlify.app/usage/">
 
 
+        <link rel="prev" href="../quickstart/">
 
-        <link rel="next" href="installation/">
+
+        <link rel="next" href="../configuration/">
 
 
-      <link rel="icon" href="assets/images/favicon.png">
+      <link rel="icon" href="../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.16">
 
 
 
-        <title>STRUCT Documentation</title>
+        <title>Usage - STRUCT Documentation</title>
 
 
 
-      <link rel="stylesheet" href="assets/stylesheets/main.7e37652d.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.7e37652d.min.css">
 
 
-        <link rel="stylesheet" href="assets/stylesheets/palette.06af60db.min.css">
+        <link rel="stylesheet" href="../assets/stylesheets/palette.06af60db.min.css">
 
 
 
@@ -48,9 +50,9 @@
 
 
 
-      <link rel="stylesheet" href="stylesheets/extra.css">
+      <link rel="stylesheet" href="../stylesheets/extra.css">
 
-    <script>__md_scope=new URL(".",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
 
 
 
@@ -87,7 +89,7 @@
     <div data-md-component="skip">
 
 
-        <a href="#struct-documentation" class="md-skip">
+        <a href="#basic-usage" class="md-skip">
           Skip to content
         </a>
 
@@ -101,7 +103,7 @@
 
 <header class="md-header" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="." title="STRUCT Documentation" class="md-header__button md-logo" aria-label="STRUCT Documentation" data-md-component="logo">
+    <a href=".." title="STRUCT Documentation" class="md-header__button md-logo" aria-label="STRUCT Documentation" data-md-component="logo">
 
 
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -121,7 +123,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
 
-              Home
+              Usage
 
           </span>
         </div>
@@ -246,10 +248,8 @@
 
 
 
-
-
-    <li class="md-tabs__item md-tabs__item--active">
-      <a href="." class="md-tabs__link">
+    <li class="md-tabs__item">
+      <a href=".." class="md-tabs__link">
 
 
 
@@ -269,8 +269,10 @@
 
 
 
-      <li class="md-tabs__item">
-        <a href="installation/" class="md-tabs__link">
+
+
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../installation/" class="md-tabs__link">
 
 
 
@@ -290,7 +292,7 @@
 
 
       <li class="md-tabs__item">
-        <a href="configuration/" class="md-tabs__link">
+        <a href="../configuration/" class="md-tabs__link">
 
 
 
@@ -310,7 +312,7 @@
 
 
       <li class="md-tabs__item">
-        <a href="structures/" class="md-tabs__link">
+        <a href="../structures/" class="md-tabs__link">
 
 
 
@@ -330,7 +332,7 @@
 
 
       <li class="md-tabs__item">
-        <a href="development/" class="md-tabs__link">
+        <a href="../development/" class="md-tabs__link">
 
 
 
@@ -350,7 +352,7 @@
 
 
       <li class="md-tabs__item">
-        <a href="examples/" class="md-tabs__link">
+        <a href="../examples/" class="md-tabs__link">
 
 
 
@@ -384,7 +386,7 @@
 
 <nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="." title="STRUCT Documentation" class="md-nav__button md-logo" aria-label="STRUCT Documentation" data-md-component="logo">
+    <a href=".." title="STRUCT Documentation" class="md-nav__button md-logo" aria-label="STRUCT Documentation" data-md-component="logo">
 
 
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -413,30 +415,8 @@
 
 
 
-
-
-    <li class="md-nav__item md-nav__item--active">
-
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-
-
-
-
-
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-
-
-
-  <span class="md-ellipsis">
-    Home
-
-  </span>
-
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-
-      <a href="." class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
 
 
 
@@ -447,104 +427,6 @@
 
 
       </a>
-
-
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-
-
-
-
-
-
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-
-        <li class="md-nav__item">
-  <a href="#documentation-sections" class="md-nav__link">
-    <span class="md-ellipsis">
-      📚 Documentation Sections
-    </span>
-  </a>
-
-    <nav class="md-nav" aria-label="📚 Documentation Sections">
-      <ul class="md-nav__list">
-
-          <li class="md-nav__item">
-  <a href="#getting-started" class="md-nav__link">
-    <span class="md-ellipsis">
-      Getting Started
-    </span>
-  </a>
-
-</li>
-
-          <li class="md-nav__item">
-  <a href="#configuration" class="md-nav__link">
-    <span class="md-ellipsis">
-      Configuration
-    </span>
-  </a>
-
-</li>
-
-          <li class="md-nav__item">
-  <a href="#advanced-features" class="md-nav__link">
-    <span class="md-ellipsis">
-      Advanced Features
-    </span>
-  </a>
-
-</li>
-
-          <li class="md-nav__item">
-  <a href="#development" class="md-nav__link">
-    <span class="md-ellipsis">
-      Development
-    </span>
-  </a>
-
-</li>
-
-          <li class="md-nav__item">
-  <a href="#reference" class="md-nav__link">
-    <span class="md-ellipsis">
-      Reference
-    </span>
-  </a>
-
-</li>
-
-      </ul>
-    </nav>
-
-</li>
-
-        <li class="md-nav__item">
-  <a href="#external-resources" class="md-nav__link">
-    <span class="md-ellipsis">
-      🔗 External Resources
-    </span>
-  </a>
-
-</li>
-
-        <li class="md-nav__item">
-  <a href="#community" class="md-nav__link">
-    <span class="md-ellipsis">
-      🤝 Community
-    </span>
-  </a>
-
-</li>
-
-    </ul>
-
-</nav>
-
     </li>
 
 
@@ -565,16 +447,19 @@
 
 
 
-    <li class="md-nav__item md-nav__item--nested">
 
 
 
 
 
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
 
 
-          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+
+
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
 
 
 
@@ -587,7 +472,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
 
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_2">
             <span class="md-nav__icon md-icon"></span>
             Getting Started
@@ -601,7 +486,7 @@
 
 
     <li class="md-nav__item">
-      <a href="installation/" class="md-nav__link">
+      <a href="../installation/" class="md-nav__link">
 
 
 
@@ -624,7 +509,7 @@
 
 
     <li class="md-nav__item">
-      <a href="quickstart/" class="md-nav__link">
+      <a href="../quickstart/" class="md-nav__link">
 
 
 
@@ -646,8 +531,30 @@
 
 
 
-    <li class="md-nav__item">
-      <a href="usage/" class="md-nav__link">
+
+
+    <li class="md-nav__item md-nav__item--active">
+
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+
+
+
+
+
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+
+
+
+  <span class="md-ellipsis">
+    Usage
+
+  </span>
+
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+
+      <a href="./" class="md-nav__link md-nav__link--active">
 
 
 
@@ -658,6 +565,161 @@
 
 
       </a>
+
+
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+
+
+
+
+
+
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+
+        <li class="md-nav__item">
+  <a href="#generate-command" class="md-nav__link">
+    <span class="md-ellipsis">
+      Generate Command
+    </span>
+  </a>
+
+    <nav class="md-nav" aria-label="Generate Command">
+      <ul class="md-nav__list">
+
+          <li class="md-nav__item">
+  <a href="#finding-available-structures" class="md-nav__link">
+    <span class="md-ellipsis">
+      Finding Available Structures
+    </span>
+  </a>
+
+</li>
+
+          <li class="md-nav__item">
+  <a href="#simple-example" class="md-nav__link">
+    <span class="md-ellipsis">
+      Simple Example
+    </span>
+  </a>
+
+</li>
+
+          <li class="md-nav__item">
+  <a href="#yaml-file-usage" class="md-nav__link">
+    <span class="md-ellipsis">
+      YAML File Usage
+    </span>
+  </a>
+
+</li>
+
+          <li class="md-nav__item">
+  <a href="#complete-example" class="md-nav__link">
+    <span class="md-ellipsis">
+      Complete Example
+    </span>
+  </a>
+
+</li>
+
+          <li class="md-nav__item">
+  <a href="#command-options" class="md-nav__link">
+    <span class="md-ellipsis">
+      Command Options
+    </span>
+  </a>
+
+</li>
+
+      </ul>
+    </nav>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#generate-schema-command" class="md-nav__link">
+    <span class="md-ellipsis">
+      Generate Schema Command
+    </span>
+  </a>
+
+    <nav class="md-nav" aria-label="Generate Schema Command">
+      <ul class="md-nav__list">
+
+          <li class="md-nav__item">
+  <a href="#basic-usage-of-generate-schema" class="md-nav__link">
+    <span class="md-ellipsis">
+      Basic Usage of generate-schema
+    </span>
+  </a>
+
+</li>
+
+          <li class="md-nav__item">
+  <a href="#command-options-for-generate-schema" class="md-nav__link">
+    <span class="md-ellipsis">
+      Command Options for generate-schema
+    </span>
+  </a>
+
+</li>
+
+      </ul>
+    </nav>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#other-commands" class="md-nav__link">
+    <span class="md-ellipsis">
+      Other Commands
+    </span>
+  </a>
+
+    <nav class="md-nav" aria-label="Other Commands">
+      <ul class="md-nav__list">
+
+          <li class="md-nav__item">
+  <a href="#validate-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      Validate Configuration
+    </span>
+  </a>
+
+</li>
+
+          <li class="md-nav__item">
+  <a href="#list-available-structures" class="md-nav__link">
+    <span class="md-ellipsis">
+      List Available Structures
+    </span>
+  </a>
+
+</li>
+
+          <li class="md-nav__item">
+  <a href="#show-information" class="md-nav__link">
+    <span class="md-ellipsis">
+      Show Information
+    </span>
+  </a>
+
+</li>
+
+      </ul>
+    </nav>
+
+</li>
+
+    </ul>
+
+</nav>
+
     </li>
 
 
@@ -722,7 +784,7 @@
 
 
     <li class="md-nav__item">
-      <a href="configuration/" class="md-nav__link">
+      <a href="../configuration/" class="md-nav__link">
 
 
 
@@ -745,7 +807,7 @@
 
 
     <li class="md-nav__item">
-      <a href="template-variables/" class="md-nav__link">
+      <a href="../template-variables/" class="md-nav__link">
 
 
 
@@ -768,7 +830,7 @@
 
 
     <li class="md-nav__item">
-      <a href="file-handling/" class="md-nav__link">
+      <a href="../file-handling/" class="md-nav__link">
 
 
 
@@ -791,7 +853,7 @@
 
 
     <li class="md-nav__item">
-      <a href="mappings/" class="md-nav__link">
+      <a href="../mappings/" class="md-nav__link">
 
 
 
@@ -866,7 +928,7 @@
 
 
     <li class="md-nav__item">
-      <a href="structures/" class="md-nav__link">
+      <a href="../structures/" class="md-nav__link">
 
 
 
@@ -889,7 +951,7 @@
 
 
     <li class="md-nav__item">
-      <a href="hooks/" class="md-nav__link">
+      <a href="../hooks/" class="md-nav__link">
 
 
 
@@ -912,7 +974,7 @@
 
 
     <li class="md-nav__item">
-      <a href="github-integration/" class="md-nav__link">
+      <a href="../github-integration/" class="md-nav__link">
 
 
 
@@ -935,7 +997,7 @@
 
 
     <li class="md-nav__item">
-      <a href="schema/" class="md-nav__link">
+      <a href="../schema/" class="md-nav__link">
 
 
 
@@ -1010,7 +1072,7 @@
 
 
     <li class="md-nav__item">
-      <a href="development/" class="md-nav__link">
+      <a href="../development/" class="md-nav__link">
 
 
 
@@ -1033,7 +1095,7 @@
 
 
     <li class="md-nav__item">
-      <a href="completion/" class="md-nav__link">
+      <a href="../completion/" class="md-nav__link">
 
 
 
@@ -1056,7 +1118,7 @@
 
 
     <li class="md-nav__item">
-      <a href="contributing/" class="md-nav__link">
+      <a href="../contributing/" class="md-nav__link">
 
 
 
@@ -1131,7 +1193,7 @@
 
 
     <li class="md-nav__item">
-      <a href="examples/" class="md-nav__link">
+      <a href="../examples/" class="md-nav__link">
 
 
 
@@ -1154,7 +1216,7 @@
 
 
     <li class="md-nav__item">
-      <a href="articles/" class="md-nav__link">
+      <a href="../articles/" class="md-nav__link">
 
 
 
@@ -1177,7 +1239,7 @@
 
 
     <li class="md-nav__item">
-      <a href="known-issues/" class="md-nav__link">
+      <a href="../known-issues/" class="md-nav__link">
 
 
 
@@ -1200,7 +1262,7 @@
 
 
     <li class="md-nav__item">
-      <a href="funding/" class="md-nav__link">
+      <a href="../funding/" class="md-nav__link">
 
 
 
@@ -1250,55 +1312,55 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
 
         <li class="md-nav__item">
-  <a href="#documentation-sections" class="md-nav__link">
+  <a href="#generate-command" class="md-nav__link">
     <span class="md-ellipsis">
-      📚 Documentation Sections
+      Generate Command
     </span>
   </a>
 
-    <nav class="md-nav" aria-label="📚 Documentation Sections">
+    <nav class="md-nav" aria-label="Generate Command">
       <ul class="md-nav__list">
 
           <li class="md-nav__item">
-  <a href="#getting-started" class="md-nav__link">
+  <a href="#finding-available-structures" class="md-nav__link">
     <span class="md-ellipsis">
-      Getting Started
+      Finding Available Structures
     </span>
   </a>
 
 </li>
 
           <li class="md-nav__item">
-  <a href="#configuration" class="md-nav__link">
+  <a href="#simple-example" class="md-nav__link">
     <span class="md-ellipsis">
-      Configuration
+      Simple Example
     </span>
   </a>
 
 </li>
 
           <li class="md-nav__item">
-  <a href="#advanced-features" class="md-nav__link">
+  <a href="#yaml-file-usage" class="md-nav__link">
     <span class="md-ellipsis">
-      Advanced Features
+      YAML File Usage
     </span>
   </a>
 
 </li>
 
           <li class="md-nav__item">
-  <a href="#development" class="md-nav__link">
+  <a href="#complete-example" class="md-nav__link">
     <span class="md-ellipsis">
-      Development
+      Complete Example
     </span>
   </a>
 
 </li>
 
           <li class="md-nav__item">
-  <a href="#reference" class="md-nav__link">
+  <a href="#command-options" class="md-nav__link">
     <span class="md-ellipsis">
-      Reference
+      Command Options
     </span>
   </a>
 
@@ -1310,20 +1372,77 @@
 </li>
 
         <li class="md-nav__item">
-  <a href="#external-resources" class="md-nav__link">
+  <a href="#generate-schema-command" class="md-nav__link">
     <span class="md-ellipsis">
-      🔗 External Resources
+      Generate Schema Command
+    </span>
+  </a>
+
+    <nav class="md-nav" aria-label="Generate Schema Command">
+      <ul class="md-nav__list">
+
+          <li class="md-nav__item">
+  <a href="#basic-usage-of-generate-schema" class="md-nav__link">
+    <span class="md-ellipsis">
+      Basic Usage of generate-schema
     </span>
   </a>
 
 </li>
 
-        <li class="md-nav__item">
-  <a href="#community" class="md-nav__link">
+          <li class="md-nav__item">
+  <a href="#command-options-for-generate-schema" class="md-nav__link">
     <span class="md-ellipsis">
-      🤝 Community
+      Command Options for generate-schema
     </span>
   </a>
+
+</li>
+
+      </ul>
+    </nav>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#other-commands" class="md-nav__link">
+    <span class="md-ellipsis">
+      Other Commands
+    </span>
+  </a>
+
+    <nav class="md-nav" aria-label="Other Commands">
+      <ul class="md-nav__list">
+
+          <li class="md-nav__item">
+  <a href="#validate-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      Validate Configuration
+    </span>
+  </a>
+
+</li>
+
+          <li class="md-nav__item">
+  <a href="#list-available-structures" class="md-nav__link">
+    <span class="md-ellipsis">
+      List Available Structures
+    </span>
+  </a>
+
+</li>
+
+          <li class="md-nav__item">
+  <a href="#show-information" class="md-nav__link">
+    <span class="md-ellipsis">
+      Show Information
+    </span>
+  </a>
+
+</li>
+
+      </ul>
+    </nav>
 
 </li>
 
@@ -1352,52 +1471,92 @@
 
 
 
-<h1 id="struct-documentation">STRUCT Documentation<a class="headerlink" href="#struct-documentation" title="Permanent link">&para;</a></h1>
-<p>Welcome to the comprehensive documentation for STRUCT - the Automated Project Structure Generator.</p>
-<h2 id="documentation-sections">📚 Documentation Sections<a class="headerlink" href="#documentation-sections" title="Permanent link">&para;</a></h2>
-<h3 id="getting-started">Getting Started<a class="headerlink" href="#getting-started" title="Permanent link">&para;</a></h3>
+<h1 id="basic-usage">Basic Usage<a class="headerlink" href="#basic-usage" title="Permanent link">&para;</a></h1>
+<p>Run the script with the following command using one of the following subcommands:</p>
 <ul>
-<li><a href="installation/">Installation Guide</a> - How to install STRUCT</li>
-<li><a href="quickstart/">Quick Start</a> - Get up and running quickly</li>
-<li><a href="usage/">Basic Usage</a> - Core functionality and commands</li>
+<li><code>generate</code>: Generate the project structure based on the YAML configuration.</li>
+<li><code>generate-schema</code>: Generate JSON schema for available structure templates.</li>
+<li><code>validate</code>: Validate the YAML configuration file.</li>
+<li><code>info</code>: Display information about the script and its dependencies.</li>
+<li><code>list</code>: List the available structs</li>
 </ul>
-<h3 id="configuration">Configuration<a class="headerlink" href="#configuration" title="Permanent link">&para;</a></h3>
+<p>For more information, run the script with the <code>-h</code> or <code>--help</code> option (this is also available for each subcommand):</p>
+<p><img alt="Struct List" src="../vhs/basic-usage.gif" /></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>struct<span class="w"> </span>-h
+</code></pre></div>
+<h2 id="generate-command">Generate Command<a class="headerlink" href="#generate-command" title="Permanent link">&para;</a></h2>
+<h3 id="finding-available-structures">Finding Available Structures<a class="headerlink" href="#finding-available-structures" title="Permanent link">&para;</a></h3>
+<p>Use the <code>list</code> command to see all available structures:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>struct<span class="w"> </span>list
+</code></pre></div>
+<p>Or if you have <a href="../completion/">auto-completion</a> enabled, use <code>Tab</code> to see all options:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>struct<span class="w"> </span>generate<span class="w"> </span>&lt;Tab&gt;
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="c1"># Shows all available structures</span>
+</code></pre></div>
+<h3 id="simple-example">Simple Example<a class="headerlink" href="#simple-example" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>struct<span class="w"> </span>generate<span class="w"> </span>terraform/modules/generic<span class="w"> </span>./my-terraform-module
+</code></pre></div>
+<h3 id="yaml-file-usage">YAML File Usage<a class="headerlink" href="#yaml-file-usage" title="Permanent link">&para;</a></h3>
+<p>For local YAML configuration files, the <code>file://</code> protocol is automatically added:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="c1"># Both of these work identically</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>struct<span class="w"> </span>generate<span class="w"> </span>my-config.yaml<span class="w"> </span>./output
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>struct<span class="w"> </span>generate<span class="w"> </span>file://my-config.yaml<span class="w"> </span>./output
+</code></pre></div>
+<h3 id="complete-example">Complete Example<a class="headerlink" href="#complete-example" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>struct<span class="w"> </span>generate<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="w">  </span>--log<span class="o">=</span>DEBUG<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="w">  </span>--dry-run<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="w">  </span>--backup<span class="o">=</span>/path/to/backup<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="w">  </span>--file-strategy<span class="o">=</span>rename<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="w">  </span>--log-file<span class="o">=</span>/path/to/logfile.log<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a><span class="w">  </span>terraform-module<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a><span class="w">  </span>./my-terraform-module
+</code></pre></div>
+<h3 id="command-options">Command Options<a class="headerlink" href="#command-options" title="Permanent link">&para;</a></h3>
 <ul>
-<li><a href="configuration/">YAML Configuration</a> - Complete configuration reference</li>
-<li><a href="template-variables/">Template Variables</a> - Working with dynamic content</li>
-<li><a href="file-handling/">File Handling</a> - Managing files and permissions</li>
+<li><code>--log</code>: Set logging level (DEBUG, INFO, WARNING, ERROR)</li>
+<li><code>--dry-run</code>: Preview actions without making changes</li>
+<li><code>--backup</code>: Specify backup directory for existing files</li>
+<li><code>--file-strategy</code>: Choose how to handle existing files (overwrite, skip, append, rename, backup)</li>
+<li><code>--log-file</code>: Write logs to specified file</li>
+<li><code>--mappings-file</code>: Provide external mappings file (can be used multiple times)</li>
 </ul>
-<h3 id="advanced-features">Advanced Features<a class="headerlink" href="#advanced-features" title="Permanent link">&para;</a></h3>
+<h2 id="generate-schema-command">Generate Schema Command<a class="headerlink" href="#generate-schema-command" title="Permanent link">&para;</a></h2>
+<p>The <code>generate-schema</code> command creates JSON schema definitions for available structure templates, making it easier for tools and IDEs to provide autocompletion and validation.</p>
+<h3 id="basic-usage-of-generate-schema">Basic Usage of <code>generate-schema</code><a class="headerlink" href="#basic-usage-of-generate-schema" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="c1"># Generate schema to stdout</span>
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>struct<span class="w"> </span>generate-schema
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="c1"># Generate schema with custom structures path</span>
+<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>struct<span class="w"> </span>generate-schema<span class="w"> </span>-s<span class="w"> </span>/path/to/custom/structures
+<a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a>
+<a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a><span class="c1"># Save schema to file</span>
+<a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a>struct<span class="w"> </span>generate-schema<span class="w"> </span>-o<span class="w"> </span>schema.json
+<a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a>
+<a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a><span class="c1"># Combine custom path and output file</span>
+<a id="__codelineno-6-11" name="__codelineno-6-11" href="#__codelineno-6-11"></a>struct<span class="w"> </span>generate-schema<span class="w"> </span>-s<span class="w"> </span>/path/to/custom/structures<span class="w"> </span>-o<span class="w"> </span>schema.json
+</code></pre></div>
+<h3 id="command-options-for-generate-schema">Command Options for <code>generate-schema</code><a class="headerlink" href="#command-options-for-generate-schema" title="Permanent link">&para;</a></h3>
 <ul>
-<li><a href="custom-structures/">Custom Structures</a> - Creating your own templates</li>
-<li><a href="hooks/">Hooks</a> - Pre and post-generation automation</li>
-<li><a href="mappings/">Mappings</a> - Using external data mappings</li>
-<li><a href="github-integration/">GitHub Integration</a> - Automation with GitHub Actions</li>
-<li><a href="mcp-integration/">MCP Integration</a> - Model Context Protocol for AI-assisted workflows</li>
+<li><code>-s, --structures-path</code>: Path to additional structure definitions (optional)</li>
+<li><code>-o, --output</code>: Output file path for the schema (default: stdout)</li>
 </ul>
-<h3 id="development">Development<a class="headerlink" href="#development" title="Permanent link">&para;</a></h3>
+<p>The generated schema includes all available structures from both the built-in contribs directory and any custom structures path you specify. This is useful for:</p>
 <ul>
-<li><a href="development/">Development Setup</a> - Contributing to STRUCT</li>
-<li><a href="completion/">Command-Line Completion</a> - Auto-completion setup</li>
+<li>IDE autocompletion when writing <code>.struct.yaml</code> files</li>
+<li>Validation of structure references in your configurations</li>
+<li>Programmatic discovery of available templates</li>
 </ul>
-<h3 id="reference">Reference<a class="headerlink" href="#reference" title="Permanent link">&para;</a></h3>
-<ul>
-<li><a href="cli-reference/">CLI Reference</a> - Complete command documentation</li>
-<li><a href="schema/">Schema Reference</a> - YAML validation and IDE support</li>
-<li><a href="examples/">Examples</a> - Practical examples and use cases</li>
-</ul>
-<h2 id="external-resources">🔗 External Resources<a class="headerlink" href="#external-resources" title="Permanent link">&para;</a></h2>
-<ul>
-<li><a href="https://github.com/httpdss/struct">GitHub Repository</a></li>
-<li><a href="articles/">Articles and Tutorials</a></li>
-<li><a href="known-issues/">Known Issues</a></li>
-</ul>
-<h2 id="community">🤝 Community<a class="headerlink" href="#community" title="Permanent link">&para;</a></h2>
-<ul>
-<li><a href="contributing/">Contributing Guidelines</a></li>
-<li><a href="../LICENSE">License</a></li>
-<li><a href="funding/">Funding</a></li>
-</ul>
+<h2 id="other-commands">Other Commands<a class="headerlink" href="#other-commands" title="Permanent link">&para;</a></h2>
+<h3 id="validate-configuration">Validate Configuration<a class="headerlink" href="#validate-configuration" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>struct<span class="w"> </span>validate<span class="w"> </span>my-structure.yaml
+</code></pre></div>
+<h3 id="list-available-structures">List Available Structures<a class="headerlink" href="#list-available-structures" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>struct<span class="w"> </span>list
+</code></pre></div>
+<h3 id="show-information">Show Information<a class="headerlink" href="#show-information" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>struct<span class="w"> </span>info<span class="w"> </span>&lt;structure_definition&gt;
+</code></pre></div>
 
 
 
@@ -1420,7 +1579,7 @@
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="August 3, 2025 20:29:44 UTC">August 3, 2025</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="August 2, 2025 22:27:22 UTC">August 2, 2025</span>
   </span>
 
 
@@ -1485,10 +1644,10 @@
 
 
 
-      <script id="__config" type="application/json">{"base": ".", "features": ["navigation.tabs", "navigation.sections", "navigation.expand", "navigation.top", "search.highlight", "search.share", "content.code.copy", "content.code.annotate"], "search": "assets/javascripts/workers/search.d50fe291.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"base": "..", "features": ["navigation.tabs", "navigation.sections", "navigation.expand", "navigation.top", "search.highlight", "search.share", "content.code.copy", "content.code.annotate"], "search": "../assets/javascripts/workers/search.d50fe291.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
 
 
-      <script src="assets/javascripts/bundle.50899def.min.js"></script>
+      <script src="../assets/javascripts/bundle.50899def.min.js"></script>
 
 
   </body>

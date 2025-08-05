@@ -12,9 +12,21 @@ import subprocess
 class GenerateCommand(Command):
   def __init__(self, parser):
     super().__init__(parser)
-    structure_arg = parser.add_argument('structure_definition', type=str, help='Path to the YAML configuration file')
+    structure_arg = parser.add_argument(
+        'structure_definition',
+        type=str,
+        help='Path to the YAML configuration file',
+        nargs='?',
+        default='./.struct.yaml'
+    )
     structure_arg.completer = structures_completer
-    parser.add_argument('base_path', type=str, help='Base path where the structure will be created')
+    parser.add_argument(
+        'base_path',
+        type=str,
+        nargs='?',
+        default='.',
+        help='Base path where the structure will be created (default: current directory)'
+    )
     parser.add_argument('-s', '--structures-path', type=str, help='Path to structure definitions')
     parser.add_argument('-n', '--input-store', type=str, help='Path to the input store', default='/tmp/struct/input.json')
     parser.add_argument('-d', '--dry-run', action='store_true', help='Perform a dry run without creating any files or directories')
@@ -192,7 +204,7 @@ class GenerateCommand(Command):
         # Output mode logic
         if hasattr(args, 'output') and args.output == 'console':
           # Print the file path and content to the console instead of creating the file
-          print(f"=== {file_path_to_create} ===")
+          print(f"\n📝 === {file_path_to_create.upper()} === 📝\n")
           print(file_item.content)
         else:
           file_item.create(
@@ -201,74 +213,74 @@ class GenerateCommand(Command):
               args.backup or None,
               args.file_strategy or 'overwrite'
           )
+    if not "console" in args.output:
+      for item in config_folders:
+        for folder, content in item.items():
+          folder_path = os.path.join(args.base_path, folder)
+          if hasattr(args, 'output') and args.output == 'file':
+            os.makedirs(folder_path, exist_ok=True)
+            self.logger.info(f"Created folder")
+            self.logger.info(f"  Folder: {folder_path}")
 
-    for item in config_folders:
-      for folder, content in item.items():
-        folder_path = os.path.join(args.base_path, folder)
-        if hasattr(args, 'output') and args.output == 'file':
-          os.makedirs(folder_path, exist_ok=True)
-          self.logger.info(f"Created folder")
-          self.logger.info(f"  Folder: {folder_path}")
+          # check if content has struct value
+          if 'struct' in content:
+            self.logger.info(f"Generating structure")
+            self.logger.info(f"  Folder: {folder}")
+            self.logger.info(f"  Struct:")
+            if isinstance(content['struct'], list):
+              # iterate over the list of structures
+              for struct in content['struct']:
+                self.logger.info(f"    - {struct}")
+            if isinstance(content['struct'], str):
+              self.logger.info(f"    - {content['struct']}")
 
-        # check if content has struct value
-        if 'struct' in content:
-          self.logger.info(f"Generating structure")
-          self.logger.info(f"  Folder: {folder}")
-          self.logger.info(f"  Struct:")
-          if isinstance(content['struct'], list):
-            # iterate over the list of structures
-            for struct in content['struct']:
-              self.logger.info(f"    - {struct}")
-          if isinstance(content['struct'], str):
-            self.logger.info(f"    - {content['struct']}")
+            # get vars from with param. this will be a dict of key value pairs
+            merged_vars = ""
 
-          # get vars from with param. this will be a dict of key value pairs
-          merged_vars = ""
+            # dict to comma separated string
+            if 'with' in content:
+              if isinstance(content['with'], dict):
+                # Render Jinja2 expressions in each value using TemplateRenderer
+                rendered_with = {}
+                renderer = TemplateRenderer(
+                    config_variables, args.input_store, args.non_interactive, mappings)
+                for k, v in content['with'].items():
+                  # Render the value as a template, passing in mappings and template_vars
+                  context = template_vars.copy() if template_vars else {}
+                  context['mappings'] = mappings or {}
+                  rendered_with[k] = renderer.render_template(str(v), context)
+                merged_vars = ",".join(
+                    [f"{k}={v}" for k, v in rendered_with.items()])
 
-          # dict to comma separated string
-          if 'with' in content:
-            if isinstance(content['with'], dict):
-              # Render Jinja2 expressions in each value using TemplateRenderer
-              rendered_with = {}
-              renderer = TemplateRenderer(
-                  config_variables, args.input_store, args.non_interactive, mappings)
-              for k, v in content['with'].items():
-                # Render the value as a template, passing in mappings and template_vars
-                context = template_vars.copy() if template_vars else {}
-                context['mappings'] = mappings or {}
-                rendered_with[k] = renderer.render_template(str(v), context)
-              merged_vars = ",".join(
-                  [f"{k}={v}" for k, v in rendered_with.items()])
+            if args.vars:
+              merged_vars = args.vars + "," + merged_vars
 
-          if args.vars:
-            merged_vars = args.vars + "," + merged_vars
-
-          if isinstance(content['struct'], str):
-            self._create_structure({
-              'structure_definition': content['struct'],
-              'base_path': folder_path,
-              'structures_path': args.structures_path,
-              'dry_run': args.dry_run,
-              'vars': merged_vars,
-              'backup': args.backup,
-              'file_strategy': args.file_strategy,
-              'global_system_prompt': args.global_system_prompt,
-              'input_store': args.input_store,
-              'non_interactive': args.non_interactive,
-            })
-          elif isinstance(content['struct'], list):
-            for struct in content['struct']:
+            if isinstance(content['struct'], str):
               self._create_structure({
-                'structure_definition': struct,
-                'base_path': folder_path,
-                'structures_path': args.structures_path,
-                'dry_run': args.dry_run,
-                'vars': merged_vars,
-                'backup': args.backup,
-                'file_strategy': args.file_strategy,
-                'global_system_prompt': args.global_system_prompt,
-                'input_store': args.input_store,
-                'non_interactive': args.non_interactive,
+                  'structure_definition': content['struct'],
+                  'base_path': folder_path,
+                  'structures_path': args.structures_path,
+                  'dry_run': args.dry_run,
+                  'vars': merged_vars,
+                  'backup': args.backup,
+                  'file_strategy': args.file_strategy,
+                  'global_system_prompt': args.global_system_prompt,
+                  'input_store': args.input_store,
+                  'non_interactive': args.non_interactive,
               })
-        else:
-          self.logger.warning(f"Unsupported content in folder: {folder}")
+            elif isinstance(content['struct'], list):
+              for struct in content['struct']:
+                self._create_structure({
+                    'structure_definition': struct,
+                    'base_path': folder_path,
+                    'structures_path': args.structures_path,
+                    'dry_run': args.dry_run,
+                    'vars': merged_vars,
+                    'backup': args.backup,
+                    'file_strategy': args.file_strategy,
+                    'global_system_prompt': args.global_system_prompt,
+                    'input_store': args.input_store,
+                    'non_interactive': args.non_interactive,
+                })
+          else:
+            self.logger.warning(f"Unsupported content in folder: {folder}")
