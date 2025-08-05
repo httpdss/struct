@@ -1,6 +1,6 @@
 site_name: STRUCT Documentation
 site_description: Automated Project Structure Generator
-site_url: https://httpdss.github.io/struct/
+site_url: https://structio.netlify.app/
 repo_url: https://github.com/httpdss/struct
 repo_name: httpdss/struct
 

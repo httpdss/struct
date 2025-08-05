@@ -5,7 +5,7 @@
 
 SITEMAP_FILE="sitemap.xml"
 DOCS_DIR="docs"
-BASE_URL="https://httpdss.github.io/struct"
+BASE_URL="https://structio.netlify.app"
 TODAY=$(date +%Y-%m-%d)
 
 echo "📄 Updating sitemap.xml with generated documentation pages..."

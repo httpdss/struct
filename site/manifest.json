@@ -59,7 +59,7 @@
       "name": "Documentation",
       "short_name": "Docs",
       "description": "Read STRUCT documentation",
-      "url": "https://httpdss.github.io/struct/docs",
+      "url": "https://structio.netlify.app/docs",
       "icons": [
         {
           "src": "/struct/images/docs-icon.png",
@@ -71,7 +71,7 @@
       "name": "Quick Start",
       "short_name": "Start",
       "description": "Quick start guide",
-      "url": "https://httpdss.github.io/struct/docs/quickstart",
+      "url": "https://structio.netlify.app/docs/quickstart",
       "icons": [
         {
           "src": "/struct/images/quickstart-icon.png",
