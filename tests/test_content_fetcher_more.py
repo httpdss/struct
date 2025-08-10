@@ -158,3 +158,64 @@ def test_github_invalid_path_raises(monkeypatch, tmp_path):
         cf.fetch_content("githubhttps://owner/repo-only")
     with pytest.raises(ValueError):
         cf.fetch_content("githubssh://owner/repo-only")
+
+
+def test_s3_unavailable_raises_valueerror(monkeypatch, tmp_path):
+    cf = ContentFetcher(cache_dir=tmp_path / "cache")
+    # Force unavailable path; dispatcher will not include s3 and treat as unsupported
+    import struct_module.content_fetcher as mod
+    monkeypatch.setattr(mod, "boto3_available", False)
+    with pytest.raises(ValueError):
+        cf.fetch_content("s3://bucket/key.txt")
+
+
+def test_gcs_unavailable_raises_valueerror(monkeypatch, tmp_path):
+    cf = ContentFetcher(cache_dir=tmp_path / "cache")
+    import struct_module.content_fetcher as mod
+    monkeypatch.setattr(mod, "gcs_available", False)
+    with pytest.raises(ValueError):
+        cf.fetch_content("gs://bucket/key.txt")
+
+
+def test_s3_invalid_path_raises_valueerror(monkeypatch, tmp_path):
+    cf = ContentFetcher(cache_dir=tmp_path / "cache")
+    # Ensure available so it reaches regex
+    import struct_module.content_fetcher as mod
+    monkeypatch.setattr(mod, "boto3_available", True)
+    # Do not mock boto3 since we only test invalid pattern, which raises earlier
+    with pytest.raises(ValueError):
+        cf.fetch_content("s3://invalid-format")
+
+
+def test_gcs_invalid_path_raises_valueerror(monkeypatch, tmp_path):
+    cf = ContentFetcher(cache_dir=tmp_path / "cache")
+    import struct_module.content_fetcher as mod
+    monkeypatch.setattr(mod, "gcs_available", True)
+    with pytest.raises(ValueError):
+        cf.fetch_content("gs://invalid-format")
+
+
+def test_git_clone_error_bubbles(monkeypatch, tmp_path):
+    cf = ContentFetcher(cache_dir=tmp_path / "cache")
+    def fake_run(args, check):
+        if args[:2] == ["git", "clone"]:
+            raise subprocess.CalledProcessError(1, args)
+    monkeypatch.setattr(subprocess, "run", fake_run)
+    with pytest.raises(subprocess.CalledProcessError):
+        cf.fetch_content("github://owner/repo/main/file.txt")
+
+
+def test_git_pull_error_bubbles(monkeypatch, tmp_path):
+    cf = ContentFetcher(cache_dir=tmp_path / "cache")
+    repo_dir = tmp_path / "cache" / "owner_repo_main"
+    # Simulate existing repo so it tries pull
+    repo_dir.mkdir(parents=True, exist_ok=True)
+    (repo_dir / "file.txt").write_text("x")
+
+    def fake_run(args, check):
+        if args[:3] == ["git", "-C", str(repo_dir)]:
+            raise subprocess.CalledProcessError(1, args)
+    monkeypatch.setattr(subprocess, "run", fake_run)
+
+    with pytest.raises(subprocess.CalledProcessError):
+        cf.fetch_content("githubhttps://owner/repo/main/file.txt")
