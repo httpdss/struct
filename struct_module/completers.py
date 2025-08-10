@@ -51,4 +51,5 @@ class StructuresCompleter(object):
 
 log_level_completer = ChoicesCompleter(['DEBUG', 'INFO', 'WARNING', 'ERROR', 'CRITICAL'])
 file_strategy_completer = ChoicesCompleter(['overwrite', 'skip', 'append', 'rename', 'backup'])
+cache_policy_completer = ChoicesCompleter(['always', 'never', 'refresh'])
 structures_completer = StructuresCompleter()

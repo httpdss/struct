@@ -160,6 +160,7 @@ class GenerateCommand(Command):
           content["config_variables"] = config_variables
           content["input_store"] = args.input_store
           content["non_interactive"] = args.non_interactive
+          content["cache_policy"] = args.cache_policy
           content["mappings"] = mappings or {}
           file_item = FileItem(content)
           file_item.fetch_content()
@@ -172,6 +173,7 @@ class GenerateCommand(Command):
               "input_store": args.input_store,
               "non_interactive": args.non_interactive,
               "mappings": mappings or {},
+              "cache_policy": args.cache_policy,
             }
           )
 

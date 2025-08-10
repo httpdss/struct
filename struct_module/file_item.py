@@ -25,7 +25,8 @@ class FileItem:
       self.skip = properties.get("skip", False)
       self.skip_if_exists = properties.get("skip_if_exists", False)
 
-      self.content_fetcher = ContentFetcher()
+      self.cache_policy = properties.get("cache_policy", "always")
+      self.content_fetcher = ContentFetcher(cache_policy=self.cache_policy)
 
       self.system_prompt = properties.get("system_prompt") or properties.get("global_system_prompt")
       self.user_prompt = properties.get("user_prompt")

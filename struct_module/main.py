@@ -8,6 +8,7 @@ from struct_module.commands.validate import ValidateCommand
 from struct_module.commands.list import ListCommand
 from struct_module.commands.generate_schema import GenerateSchemaCommand
 from struct_module.commands.mcp import MCPCommand
+from struct_module.commands.cache import CacheCommand
 from struct_module.logging_config import configure_logging
 
 
@@ -30,6 +31,7 @@ def main():
     ListCommand(subparsers.add_parser('list', help='List available structures'))
     GenerateSchemaCommand(subparsers.add_parser('generate-schema', help='Generate JSON schema for available structures'))
     MCPCommand(subparsers.add_parser('mcp', help='MCP (Model Context Protocol) support'))
+    CacheCommand(subparsers.add_parser('cache', help='Inspect or clear cache'))
 
     argcomplete.autocomplete(parser)
 

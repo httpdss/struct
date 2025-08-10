@@ -6,6 +6,7 @@ import subprocess
 from pathlib import Path
 import hashlib
 import logging
+import tempfile
 
 try:
   import boto3
@@ -22,10 +23,11 @@ except ImportError:
   gcs_available = False
 
 class ContentFetcher:
-  def __init__(self, cache_dir=None):
+  def __init__(self, cache_dir=None, cache_policy="always"):
     self.logger = logging.getLogger(__name__)
     self.cache_dir = Path(cache_dir or os.path.expanduser("~/.struct/cache"))
     self.cache_dir.mkdir(parents=True, exist_ok=True)
+    self.cache_policy = cache_policy
 
   def fetch_content(self, content_location):
     """
@@ -72,15 +74,20 @@ class ContentFetcher:
     cache_key = hashlib.md5(url.encode()).hexdigest()
     cache_file_path = self.cache_dir / cache_key
 
-    if cache_file_path.exists():
+    if self.cache_policy == "always" and cache_file_path.exists():
       self.logger.debug(f"Loading content from cache: {cache_file_path}")
       with cache_file_path.open('r') as file:
         return file.read()
 
+    if self.cache_policy == "refresh" and cache_file_path.exists():
+      cache_file_path.unlink()
+
     response = requests.get(url)
     response.raise_for_status()
-    with cache_file_path.open('w') as file:
-      file.write(response.text)
+
+    if self.cache_policy in ["always", "refresh"]:
+      with cache_file_path.open('w') as file:
+        file.write(response.text)
 
     return response.text
 
@@ -127,15 +134,22 @@ class ContentFetcher:
     repo_cache_path = self.cache_dir / f"{owner}_{repo}_{branch}"
     clone_url = f"https://github.com/{owner}/{repo}.git" if https else f"git@github.com:{owner}/{repo}.git"
 
-    # Clone or fetch the repository
+    if self.cache_policy == "never":
+      with tempfile.TemporaryDirectory() as tmpdir:
+        subprocess.run(["git", "clone", "-b", branch, clone_url, tmpdir], check=True)
+        file_full_path = Path(tmpdir) / file_path
+        if not file_full_path.exists():
+          raise FileNotFoundError(f"File {file_path} not found in repository {owner}/{repo} on branch {branch}")
+        with file_full_path.open('r') as file:
+          return file.read()
+
     if not repo_cache_path.exists():
       self.logger.debug(f"Cloning repository: {owner}/{repo} (branch: {branch})")
       subprocess.run(["git", "clone", "-b", branch, clone_url, str(repo_cache_path)], check=True)
-    else:
-      self.logger.debug(f"Repository already cloned. Pulling latest changes for: {repo_cache_path}")
+    elif self.cache_policy == "refresh":
+      self.logger.debug(f"Refreshing repository cache: {repo_cache_path}")
       subprocess.run(["git", "-C", str(repo_cache_path), "pull"], check=True)
 
-    # Read the requested file
     file_full_path = repo_cache_path / file_path
     if not file_full_path.exists():
       raise FileNotFoundError(f"File {file_path} not found in repository {owner}/{repo} on branch {branch}")
@@ -158,6 +172,31 @@ class ContentFetcher:
 
     bucket_name, key = match.groups()
     local_file_path = self.cache_dir / Path(key).name
+
+    if self.cache_policy == "always" and local_file_path.exists():
+      with local_file_path.open('r') as file:
+        return file.read()
+
+    if self.cache_policy == "never":
+      with tempfile.TemporaryDirectory() as tmpdir:
+        temp_path = Path(tmpdir) / Path(key).name
+        session = boto3.Session()
+        s3_client = session.client("s3")
+        try:
+          s3_client.download_file(bucket_name, key, str(temp_path))
+        except NoCredentialsError:
+          raise RuntimeError("AWS credentials not found. Ensure that your credentials are configured properly.")
+        except ClientError as e:
+          error_code = e.response.get("Error", {}).get("Code")
+          if error_code == "404":
+            raise FileNotFoundError(f"The specified S3 key does not exist: {key}")
+          else:
+            raise RuntimeError(f"Failed to download S3 file: {e}")
+        with temp_path.open('r') as file:
+          return file.read()
+
+    if self.cache_policy == "refresh" and local_file_path.exists():
+      local_file_path.unlink()
 
     try:
       session = boto3.Session()  # Create a new session
@@ -191,6 +230,26 @@ class ContentFetcher:
 
     bucket_name, key = match.groups()
     local_file_path = self.cache_dir / Path(key).name
+
+    if self.cache_policy == "always" and local_file_path.exists():
+      with local_file_path.open('r') as file:
+        return file.read()
+
+    if self.cache_policy == "never":
+      with tempfile.TemporaryDirectory() as tmpdir:
+        temp_path = Path(tmpdir) / Path(key).name
+        try:
+          gcs_client = storage.Client()
+          bucket = gcs_client.bucket(bucket_name)
+          blob = bucket.blob(key)
+          blob.download_to_filename(str(temp_path))
+        except GoogleAPIError as e:
+          raise RuntimeError(f"Failed to download GCS file: {e}")
+        with temp_path.open('r') as file:
+          return file.read()
+
+    if self.cache_policy == "refresh" and local_file_path.exists():
+      local_file_path.unlink()
 
     try:
       gcs_client = storage.Client()
