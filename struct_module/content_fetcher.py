@@ -84,41 +84,41 @@ class ContentFetcher:
 
     return response.text
 
-  def _fetch_github_file(self, github_url):
+  def _fetch_github_file(self, github_path):
     """
     Fetch a file from a GitHub repository using HTTPS.
-    Expected format: github://owner/repo/branch/file_path
+    Dispatcher passes: owner/repo/branch/file_path
     """
-    self.logger.debug(f"Fetching content from GitHub: {github_url}")
-    match = re.match(r"github://([^/]+)/([^/]+)/([^/]+)/(.+)", github_url)
+    self.logger.debug(f"Fetching content from GitHub: {github_path}")
+    match = re.match(r"([^/]+)/([^/]+)/([^/]+)/(.+)", github_path)
     if not match:
-      raise ValueError("Invalid GitHub URL format. Expected github://owner/repo/branch/file_path")
+      raise ValueError("Invalid GitHub path. Expected owner/repo/branch/file_path")
 
     owner, repo, branch, file_path = match.groups()
     return self._clone_or_fetch_github(owner, repo, branch, file_path, https=True)
 
-  def _fetch_github_https_file(self, github_url):
+  def _fetch_github_https_file(self, github_path):
     """
     Fetch a file from a GitHub repository using HTTPS.
-    Expected format: githubhttps://owner/repo/branch/file_path
+    Dispatcher passes: owner/repo/branch/file_path
     """
-    self.logger.debug(f"Fetching content from GitHub (HTTPS): {github_url}")
-    match = re.match(r"githubhttps://([^/]+)/([^/]+)/([^/]+)/(.+)", github_url)
+    self.logger.debug(f"Fetching content from GitHub (HTTPS): {github_path}")
+    match = re.match(r"([^/]+)/([^/]+)/([^/]+)/(.+)", github_path)
     if not match:
-      raise ValueError("Invalid GitHub URL format. Expected githubhttps://owner/repo/branch/file_path")
+      raise ValueError("Invalid GitHub path. Expected owner/repo/branch/file_path")
 
     owner, repo, branch, file_path = match.groups()
     return self._clone_or_fetch_github(owner, repo, branch, file_path, https=True)
 
-  def _fetch_github_ssh_file(self, github_url):
+  def _fetch_github_ssh_file(self, github_path):
     """
     Fetch a file from a GitHub repository using SSH.
-    Expected format: githubssh://owner/repo/branch/file_path
+    Dispatcher passes: owner/repo/branch/file_path
     """
-    self.logger.debug(f"Fetching content from GitHub (SSH): {github_url}")
-    match = re.match(r"githubssh://([^/]+)/([^/]+)/([^/]+)/(.+)", github_url)
+    self.logger.debug(f"Fetching content from GitHub (SSH): {github_path}")
+    match = re.match(r"([^/]+)/([^/]+)/([^/]+)/(.+)", github_path)
     if not match:
-      raise ValueError("Invalid GitHub URL format. Expected githubssh://owner/repo/branch/file_path")
+      raise ValueError("Invalid GitHub path. Expected owner/repo/branch/file_path")
 
     owner, repo, branch, file_path = match.groups()
     return self._clone_or_fetch_github(owner, repo, branch, file_path, https=False)
@@ -143,18 +143,18 @@ class ContentFetcher:
     with file_full_path.open('r') as file:
       return file.read()
 
-  def _fetch_s3_file(self, s3_url):
+  def _fetch_s3_file(self, s3_path):
     """
     Fetch a file from an S3 bucket.
-    Expected format: s3://bucket_name/key
+    Dispatcher passes: bucket_name/key
     """
     if not boto3_available:
       raise ImportError("boto3 is not installed. Please install it to use S3 fetching.")
 
-    self.logger.debug(f"Fetching content from S3: {s3_url}")
-    match = re.match(r"s3://([^/]+)/(.+)", s3_url)
+    self.logger.debug(f"Fetching content from S3: {s3_path}")
+    match = re.match(r"([^/]+)/(.+)", s3_path)
     if not match:
-      raise ValueError("Invalid S3 URL format. Expected s3://bucket_name/key")
+      raise ValueError("Invalid S3 path. Expected bucket_name/key")
 
     bucket_name, key = match.groups()
     local_file_path = self.cache_dir / Path(key).name
@@ -176,18 +176,18 @@ class ContentFetcher:
     with local_file_path.open('r') as file:
       return file.read()
 
-  def _fetch_gcs_file(self, gcs_url):
+  def _fetch_gcs_file(self, gcs_path):
     """
     Fetch a file from Google Cloud Storage.
-    Expected format: gs://bucket_name/key
+    Dispatcher passes: bucket_name/key
     """
     if not gcs_available:
       raise ImportError("google-cloud-storage is not installed. Please install it to use GCS fetching.")
 
-    self.logger.debug(f"Fetching content from GCS: {gcs_url}")
-    match = re.match(r"gs://([^/]+)/(.+)", gcs_url)
+    self.logger.debug(f"Fetching content from GCS: {gcs_path}")
+    match = re.match(r"([^/]+)/(.+)", gcs_path)
     if not match:
-      raise ValueError("Invalid GCS URL format. Expected gs://bucket_name/key")
+      raise ValueError("Invalid GCS path. Expected bucket_name/key")
 
     bucket_name, key = match.groups()
     local_file_path = self.cache_dir / Path(key).name
