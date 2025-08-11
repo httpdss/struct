@@ -53,7 +53,10 @@ class ContentFetcher:
 
     for prefix, method in protocol_map.items():
       if content_location.startswith(prefix):
-        if content_location.startswith("http"):
+        # Only treat the raw HTTPS prefix as a direct URL fetch. All other
+        # custom prefixes (e.g., githubhttps://, githubssh://) should have
+        # their prefix stripped and be dispatched to the appropriate handler.
+        if prefix == "https://":
           return method(content_location)
         else:
           return method(content_location[len(prefix):])
