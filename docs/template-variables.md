@@ -83,6 +83,15 @@ variables:
 
 ### Validation and Defaults
 
+Interactive enum selection: when a variable defines `enum` and you are in interactive mode, STRUCT will display numbered choices and accept either the number or the exact value. Press Enter to accept the default (if any).
+
+Example prompt:
+
+```
+❓ Enter value for ENV [dev] (1) dev, (2) prod:
+# Typing `2` selects `prod`, typing `prod` also works.
+```
+
 You can now enforce types and validations in your variables schema:
 
 - `required: true` to require a value (non-interactive runs will error if missing)
