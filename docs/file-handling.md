@@ -68,7 +68,7 @@ files:
 
 ## Remote File Protocols
 
-STRUCT supports multiple protocols for fetching remote content:
+STRUCT supports multiple protocols for fetching remote content (with caching and robust fallbacks):
 
 ### HTTP/HTTPS
 
@@ -79,6 +79,12 @@ files:
 ```
 
 ### GitHub Protocols
+
+STRUCT optimizes single-file fetches from GitHub by preferring `raw.githubusercontent.com` when possible and falling back to `git clone/pull` if necessary. You can control behavior with environment variables:
+
+- `STRUCT_HTTP_TIMEOUT` (seconds, default 10)
+- `STRUCT_HTTP_RETRIES` (default 2)
+- `STRUCT_DENY_NETWORK=1` to skip HTTP attempts and use git fallback directly.
 
 #### Standard GitHub
 

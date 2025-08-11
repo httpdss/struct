@@ -78,7 +78,37 @@ variables:
 
 - `string`: Text values
 - `integer`: Numeric values
+- `number`: Floating-point values
 - `boolean`: True/false values
+
+### Validation and Defaults
+
+You can now enforce types and validations in your variables schema:
+
+- `required: true` to require a value (non-interactive runs will error if missing)
+- `enum: [...]` to restrict values to a set
+- `regex`/`pattern` to validate string format
+- `min`/`max` to bound numeric values
+- `env` or `default_from_env` to set defaults from environment variables
+
+Example:
+
+```yaml
+variables:
+  - IS_ENABLED:
+      type: boolean
+      required: true
+  - RETRY:
+      type: integer
+      min: 1
+      max: 5
+  - ENV:
+      type: string
+      enum: [dev, prod]
+  - TOKEN:
+      type: string
+      env: MY_TOKEN
+```
 
 ## Custom Jinja2 Filters
 

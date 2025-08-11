@@ -59,7 +59,7 @@ Generate the project structure.
 **Usage:**
 
 ```sh
-struct generate [-h] [-l LOG] [-c CONFIG_FILE] [-i LOG_FILE] [-s STRUCTURES_PATH] [-n INPUT_STORE] [-d] [-v VARS] [-b BACKUP] [-f {overwrite,skip,append,rename,backup}] [-p GLOBAL_SYSTEM_PROMPT] [--non-interactive] [--mappings-file MAPPINGS_FILE] [-o {console,file}] structure_definition base_path
+struct generate [-h] [-l LOG] [-c CONFIG_FILE] [-i LOG_FILE] [-s STRUCTURES_PATH] [-n INPUT_STORE] [-d] [--diff] [-v VARS] [-b BACKUP] [-f {overwrite,skip,append,rename,backup}] [-p GLOBAL_SYSTEM_PROMPT] [--non-interactive] [--mappings-file MAPPINGS_FILE] [-o {console,file}] structure_definition base_path
 ```
 
 **Arguments:**
@@ -69,6 +69,7 @@ struct generate [-h] [-l LOG] [-c CONFIG_FILE] [-i LOG_FILE] [-s STRUCTURES_PATH
 - `-s STRUCTURES_PATH, --structures-path STRUCTURES_PATH`: Path to structure definitions.
 - `-n INPUT_STORE, --input-store INPUT_STORE`: Path to the input store.
 - `-d, --dry-run`: Perform a dry run without creating any files or directories.
+- `--diff`: Show unified diffs for files that would be created/modified (works with `--dry-run` and in `-o console` mode).
 - `-v VARS, --vars VARS`: Template variables in the format KEY1=value1,KEY2=value2.
 - `-b BACKUP, --backup BACKUP`: Path to the backup folder.
 - `-f {overwrite,skip,append,rename,backup}, --file-strategy {overwrite,skip,append,rename,backup}`: Strategy for handling existing files.
