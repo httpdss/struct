@@ -8,3 +8,8 @@ build/*
 
 # MkDocs generated documentation
 site/docs/
+
+# Coverage artifacts
+.coverage
+coverage.xml
+htmlcov/

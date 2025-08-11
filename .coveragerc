@@ -1,0 +1,10 @@
+[run]
+branch = True
+source = struct_module
+
+[report]
+omit =
+    tests/*
+    */__init__.py
+show_missing = True
+skip_covered = True
