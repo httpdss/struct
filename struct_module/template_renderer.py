@@ -105,7 +105,28 @@ class TemplateRenderer:
               raise ValueError(f"Missing required variable '{var}' in non-interactive mode")
             user_input = default
           else:
-            user_input = input(f"❓ Enter value for {var} [{default}]: ") or default
+            # Interactive prompt with enum support (choose by value or index)
+            enum = conf.get('enum')
+            if enum:
+              # Build options list string like "(1) dev, (2) prod)"
+              options = ", ".join([f"({i+1}) {val}" for i, val in enumerate(enum)])
+              while True:
+                raw = input(f"❓ Enter value for {var} [{default}] {options}: ")
+                raw = raw.strip()
+                if raw == "":
+                  user_input = default
+                elif raw.isdigit() and 1 <= int(raw) <= len(enum):
+                  user_input = enum[int(raw) - 1]
+                else:
+                  # accept exact match from enum
+                  if raw in enum:
+                    user_input = raw
+                  else:
+                    print(f"Invalid choice. Please enter one of: {options} or a valid value.")
+                    continue
+                break
+            else:
+              user_input = input(f"❓ Enter value for {var} [{default}]: ") or default
           # Coerce and validate according to schema
           coerced = self._coerce_and_validate(var, user_input, conf)
           self.input_store.set_value(var, coerced)
