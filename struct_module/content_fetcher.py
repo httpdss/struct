@@ -98,7 +98,7 @@ class ContentFetcher:
       raise ValueError("Invalid GitHub path. Expected owner/repo/branch/file_path")
 
     owner, repo, branch, file_path = match.groups()
-    return self._clone_or_fetch_github(owner, repo, branch, file_path, https=True)
+    return self._github_fetch_with_raw_then_git(owner, repo, branch, file_path, use_https=True)
 
   def _fetch_github_https_file(self, github_path):
     """
@@ -111,7 +111,7 @@ class ContentFetcher:
       raise ValueError("Invalid GitHub path. Expected owner/repo/branch/file_path")
 
     owner, repo, branch, file_path = match.groups()
-    return self._clone_or_fetch_github(owner, repo, branch, file_path, https=True)
+    return self._github_fetch_with_raw_then_git(owner, repo, branch, file_path, use_https=True)
 
   def _fetch_github_ssh_file(self, github_path):
     """
@@ -124,7 +124,7 @@ class ContentFetcher:
       raise ValueError("Invalid GitHub path. Expected owner/repo/branch/file_path")
 
     owner, repo, branch, file_path = match.groups()
-    return self._clone_or_fetch_github(owner, repo, branch, file_path, https=False)
+    return self._github_fetch_with_raw_then_git(owner, repo, branch, file_path, use_https=False)
 
   def _clone_or_fetch_github(self, owner, repo, branch, file_path, https=True):
     repo_cache_path = self.cache_dir / f"{owner}_{repo}_{branch}"
@@ -145,6 +145,47 @@ class ContentFetcher:
 
     with file_full_path.open('r') as file:
       return file.read()
+
+  def _github_fetch_with_raw_then_git(self, owner, repo, branch, file_path, use_https=True):
+    """
+    Try lightweight fetch via raw.githubusercontent.com first. If it fails
+    (network disabled, HTTP error, etc.), fall back to git clone/pull.
+    If a local cache repo exists already, prefer using git path directly
+    to avoid surprise network requests.
+    """
+    # Deny network option
+    if os.getenv("STRUCT_DENY_NETWORK") == "1":
+      self.logger.debug("Network denied by STRUCT_DENY_NETWORK=1; using git fallback if available")
+      return self._clone_or_fetch_github(owner, repo, branch, file_path, https=use_https)
+
+    repo_cache_path = self.cache_dir / f"{owner}_{repo}_{branch}"
+    if repo_cache_path.exists():
+      # Keep existing behavior: use git path if cache exists
+      return self._clone_or_fetch_github(owner, repo, branch, file_path, https=use_https)
+
+    # Attempt raw fetch
+    raw_url = f"https://raw.githubusercontent.com/{owner}/{repo}/{branch}/{file_path}"
+    timeout = float(os.getenv("STRUCT_HTTP_TIMEOUT", "10"))
+    retries = int(os.getenv("STRUCT_HTTP_RETRIES", "2"))
+
+    last_err = None
+    for attempt in range(retries + 1):
+      try:
+        self.logger.debug(f"Attempting raw fetch: {raw_url} (attempt {attempt+1}/{retries+1})")
+        resp = requests.get(raw_url, timeout=timeout)
+        resp.raise_for_status()
+        return resp.text
+      except Exception as e:
+        last_err = e
+        # simple backoff
+        try:
+          import time
+          time.sleep(min(2 ** attempt, 5))
+        except Exception:
+          pass
+
+    self.logger.warning(f"Raw GitHub fetch failed, falling back to git. Last error: {last_err}")
+    return self._clone_or_fetch_github(owner, repo, branch, file_path, https=use_https)
 
   def _fetch_s3_file(self, s3_path):
     """
