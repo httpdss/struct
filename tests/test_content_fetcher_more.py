@@ -219,3 +219,110 @@ def test_git_pull_error_bubbles(monkeypatch, tmp_path):
 
     with pytest.raises(subprocess.CalledProcessError):
         cf.fetch_content("githubhttps://owner/repo/main/file.txt")
+
+
+def test_github_raw_fetch_success_no_git_calls(monkeypatch, tmp_path):
+    cf = ContentFetcher(cache_dir=tmp_path / "cache")
+    # Ensure no existing cache repo
+    # Prepare requests.get to return content
+    class Resp:
+        def __init__(self, text):
+            self.text = text
+        def raise_for_status(self):
+            return None
+    called = {"http": 0, "git": 0}
+    def fake_get(url, timeout=None):
+        called["http"] += 1
+        assert url == "https://raw.githubusercontent.com/owner/repo/main/path/to/file.txt"
+        return Resp("RAW_DATA")
+    def fake_run(args, check):
+        called["git"] += 1
+        raise AssertionError("git should not be called on raw success")
+    monkeypatch.setattr("struct_module.content_fetcher.requests.get", fake_get)
+    monkeypatch.setattr(subprocess, "run", fake_run)
+
+    out = cf.fetch_content("githubhttps://owner/repo/main/path/to/file.txt")
+    assert out == "RAW_DATA"
+    assert called["http"] == 1
+    assert called["git"] == 0
+
+
+def test_github_raw_fetch_retries_then_fallback_to_git(monkeypatch, tmp_path):
+    cf = ContentFetcher(cache_dir=tmp_path / "cache")
+    repo_dir = tmp_path / "cache" / "owner_repo_main"
+    file_rel = "path/to/file.txt"
+    file_full = repo_dir / file_rel
+
+    # Fail HTTP calls
+    def bad_get(url, timeout=None):
+        raise Exception("network down")
+    monkeypatch.setattr("struct_module.content_fetcher.requests.get", bad_get)
+
+    calls = {"clone": 0}
+    def fake_run(args, check):
+        if args[:2] == ["git", "clone"]:
+            calls["clone"] += 1
+            repo_dir.mkdir(parents=True, exist_ok=True)
+            file_full.parent.mkdir(parents=True, exist_ok=True)
+            file_full.write_text("GIT_DATA")
+        elif args[:3] == ["git", "-C", str(repo_dir)]:
+            # no-op for pull after clone path (not expected here)
+            return None
+        else:
+            raise AssertionError(f"Unexpected git call: {args}")
+    monkeypatch.setattr(subprocess, "run", fake_run)
+
+    # Speed up retries/backoff by setting retries=0 via env
+    monkeypatch.setenv("STRUCT_HTTP_RETRIES", "0")
+
+    out = cf.fetch_content("githubhttps://owner/repo/main/path/to/file.txt")
+    assert out == "GIT_DATA"
+    assert calls["clone"] == 1
+
+
+def test_github_deny_network_uses_git(monkeypatch, tmp_path):
+    cf = ContentFetcher(cache_dir=tmp_path / "cache")
+    repo_dir = tmp_path / "cache" / "owner_repo_main"
+    file_full = repo_dir / "path.txt"
+
+    # Deny network
+    monkeypatch.setenv("STRUCT_DENY_NETWORK", "1")
+
+    # HTTP must not be called
+    def bad_get(url, timeout=None):
+        raise AssertionError("HTTP should not be invoked when STRUCT_DENY_NETWORK=1")
+    monkeypatch.setattr("struct_module.content_fetcher.requests.get", bad_get)
+
+    def fake_run(args, check):
+        if args[:2] == ["git", "clone"]:
+            repo_dir.mkdir(parents=True, exist_ok=True)
+            file_full.write_text("OK")
+        elif args[:3] == ["git", "-C", str(repo_dir)]:
+            return None
+    monkeypatch.setattr(subprocess, "run", fake_run)
+
+    out = cf.fetch_content("githubhttps://owner/repo/main/path.txt")
+    assert out == "OK"
+
+
+def test_github_existing_cache_prefers_git(monkeypatch, tmp_path):
+    cf = ContentFetcher(cache_dir=tmp_path / "cache")
+    repo_dir = tmp_path / "cache" / "owner_repo_main"
+    file_full = repo_dir / "path.txt"
+    repo_dir.mkdir(parents=True, exist_ok=True)
+    file_full.write_text("CACHE_DATA")
+
+    # HTTP must not be needed; if called, fail
+    def bad_get(url, timeout=None):
+        raise AssertionError("HTTP should not be called when cache exists")
+    monkeypatch.setattr("struct_module.content_fetcher.requests.get", bad_get)
+
+    pulls = {"count": 0}
+    def fake_run(args, check):
+        if args[:3] == ["git", "-C", str(repo_dir)]:
+            pulls["count"] += 1
+    monkeypatch.setattr(subprocess, "run", fake_run)
+
+    out = cf.fetch_content("githubhttps://owner/repo/main/path.txt")
+    assert out == "CACHE_DATA"
+    assert pulls["count"] == 1
