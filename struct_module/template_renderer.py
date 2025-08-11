@@ -61,8 +61,13 @@ class TemplateRenderer:
       defaults = {}
       for item in self.config_variables:
         for name, content in item.items():
+          # Explicit default value
           if 'default' in content:
             defaults[name] = content.get('default')
+          # Default from environment variable (env or default_from_env)
+          env_key = content.get('env') or content.get('default_from_env')
+          if env_key and os.environ.get(env_key) is not None:
+            defaults[name] = os.environ.get(env_key)
       return defaults
 
 
@@ -79,6 +84,12 @@ class TemplateRenderer:
       undeclared_variables = meta.find_undeclared_variables(parsed_content)
       self.logger.debug(f"Undeclared variables: {undeclared_variables}")
 
+      # Build schema lookup
+      schema = {}
+      for item in (self.config_variables or []):
+        for name, conf in item.items():
+          schema[name] = conf or {}
+
       # Prompt the user for any missing variables
       # Suggest a default from the config if available
       default_values = self.get_defaults_from_config()
@@ -86,12 +97,70 @@ class TemplateRenderer:
 
       for var in undeclared_variables:
         if var not in vars:
+          conf = schema.get(var, {})
+          required = conf.get('required', False)
           default = self.input_data.get(var, default_values.get(var, ""))
           if self.non_interactive:
-            user_input = default if default else "NEEDS_TO_BE_SET"
+            if required and (default is None or default == ""):
+              raise ValueError(f"Missing required variable '{var}' in non-interactive mode")
+            user_input = default
           else:
             user_input = input(f"❓ Enter value for {var} [{default}]: ") or default
-          self.input_store.set_value(var, user_input)
-          vars[var] = user_input
+          # Coerce and validate according to schema
+          coerced = self._coerce_and_validate(var, user_input, conf)
+          self.input_store.set_value(var, coerced)
+          vars[var] = coerced
       self.input_store.save()
       return vars
+
+    def _coerce_and_validate(self, name, value, conf):
+      # Type coercion
+      vtype = (conf.get('type') or 'string').lower()
+      original = value
+      try:
+        if vtype == 'boolean' or vtype == 'bool':
+          if isinstance(value, bool):
+            coerced = value
+          elif isinstance(value, str):
+            coerced = value.strip().lower() in ['1', 'true', 'yes', 'y', 'on']
+          else:
+            coerced = bool(value)
+        elif vtype == 'number' or vtype == 'float':
+          coerced = float(value) if value != '' and value is not None else None
+        elif vtype == 'integer' or vtype == 'int':
+          coerced = int(value) if value not in (None, '') else None
+        else:
+          coerced = '' if value is None else str(value)
+      except Exception:
+        raise ValueError(f"Variable '{name}' could not be coerced to {vtype} (value: {original})")
+
+      # Enum validation
+      enum = conf.get('enum')
+      if enum is not None and coerced not in enum:
+        raise ValueError(f"Variable '{name}' must be one of {enum}, got: {coerced}")
+
+      # Regex validation (only for strings)
+      pattern = conf.get('regex') or conf.get('pattern')
+      if pattern and isinstance(coerced, str):
+        import re as _re
+        if _re.fullmatch(pattern, coerced) is None:
+          raise ValueError(f"Variable '{name}' does not match required pattern: {pattern}")
+
+      # Min/Max validation
+      def _as_num(x):
+        try:
+          return float(x)
+        except Exception:
+          return None
+      minv = conf.get('min')
+      maxv = conf.get('max')
+      if minv is not None:
+        cv = _as_num(coerced)
+        if cv is not None and cv < float(minv):
+          raise ValueError(f"Variable '{name}' must be >= {minv}, got {coerced}")
+      if maxv is not None:
+        cv = _as_num(coerced)
+        if cv is not None and cv > float(maxv):
+          raise ValueError(f"Variable '{name}' must be <= {maxv}, got {coerced}")
+
+      return coerced
