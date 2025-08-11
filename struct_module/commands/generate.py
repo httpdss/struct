@@ -18,6 +18,7 @@ class GenerateCommand(Command):
     parser.add_argument('-s', '--structures-path', type=str, help='Path to structure definitions')
     parser.add_argument('-n', '--input-store', type=str, help='Path to the input store', default='/tmp/struct/input.json')
     parser.add_argument('-d', '--dry-run', action='store_true', help='Perform a dry run without creating any files or directories')
+    parser.add_argument('--diff', action='store_true', help='Show unified diffs for files that would change during dry-run or console output')
     parser.add_argument('-v', '--vars', type=str, help='Template variables in the format KEY1=value1,KEY2=value2')
     parser.add_argument('-b', '--backup', type=str, help='Path to the backup folder')
     parser.add_argument('-f', '--file-strategy', type=str, choices=['overwrite', 'skip', 'append', 'rename', 'backup'], default='overwrite', help='Strategy for handling existing files').completer = file_strategy_completer
@@ -189,18 +190,47 @@ class GenerateCommand(Command):
         )
         file_item.apply_template_variables(template_vars)
 
-        # Output mode logic
+        # Output mode logic with diff support
         if hasattr(args, 'output') and args.output == 'console':
-          # Print the file path and content to the console instead of creating the file
           print(f"=== {file_path_to_create} ===")
-          print(file_item.content)
+          if args.diff and existing_content is not None:
+            import difflib
+            new_content = file_item.content if file_item.content.endswith("\n") else file_item.content + "\n"
+            old_content = existing_content if existing_content.endswith("\n") else existing_content + "\n"
+            diff = difflib.unified_diff(
+                old_content.splitlines(keepends=True),
+                new_content.splitlines(keepends=True),
+                fromfile=f"a/{file_path_to_create}",
+                tofile=f"b/{file_path_to_create}",
+            )
+            print("".join(diff))
+          else:
+            print(file_item.content)
         else:
-          file_item.create(
-              args.base_path,
-              args.dry_run or False,
-              args.backup or None,
-              args.file_strategy or 'overwrite'
-          )
+          # When dry-run with --diff and files mode, print action and diff instead of writing
+          if args.dry_run and args.diff:
+            action = "create"
+            if existing_content is not None:
+              action = "update"
+            print(f"[DRY RUN] {action}: {file_path_to_create}")
+            import difflib
+            new_content = file_item.content if file_item.content.endswith("\n") else file_item.content + "\n"
+            old_content = (existing_content if existing_content is not None else "")
+            old_content = old_content if old_content.endswith("\n") else (old_content + ("\n" if old_content else ""))
+            diff = difflib.unified_diff(
+                old_content.splitlines(keepends=True),
+                new_content.splitlines(keepends=True),
+                fromfile=f"a/{file_path_to_create}",
+                tofile=f"b/{file_path_to_create}",
+            )
+            print("".join(diff))
+          else:
+            file_item.create(
+                args.base_path,
+                args.dry_run or False,
+                args.backup or None,
+                args.file_strategy or 'overwrite'
+            )
 
     for item in config_folders:
       for folder, content in item.items():

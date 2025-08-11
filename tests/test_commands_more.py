@@ -50,6 +50,44 @@ def test_generate_creates_base_path_and_console_output(parser, tmp_path):
         mock_makedirs.assert_called()  # base path created
 
 
+def test_generate_dry_run_diff_shows_unified_diff(parser, tmp_path):
+    command = GenerateCommand(parser)
+    args = parser.parse_args(['struct-x', str(tmp_path / 'base')])
+
+    # Minimal config to trigger one file update
+    config = {'files': [{'hello.txt': 'Hello world'}], 'folders': []}
+
+    # Existing file with different content
+    base_dir = tmp_path / 'base'
+    base_dir.mkdir(parents=True, exist_ok=True)
+    (base_dir / 'hello.txt').write_text('Hello old\n')
+
+    store_dir = tmp_path / 'store'
+    store_dir.mkdir(parents=True, exist_ok=True)
+    with open(store_dir / 'input.json', 'w') as fh:
+        fh.write('{}')
+
+    with patch.object(command, '_load_yaml_config', return_value=config), \
+         patch('builtins.print') as mock_print:
+        args.output = 'file'
+        args.input_store = str(store_dir / 'input.json')
+        args.dry_run = True
+        args.diff = True
+        args.vars = None
+        args.backup = None
+        args.file_strategy = 'overwrite'
+        args.global_system_prompt = None
+        args.structures_path = None
+        args.non_interactive = True
+
+        command.execute(args)
+
+        # Should have printed a DRY RUN action and diff
+        printed = ''.join(call.args[0] for call in mock_print.call_args_list)
+        assert '[DRY RUN] update' in printed
+        assert '--- a' in printed and '+++ b' in printed
+
+
 def test_generate_pre_hook_failure_aborts(parser, tmp_path):
     command = GenerateCommand(parser)
     args = parser.parse_args(['struct-x', str(tmp_path)])
