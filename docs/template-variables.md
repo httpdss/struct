@@ -2,6 +2,16 @@
 
 Template variables allow you to create dynamic content in your STRUCT configurations. This page covers all aspects of working with variables.
 
+## Custom Delimiters (STRUCT)
+
+STRUCT uses custom Jinja2 delimiters to avoid conflicts with YAML and other content:
+
+- Variables: `{{@` and `@}}`
+- Blocks: `{%@` and `@%}`
+- Comments: `{#@` and `@#}`
+
+Examples are shown below and throughout this page.
+
 ## Basic Syntax
 
 Use template variables by enclosing them in `{{@` and `@}}`:
@@ -119,9 +129,85 @@ variables:
       env: MY_TOKEN
 ```
 
-## Custom Jinja2 Filters
+## Custom Jinja2 Filters and Globals
 
 STRUCT includes custom filters for common tasks:
+
+### `uuid()` (global)
+
+Generate a random UUID v4 string.
+
+```yaml
+files:
+  - id.txt:
+      content: |
+        id: {{@ uuid() @}}
+```
+
+### `now()` (global)
+
+Return the current UTC time in ISO 8601 format.
+
+```yaml
+files:
+  - stamp.txt:
+      content: |
+        generated_at: {{@ now() @}}
+```
+
+### `env(name, default="")` (global)
+
+Read an environment variable with an optional default.
+
+```yaml
+files:
+  - .env.example:
+      content: |
+        TOKEN={{@ env("TOKEN", "changeme") @}}
+```
+
+### `read_file(path)` (global)
+
+Read the contents of a file on disk. Returns empty string on error.
+
+```yaml
+files:
+  - README.md:
+      content: |
+        {{@ read_file("INTRO.md") @}}
+```
+
+### `to_yaml` / `from_yaml` (filters)
+
+Serialize and parse YAML.
+
+```yaml
+files:
+  - data.yml:
+      content: |
+        {{@ some_dict | to_yaml @}}
+```
+
+```yaml
+# Assume str_var holds YAML string
+{%@ set obj = str_var | from_yaml @%}
+```
+
+### `to_json` / `from_json` (filters)
+
+Serialize and parse JSON.
+
+```yaml
+files:
+  - data.json:
+      content: |
+        {{@ some_dict | to_json @}}
+```
+
+```yaml
+# Assume str_var holds JSON string
+{%@ set obj = str_var | from_json @%}
+```
 
 ### `latest_release`
 
