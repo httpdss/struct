@@ -96,9 +96,9 @@ class StructMCPServer:
                             },
                             "output": {
                                 "type": "string",
-                                "enum": ["console", "files"],
-                                "description": "Output mode: console for stdout or files for actual generation",
-                                "default": "files"
+                                "enum": ["console", "file"],
+                                "description": "Output mode: console for stdout or file for actual generation",
+                                "default": "file"
                             },
                             "dry_run": {
                                 "type": "boolean",
@@ -307,7 +307,10 @@ class StructMCPServer:
         try:
             structure_definition = arguments.get("structure_definition")
             base_path = arguments.get("base_path")
-            output_mode = arguments.get("output", "files")
+            output_mode = arguments.get("output", "file")
+            # Backward compatibility: accept legacy 'files' and normalize to 'file'
+            if output_mode == "files":
+                output_mode = "file"
             dry_run = arguments.get("dry_run", False)
             mappings = arguments.get("mappings", {})
             structures_path = arguments.get("structures_path")
