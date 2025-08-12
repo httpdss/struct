@@ -3,7 +3,19 @@ import logging
 import os
 import sys
 from jinja2 import Environment, meta
-from struct_module.filters import get_latest_release, slugify, get_default_branch
+from struct_module.filters import (
+  get_latest_release,
+  slugify,
+  get_default_branch,
+  gen_uuid,
+  now_iso,
+  env as env_get,
+  read_file,
+  to_yaml,
+  from_yaml,
+  to_json,
+  from_json,
+)
 from struct_module.input_store import InputStore
 from struct_module.utils import get_current_repo
 
@@ -28,11 +40,19 @@ class TemplateRenderer:
       custom_filters = {
         'latest_release': get_latest_release,
         'slugify': slugify,
-        'default_branch': get_default_branch
+        'default_branch': get_default_branch,
+        'to_yaml': to_yaml,
+        'from_yaml': from_yaml,
+        'to_json': to_json,
+        'from_json': from_json,
       }
 
       globals = {
-        'current_repo': get_current_repo
+        'current_repo': get_current_repo,
+        'uuid': gen_uuid,
+        'now': now_iso,
+        'env': env_get,
+        'read_file': read_file,
       }
 
       self.env.globals.update(globals)
@@ -110,21 +130,17 @@ class TemplateRenderer:
             if enum:
               # Build options list string like "(1) dev, (2) prod)"
               options = ", ".join([f"({i+1}) {val}" for i, val in enumerate(enum)])
-              while True:
-                raw = input(f"❓ Enter value for {var} [{default}] {options}: ")
-                raw = raw.strip()
-                if raw == "":
-                  user_input = default
-                elif raw.isdigit() and 1 <= int(raw) <= len(enum):
-                  user_input = enum[int(raw) - 1]
-                else:
-                  # accept exact match from enum
-                  if raw in enum:
-                    user_input = raw
-                  else:
-                    print(f"Invalid choice. Please enter one of: {options} or a valid value.")
-                    continue
-                break
+              raw = input(f"❓ Enter value for {var} [{default}] {options}: ")
+              raw = raw.strip()
+              if raw == "":
+                user_input = default
+              elif raw.isdigit() and 1 <= int(raw) <= len(enum):
+                user_input = enum[int(raw) - 1]
+              elif raw in enum:
+                user_input = raw
+              else:
+                # For invalid enum input, raise immediately instead of re-prompting
+                raise ValueError(f"Variable '{var}' must be one of {enum}, got: {raw}")
             else:
               user_input = input(f"❓ Enter value for {var} [{default}]: ") or default
           # Coerce and validate according to schema

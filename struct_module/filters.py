@@ -1,5 +1,11 @@
 import os
 import re
+import json
+from uuid import uuid4
+from datetime import datetime, timezone
+from typing import Any
+
+import yaml
 from github import Github
 from cachetools import TTLCache, cached
 
@@ -52,3 +58,55 @@ def slugify(value):
     # Remove any non-alphanumeric characters (except hyphens)
     value = re.sub(r'[^a-z0-9-]', '', value)
     return value
+
+# -----------------------------
+# Additional helpers/filters
+# -----------------------------
+
+def gen_uuid() -> str:
+    return str(uuid4())
+
+
+def now_iso() -> str:
+    # UTC ISO8601 string
+    return datetime.now(timezone.utc).isoformat()
+
+
+def env(name: str, default: str = "") -> str:
+    return os.getenv(name, default)
+
+
+def read_file(path: str, encoding: str = "utf-8") -> str:
+    try:
+        with open(path, "r", encoding=encoding) as f:
+            return f.read()
+    except Exception:
+        return ""
+
+
+def to_yaml(obj: Any) -> str:
+    try:
+        return yaml.safe_dump(obj, sort_keys=False)
+    except Exception:
+        return ""
+
+
+def from_yaml(s: str) -> Any:
+    try:
+        return yaml.safe_load(s)
+    except Exception:
+        return None
+
+
+def to_json(obj: Any, indent: int | None = None) -> str:
+    try:
+        return json.dumps(obj, indent=indent)
+    except Exception:
+        return ""
+
+
+def from_json(s: str) -> Any:
+    try:
+        return json.loads(s)
+    except Exception:
+        return None
