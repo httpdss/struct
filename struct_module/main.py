@@ -31,6 +31,10 @@ def main():
     GenerateSchemaCommand(subparsers.add_parser('generate-schema', help='Generate JSON schema for available structures'))
     MCPCommand(subparsers.add_parser('mcp', help='MCP (Model Context Protocol) support'))
 
+    # init to create a basic .struct.yaml
+    from struct_module.commands.init import InitCommand
+    InitCommand(subparsers.add_parser('init', help='Initialize a basic .struct.yaml in the target directory'))
+
     # completion installer
     from struct_module.commands.completion import CompletionCommand
     CompletionCommand(subparsers.add_parser('completion', help='Manage shell completions'))
