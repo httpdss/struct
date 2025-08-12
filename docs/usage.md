@@ -49,6 +49,12 @@ struct generate my-config.yaml ./output
 struct generate file://my-config.yaml ./output
 ```
 
+### Diff Preview Example
+
+```sh
+struct generate --dry-run --diff file://structure.yaml ./output
+```
+
 ### Complete Example
 
 ```sh
@@ -66,6 +72,7 @@ struct generate \
 
 - `--log`: Set logging level (DEBUG, INFO, WARNING, ERROR)
 - `--dry-run`: Preview actions without making changes
+- `--diff`: Show unified diffs for files that would be created/modified (useful with `--dry-run` and console output)
 - `--backup`: Specify backup directory for existing files
 - `--file-strategy`: Choose how to handle existing files (overwrite, skip, append, rename, backup)
 - `--log-file`: Write logs to specified file
