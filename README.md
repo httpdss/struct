@@ -45,6 +45,20 @@ struct validate my-config.yaml
 struct mcp --server
  ```
 
+### Shell Completion
+
+Enable tab completion for struct commands and options:
+
+```sh
+# Print exact setup commands for your shell (auto-detects if omitted)
+struct completion install
+
+# Or specify explicitly
+struct completion install zsh
+struct completion install bash
+struct completion install fish
+```
+
 ### 🤖 MCP Integration Quick Start
 
 Struct supports MCP (Model Context Protocol) for seamless AI tool integration:
