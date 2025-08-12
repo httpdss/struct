@@ -130,21 +130,17 @@ class TemplateRenderer:
             if enum:
               # Build options list string like "(1) dev, (2) prod)"
               options = ", ".join([f"({i+1}) {val}" for i, val in enumerate(enum)])
-              while True:
-                raw = input(f"❓ Enter value for {var} [{default}] {options}: ")
-                raw = raw.strip()
-                if raw == "":
-                  user_input = default
-                elif raw.isdigit() and 1 <= int(raw) <= len(enum):
-                  user_input = enum[int(raw) - 1]
-                else:
-                  # accept exact match from enum
-                  if raw in enum:
-                    user_input = raw
-                  else:
-                    print(f"Invalid choice. Please enter one of: {options} or a valid value.")
-                    continue
-                break
+              raw = input(f"❓ Enter value for {var} [{default}] {options}: ")
+              raw = raw.strip()
+              if raw == "":
+                user_input = default
+              elif raw.isdigit() and 1 <= int(raw) <= len(enum):
+                user_input = enum[int(raw) - 1]
+              elif raw in enum:
+                user_input = raw
+              else:
+                # For invalid enum input, raise immediately instead of re-prompting
+                raise ValueError(f"Variable '{var}' must be one of {enum}, got: {raw}")
             else:
               user_input = input(f"❓ Enter value for {var} [{default}]: ") or default
           # Coerce and validate according to schema
