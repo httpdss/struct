@@ -9,7 +9,7 @@ The `struct` CLI allows you to generate project structures from YAML configurati
 **Basic Usage:**
 
 ```sh
-struct {info,validate,generate,list,generate-schema} ...
+struct {info,validate,generate,list,generate-schema,mcp,completion} ...
 ```
 
 ## Global Options
@@ -106,6 +106,19 @@ struct generate-schema [-h] [-l LOG] [-c CONFIG_FILE] [-i LOG_FILE] [-s STRUCTUR
 
 - `-s STRUCTURES_PATH, --structures-path STRUCTURES_PATH`: Path to structure definitions.
 - `-o OUTPUT, --output OUTPUT`: Output file path for the schema (default: stdout).
+
+### `completion`
+
+Manage shell completions for struct.
+
+Usage:
+
+```sh
+struct completion install [bash|zsh|fish]
+```
+
+- If no shell is provided, the command attempts to auto-detect your current shell and prints the exact commands to enable argcomplete-based completion for struct.
+- This does not modify your shell configuration; it only prints the commands you can copy-paste.
 
 ## Examples
 

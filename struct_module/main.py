@@ -31,6 +31,10 @@ def main():
     GenerateSchemaCommand(subparsers.add_parser('generate-schema', help='Generate JSON schema for available structures'))
     MCPCommand(subparsers.add_parser('mcp', help='MCP (Model Context Protocol) support'))
 
+    # completion installer
+    from struct_module.commands.completion import CompletionCommand
+    CompletionCommand(subparsers.add_parser('completion', help='Manage shell completions'))
+
     argcomplete.autocomplete(parser)
 
     args = parser.parse_args()

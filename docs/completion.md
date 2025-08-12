@@ -7,6 +7,20 @@ STRUCT provides intelligent auto-completion for commands, options, and **structu
 
 ## Quick Setup
 
+The easiest way is to ask struct to print the exact commands for your shell:
+
+```sh
+# Auto-detect current shell and print install steps
+struct completion install
+
+# Or specify explicitly
+struct completion install zsh
+struct completion install bash
+struct completion install fish
+```
+
+You can still follow the manual steps below if you prefer.
+
 For most users, this simple setup will enable full completion:
 
 ```sh
