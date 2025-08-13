@@ -74,6 +74,16 @@ Or try a simple project structure:
 struct generate project/nodejs ./my-node-app
 ```
 
+## Bootstrap a new project
+
+Start with a minimal .struct.yaml:
+
+```sh
+struct init
+```
+
+This writes a basic .struct.yaml with hooks, a README, and a reference to the run-struct workflow.
+
 ## Next Steps
 
 - Learn about [YAML Configuration](configuration.md)
