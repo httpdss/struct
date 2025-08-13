@@ -280,8 +280,27 @@ class StructMCPServer:
 
             if config.get('folders'):
                 result_text += "   📌 Folders:\n"
-                for folder in config.get('folders', []):
-                    result_text += f"     - {folder}\n"
+                for item in config.get('folders', []):
+                    if isinstance(item, dict):
+                        for folder, content in item.items():
+                            result_text += f"       - {folder}\n"
+                            if isinstance(content, dict):
+                                if 'struct' in content:
+                                    structs = content['struct']
+                                    if isinstance(structs, list):
+                                        result_text += "         • struct(s):\n"
+                                        for s in structs:
+                                            result_text += f"           - {s}\n"
+                                    elif isinstance(structs, str):
+                                        result_text += f"         • struct: {structs}\n"
+                                if 'with' in content and isinstance(content['with'], dict):
+                                    result_text += "         • with:"
+                                    for k, v in content['with'].items():
+                                        result_text += f" {k}={v}"
+                                    result_text += "\n"
+                    else:
+                        # Fallback if item isn't a dict
+                        result_text += f"       - {item}\n"
 
             return CallToolResult(
                 content=[

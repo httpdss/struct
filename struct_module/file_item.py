@@ -39,6 +39,8 @@ class FileItem:
           self.non_interactive,
           self.mappings
       )
+      # internal flags used for reporting
+      self._last_action = None
 
     def _get_file_directory(self):
         return os.path.dirname(self.name)
@@ -110,47 +112,71 @@ class FileItem:
 
       file_path = self.template_renderer.render_template(file_path, self.vars)
 
+      # default result
+      result = {"action": None, "path": file_path}
+
       if self.skip:
-        self.logger.info(f"skip is set to true. skipping creation.")
-        return
+        self.logger.info(f"⏭️ Skipped (skip=true): {file_path}")
+        result["action"] = "skipped"
+        return result
 
       if dry_run:
-        self.logger.info(f"[DRY RUN] Would create file: {file_path} with content: \n\n{self.content}")
-        return
+        self.logger.info(f"[DRY RUN] Would create/update: {file_path}")
+        result["action"] = "dry_run"
+        return result
 
       if self.skip_if_exists and os.path.exists(file_path):
-        self.logger.info(f"    skip_if_exists is set to true and file already exists. skipping creation.")
-        return
+        self.logger.info(f"⏭️ Skipped (exists and skip_if_exists=true): {file_path}")
+        result["action"] = "skipped"
+        return result
 
       # Create the directory if it does not exist
       os.makedirs(os.path.dirname(file_path), exist_ok=True)
 
-      if os.path.exists(file_path):
+      existed_before = os.path.exists(file_path)
+      renamed_from = None
+      backed_up_to = None
+
+      if existed_before:
         if file_strategy == 'backup' and backup_path:
           backup_file_path = os.path.join(backup_path, os.path.basename(file_path))
           shutil.copy2(file_path, backup_file_path)
-          self.logger.info(f"Backed up existing file: {file_path} to {backup_file_path}")
+          backed_up_to = backup_file_path
+          self.logger.info(f"🗄️ Backed up: {file_path} -> {backup_file_path}")
         elif file_strategy == 'skip':
-          self.logger.info(f"Skipped existing file: {file_path}")
-          return
+          self.logger.info(f"⏭️ Skipped (exists): {file_path}")
+          result["action"] = "skipped"
+          return result
         elif file_strategy == 'append':
           with open(file_path, 'a') as f:
               f.write(f"{self.content}\n")
-          self.logger.info(f"✅ Appended to existing file: {file_path}")
-          return
+          self.logger.info(f"📝 Appended: {file_path}")
+          result.update({"action": "appended"})
+          return result
         elif file_strategy == 'rename':
           new_name = f"{file_path}.{int(time.time())}"
           os.rename(file_path, new_name)
-          self.logger.info(f"Renamed existing file: {file_path} to {new_name}")
+          renamed_from = new_name
+          self.logger.info(f"🔁 Renamed: {file_path} -> {new_name}")
 
+      # Write/overwrite the file
       with open(file_path, 'w') as f:
         f.write(f"{self.content}\n")
-      self.logger.info(f"✅ Created file with content")
-      self.logger.info(f"     File path: {file_path}")
-      self.logger.debug(f"     Content: \n\n{self.content}")
+
+      action = "created" if not existed_before else "updated"
+      if action == "created":
+        self.logger.info(f"✅ Created: {file_path}")
+      else:
+        self.logger.info(f"✅ Updated: {file_path}")
+      self.logger.debug(f"Content: \n\n{self.content}")
 
       if self.permissions:
         os.chmod(file_path, int(self.permissions, 8))
-        self.logger.info(f"🔐 Set permissions to file")
-        self.logger.info(f"     File path: {file_path}")
-        self.logger.info(f"     Permissions: {self.permissions}")
+        self.logger.info(f"🔐 Set permissions: {self.permissions} on {file_path}")
+
+      result.update({
+        "action": action,
+        "renamed_from": renamed_from,
+        "backed_up_to": backed_up_to,
+      })
+      return result
