@@ -111,6 +111,26 @@ The generated schema includes all available structures from both the built-in co
 
 ## Other Commands
 
+### Initialize a project with .struct.yaml
+
+Create a minimal .struct.yaml in the current directory:
+
+```sh
+struct init
+```
+
+Or specify a directory:
+
+```sh
+struct init ./my-project
+```
+
+The file includes:
+
+- pre_hooks/post_hooks with echo commands
+- A README.md placeholder in files
+- A folders entry pointing to the github/workflows/run-struct workflow at ./
+
 ### Validate Configuration
 
 ```sh

@@ -9,7 +9,7 @@ The `struct` CLI allows you to generate project structures from YAML configurati
 **Basic Usage:**
 
 ```sh
-struct {info,validate,generate,list,generate-schema,mcp,completion} ...
+struct {info,validate,generate,list,generate-schema,mcp,completion,init} ...
 ```
 
 ## Global Options
@@ -119,6 +119,23 @@ struct completion install [bash|zsh|fish]
 
 - If no shell is provided, the command attempts to auto-detect your current shell and prints the exact commands to enable argcomplete-based completion for struct.
 - This does not modify your shell configuration; it only prints the commands you can copy-paste.
+
+### `init`
+
+Initialize a basic .struct.yaml in the target directory.
+
+Usage:
+
+```sh
+struct init [path]
+```
+
+- Creates a .struct.yaml if it does not exist.
+- Includes:
+  - pre_hooks/post_hooks with echo commands
+  - files with a README.md placeholder
+  - folders referencing github/workflows/run-struct at ./
+- Non-destructive: if .struct.yaml already exists, it is not overwritten and a message is printed.
 
 ## Examples
 
