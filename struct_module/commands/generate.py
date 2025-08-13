@@ -151,6 +151,19 @@ class GenerateCommand(Command):
     config_folders = config.get('folders', [])
     config_variables = config.get('variables', [])
 
+    # Action counters for final summary
+    summary = {
+      "created": 0,
+      "updated": 0,
+      "appended": 0,
+      "skipped": 0,
+      "backed_up": 0,
+      "renamed": 0,
+      "folders": 0,
+      "dry_run_created": 0,
+      "dry_run_updated": 0,
+    }
+
     for item in config_structure:
       self.logger.debug(f"Processing item: {item}")
       for name, content in item.items():
@@ -180,7 +193,7 @@ class GenerateCommand(Command):
         file_path_to_create = os.path.join(args.base_path, name)
         existing_content = None
         if os.path.exists(file_path_to_create):
-          self.logger.warning(f"⚠️ File already exists: {file_path_to_create}")
+          self.logger.info(f"ℹ️ Exists: {file_path_to_create}")
           with open(file_path_to_create, 'r') as existing_file:
             existing_content = existing_file.read()
 
@@ -213,6 +226,10 @@ class GenerateCommand(Command):
             if existing_content is not None:
               action = "update"
             print(f"[DRY RUN] {action}: {file_path_to_create}")
+            if action == "create":
+              summary["dry_run_created"] += 1
+            else:
+              summary["dry_run_updated"] += 1
             import difflib
             new_content = file_item.content if file_item.content.endswith("\n") else file_item.content + "\n"
             old_content = (existing_content if existing_content is not None else "")
@@ -225,26 +242,39 @@ class GenerateCommand(Command):
             )
             print("".join(diff))
           else:
-            file_item.create(
+            result = file_item.create(
                 args.base_path,
                 args.dry_run or False,
                 args.backup or None,
                 args.file_strategy or 'overwrite'
             )
+            if isinstance(result, dict):
+              if result.get("action") == "created":
+                summary["created"] += 1
+              elif result.get("action") == "updated":
+                summary["updated"] += 1
+              elif result.get("action") == "appended":
+                summary["appended"] += 1
+              elif result.get("action") == "skipped":
+                summary["skipped"] += 1
+              if result.get("backed_up_to"):
+                summary["backed_up"] += 1
+              if result.get("renamed_from"):
+                summary["renamed"] += 1
 
     for item in config_folders:
       for folder, content in item.items():
         folder_path = os.path.join(args.base_path, folder)
         if hasattr(args, 'output') and args.output == 'file':
           os.makedirs(folder_path, exist_ok=True)
-          self.logger.info(f"Created folder")
-          self.logger.info(f"  Folder: {folder_path}")
+          self.logger.info(f"📁 Created folder: {folder_path}")
+          summary["folders"] += 1
 
         # check if content has struct value
         if 'struct' in content:
           self.logger.info(f"Generating structure")
           self.logger.info(f"  Folder: {folder}")
-          self.logger.info(f"  Struct:")
+          self.logger.info(f"  Struct(s):")
           if isinstance(content['struct'], list):
             # iterate over the list of structures
             for struct in content['struct']:
@@ -302,3 +332,17 @@ class GenerateCommand(Command):
               })
         else:
           self.logger.warning(f"Unsupported content in folder: {folder}")
+
+    # Final summary
+    self.logger.info("")
+    self.logger.info("Summary of actions:")
+    self.logger.info(f"  ✅ Created: {summary['created']}")
+    self.logger.info(f"  ✅ Updated: {summary['updated']}")
+    self.logger.info(f"  📝 Appended: {summary['appended']}")
+    self.logger.info(f"  ⏭️ Skipped: {summary['skipped']}")
+    self.logger.info(f"  🗄️ Backed up: {summary['backed_up']}")
+    self.logger.info(f"  🔁 Renamed: {summary['renamed']}")
+    self.logger.info(f"  📁 Folders created: {summary['folders']}")
+    if args.dry_run:
+      self.logger.info(f"  [DRY RUN] Would create: {summary['dry_run_created']}")
+      self.logger.info(f"  [DRY RUN] Would update: {summary['dry_run_updated']}")
