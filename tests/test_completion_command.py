@@ -21,8 +21,8 @@ def test_completion_install_bash_explicit():
         cmd._install(args)
         out = _gather_print_output(mock_print)
         assert "Detected shell: bash" in out
-        assert "register-python-argcomplete struct" in out
-        assert "~/.bashrc" in out
+        assert "struct --print-completion bash" in out
+        assert "~/.local/share/bash-completion/completions/struct" in out
 
 
 def test_completion_install_zsh_explicit():
@@ -33,8 +33,8 @@ def test_completion_install_zsh_explicit():
         cmd._install(args)
         out = _gather_print_output(mock_print)
         assert "Detected shell: zsh" in out
-        assert "register-python-argcomplete --shell zsh struct" in out
-        assert "~/.zshrc" in out
+        assert "struct --print-completion zsh" in out
+        assert "~/.zfunc/_struct" in out
 
 
 def test_completion_install_fish_explicit():
@@ -45,7 +45,7 @@ def test_completion_install_fish_explicit():
         cmd._install(args)
         out = _gather_print_output(mock_print)
         assert "Detected shell: fish" in out
-        assert "register-python-argcomplete --shell fish struct" in out
+        assert "struct --print-completion fish" in out
         assert "~/.config/fish/completions/struct.fish" in out
 
 
@@ -58,4 +58,4 @@ def test_completion_install_auto_detect_zsh():
             cmd._install(args)
             out = _gather_print_output(mock_print)
             assert "Detected shell: zsh" in out
-            assert "register-python-argcomplete --shell zsh struct" in out
+            assert "struct --print-completion zsh" in out

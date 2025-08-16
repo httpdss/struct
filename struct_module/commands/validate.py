@@ -9,6 +9,7 @@ load_dotenv()
 class ValidateCommand(Command):
     def __init__(self, parser):
       super().__init__(parser)
+      parser.description = "Validate a YAML configuration file for structure definitions"
       parser.add_argument('yaml_file', type=str, help='Path to the YAML configuration file')
       parser.set_defaults(func=self.execute)
 

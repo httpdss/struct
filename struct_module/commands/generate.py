@@ -12,6 +12,7 @@ import subprocess
 class GenerateCommand(Command):
   def __init__(self, parser):
     super().__init__(parser)
+    parser.description = "Generate the project structure from a YAML configuration file"
     structure_arg = parser.add_argument('structure_definition', type=str, help='Path to the YAML configuration file')
     structure_arg.completer = structures_completer
     parser.add_argument('base_path', type=str, help='Base path where the structure will be created')
@@ -29,6 +30,33 @@ class GenerateCommand(Command):
     parser.add_argument('-o', '--output', type=str,
                         choices=['console', 'file'], default='file', help='Output mode')
     parser.set_defaults(func=self.execute)
+
+  def _parse_template_vars(self, vars_str):
+    """Parse a comma-separated KEY=VALUE string into a dict safely.
+    - Ignores empty tokens and trailing commas
+    - Supports values containing '=' by splitting only on the first '='
+    - Logs and skips malformed entries without raising
+    """
+    result = {}
+    if not vars_str:
+      return result
+    # Normalize by removing accidental leading/trailing commas and whitespace
+    tokens = [t.strip() for t in vars_str.strip(', ').split(',')]
+    for token in tokens:
+      if not token:
+        continue
+      if '=' not in token:
+        # Skip malformed item but warn
+        self.logger.warning(f"Skipping malformed template var (no '='): '{token}'")
+        continue
+      key, value = token.split('=', 1)
+      key = key.strip()
+      value = value
+      if not key:
+        self.logger.warning(f"Skipping template var with empty key: '{token}'")
+        continue
+      result[key] = value
+    return result
 
   def _deep_merge_dicts(self, dict1, dict2):
     """
@@ -146,7 +174,8 @@ class GenerateCommand(Command):
     if config is None:
       return summary if summary is not None else None
 
-    template_vars = dict(item.split('=') for item in args.vars.split(',')) if args.vars else None
+    # Safely parse template variables
+    template_vars = self._parse_template_vars(args.vars) if getattr(args, 'vars', None) else {}
     config_structure = config.get('files', config.get('structure', []))
     config_folders = config.get('folders', [])
     config_variables = config.get('variables', [])
@@ -301,8 +330,18 @@ class GenerateCommand(Command):
               merged_vars = ",".join(
                   [f"{k}={v}" for k, v in rendered_with.items()])
 
-          if args.vars:
-            merged_vars = args.vars + "," + merged_vars
+          # Merge parent args.vars safely without introducing trailing commas
+          if getattr(args, 'vars', None):
+            parts = []
+            parent_vars = args.vars.strip().strip(',')
+            if parent_vars:
+              parts.append(parent_vars)
+            if merged_vars:
+              parts.append(merged_vars)
+            merged_vars = ",".join(parts)
+
+          # If nothing to merge, keep None to avoid accidental truthiness with empty string
+          merged_vars = merged_vars if merged_vars else None
 
           if isinstance(content['struct'], str):
             self._create_structure({
@@ -345,8 +384,8 @@ class GenerateCommand(Command):
       self.logger.info(f"  ✅  Created: {summary['created']}")
       self.logger.info(f"  ✅  Updated: {summary['updated']}")
       self.logger.info(f"  📝  Appended: {summary['appended']}")
-      self.logger.info(f"  ⏭️   Skipped: {summary['skipped']}")
-      self.logger.info(f"  🗄️   Backed up: {summary['backed_up']}")
+      self.logger.info(f"  ⏭️  Skipped: {summary['skipped']}")
+      self.logger.info(f"  🗄️  Backed up: {summary['backed_up']}")
       self.logger.info(f"  🔁  Renamed: {summary['renamed']}")
       self.logger.info(f"  📁  Folders created: {summary['folders']}")
       if args.dry_run:
