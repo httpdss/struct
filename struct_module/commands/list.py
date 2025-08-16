@@ -10,6 +10,7 @@ class ListCommand(Command):
   def __init__(self, parser):
     super().__init__(parser)
     parser.add_argument('-s', '--structures-path', type=str, help='Path to structure definitions')
+    parser.add_argument('--names-only', action='store_true', help='Print only structure names, one per line (for shell completion)')
     parser.add_argument('--mcp', action='store_true', help='Enable MCP (Model Context Protocol) integration')
     parser.set_defaults(func=self.execute)
 
@@ -30,7 +31,6 @@ class ListCommand(Command):
     else:
       paths_to_list = [contribs_path]
 
-    print("📃 Listing available structures\n")
     all_structures = set()
     for path in paths_to_list:
       for root, _, files in os.walk(path):
@@ -39,11 +39,23 @@ class ListCommand(Command):
             rel_path = os.path.relpath(file_path, path)
             if file.endswith(".yaml"):
               rel_path = rel_path[:-5]
-              if path != contribs_path:
+              # Mark custom path entries with '+ ' unless names-only requested
+              if not args.names_only and path != contribs_path:
                 rel_path = f"+ {rel_path}"
               all_structures.add(rel_path)
 
     sorted_list = sorted(all_structures)
+
+    if args.names_only:
+      # Print plain names without bullets or headers, remove '+ ' marker
+      for structure in sorted_list:
+        if structure.startswith('+ '):
+          print(structure[2:])
+        else:
+          print(structure)
+      return
+
+    print("📃 Listing available structures\n")
     for structure in sorted_list:
       print(f" - {structure}")
 
