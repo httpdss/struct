@@ -32,9 +32,10 @@ pip install shtab
 ### 2) Generate and install completion for your shell
 
 - Zsh
+
   ```sh
   mkdir -p ~/.zfunc
-  python -m shtab struct_module.main:get_parser -s zsh -o ~/.zfunc/_struct
+  struct --print-completion zsh > ~/.zfunc/_struct
   # ensure in ~/.zshrc
   fpath=(~/.zfunc $fpath)
   autoload -U compinit && compinit
@@ -42,16 +43,18 @@ pip install shtab
   ```
 
 - Bash
+
   ```sh
   mkdir -p ~/.local/share/bash-completion/completions
-  python -m shtab struct_module.main:get_parser -s bash -o ~/.local/share/bash-completion/completions/struct
+  struct --print-completion bash > ~/.local/share/bash-completion/completions/struct
   source ~/.bashrc
   ```
 
 - Fish
+
   ```sh
   mkdir -p ~/.config/fish/completions
-  python -m shtab struct_module.main:get_parser -s fish -o ~/.config/fish/completions/struct.fish
+  struct --print-completion fish > ~/.config/fish/completions/struct.fish
   fish -c 'source ~/.config/fish/completions/struct.fish'
   ```
 
