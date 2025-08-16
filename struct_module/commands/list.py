@@ -9,6 +9,7 @@ from struct_module.utils import project_path
 class ListCommand(Command):
   def __init__(self, parser):
     super().__init__(parser)
+    parser.description = "List available structures"
     parser.add_argument('-s', '--structures-path', type=str, help='Path to structure definitions')
     parser.add_argument('--names-only', action='store_true', help='Print only structure names, one per line (for shell completion)')
     parser.add_argument('--mcp', action='store_true', help='Enable MCP (Model Context Protocol) integration')
