@@ -4,7 +4,7 @@ openai
 python-dotenv
 jinja2
 PyGithub
-argcomplete
+shtab
 colorlog
 boto3
 google-cloud

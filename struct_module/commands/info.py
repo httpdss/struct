@@ -8,6 +8,7 @@ from struct_module.commands import Command
 class InfoCommand(Command):
     def __init__(self, parser):
       super().__init__(parser)
+      parser.description = "Show information about the package or structure definition"
       parser.add_argument('structure_definition', type=str, help='Name of the structure definition')
       parser.add_argument('-s', '--structures-path', type=str, help='Path to structure definitions')
       parser.add_argument('--mcp', action='store_true', help='Enable MCP (Model Context Protocol) integration')

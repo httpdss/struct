@@ -8,6 +8,7 @@ from struct_module.mcp_server import StructMCPServer
 class MCPCommand(Command):
     def __init__(self, parser):
         super().__init__(parser)
+        parser.description = "MCP (Model Context Protocol) support for struct tool"
         parser.add_argument('--server', action='store_true',
                           help='Start the MCP server for stdio communication')
         parser.set_defaults(func=self.execute)

@@ -117,7 +117,7 @@ Usage:
 struct completion install [bash|zsh|fish]
 ```
 
-- If no shell is provided, the command attempts to auto-detect your current shell and prints the exact commands to enable argcomplete-based completion for struct.
+- If no shell is provided, the command attempts to auto-detect your current shell and prints the exact commands to generate and install static completion files via shtab.
 - This does not modify your shell configuration; it only prints the commands you can copy-paste.
 
 ### `init`

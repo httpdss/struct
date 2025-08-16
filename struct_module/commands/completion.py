@@ -6,7 +6,7 @@ SUPPORTED_SHELLS = ["bash", "zsh", "fish"]
 class CompletionCommand(Command):
   def __init__(self, parser):
     super().__init__(parser)
-    parser.description = "Manage CLI shell completions for struct (argcomplete)"
+    parser.description = "Manage CLI shell completions for struct (shtab-generated)"
     sub = parser.add_subparsers(dest="action")
 
     install = sub.add_parser("install", help="Print the commands to enable completion for your shell")
@@ -29,27 +29,32 @@ class CompletionCommand(Command):
     print(f"Detected shell: {shell}")
 
     if shell == "bash":
-      print("\n# One-time dependency (if not installed):")
-      print("python -m pip install argcomplete")
-      print("\n# Enable completion for 'struct' in bash (append to ~/.bashrc):")
-      print('echo "eval \"$(register-python-argcomplete struct)\"" >> ~/.bashrc')
-      print("\n# Apply now:")
+      print("\n# Install shtab (once, in your environment):")
+      print("python -m pip install shtab")
+      print("\n# Generate static bash completion for 'struct':")
+      print("mkdir -p ~/.local/share/bash-completion/completions")
+      print("struct --print-completion bash > ~/.local/share/bash-completion/completions/struct")
+      print("\n# Apply now (or open a new shell):")
       print("source ~/.bashrc")
 
     elif shell == "zsh":
-      print("\n# One-time dependency (if not installed):")
-      print("python -m pip install argcomplete")
-      print("\n# Enable completion for 'struct' in zsh (append to ~/.zshrc):")
-      print('echo "eval \"$(register-python-argcomplete --shell zsh struct)\"" >> ~/.zshrc')
-      print("\n# Apply now:")
-      print("source ~/.zshrc")
+      print("\n# Install shtab (once, in your environment):")
+      print("python -m pip install shtab")
+      print("\n# Generate static zsh completion for 'struct':")
+      print("mkdir -p ~/.zfunc")
+      print("struct --print-completion zsh > ~/.zfunc/_struct")
+      print("\n# Ensure zsh loads user functions/completions (append to ~/.zshrc if needed):")
+      print('echo "fpath=(~/.zfunc $fpath)" >> ~/.zshrc')
+      print('echo "autoload -U compinit && compinit" >> ~/.zshrc')
+      print("\n# Apply now (or open a new shell):")
+      print("exec zsh")
 
     elif shell == "fish":
-      print("\n# One-time dependency (if not installed):")
-      print("python -m pip install argcomplete")
-      print("\n# Install fish completion file for 'struct':")
+      print("\n# Install shtab (once, in your environment):")
+      print("python -m pip install shtab")
+      print("\n# Generate static fish completion for 'struct':")
       print('mkdir -p ~/.config/fish/completions')
-      print('register-python-argcomplete --shell fish struct > ~/.config/fish/completions/struct.fish')
+      print('struct --print-completion fish > ~/.config/fish/completions/struct.fish')
       print("\n# Apply now:")
       print("fish -c 'source ~/.config/fish/completions/struct.fish'")
 
@@ -57,4 +62,4 @@ class CompletionCommand(Command):
       self.logger.error(f"Unsupported shell: {shell}. Supported: {', '.join(SUPPORTED_SHELLS)}")
       return
 
-    print("\nTip: If 'register-python-argcomplete' is not found, try:\n  python -m argcomplete.shellintegration <shell>")
+    print("\nTip: You can also print completion directly via: struct --print-completion <shell>")
