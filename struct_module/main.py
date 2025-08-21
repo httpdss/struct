@@ -1,4 +1,4 @@
-import argparse, argcomplete
+import argparse
 import logging
 from dotenv import load_dotenv
 from struct_module.utils import read_config_file, merge_configs
@@ -10,11 +10,15 @@ from struct_module.commands.generate_schema import GenerateSchemaCommand
 from struct_module.commands.mcp import MCPCommand
 from struct_module.logging_config import configure_logging
 
-
+# Optional dependency: shtab for static shell completion generation
+try:
+    import shtab  # type: ignore
+except Exception:  # pragma: no cover - optional at runtime
+    shtab = None
 
 load_dotenv()
 
-def main():
+def get_parser():
     parser = argparse.ArgumentParser(
       description="Generate project structure from YAML configuration.",
       prog="struct",
@@ -35,11 +39,19 @@ def main():
     from struct_module.commands.init import InitCommand
     InitCommand(subparsers.add_parser('init', help='Initialize a basic .struct.yaml in the target directory'))
 
-    # completion installer
+    # completion manager
     from struct_module.commands.completion import CompletionCommand
     CompletionCommand(subparsers.add_parser('completion', help='Manage shell completions'))
 
-    argcomplete.autocomplete(parser)
+    # Add shtab completion printing flags if available
+    if shtab is not None:
+        # Adds --print-completion and --shell flags
+        shtab.add_argument_to(parser)
+
+    return parser
+
+def main():
+    parser = get_parser()
 
     args = parser.parse_args()
 
@@ -49,14 +61,13 @@ def main():
       parser.exit()
 
     # Read config file if provided
-    if args.config_file:
+    if getattr(args, 'config_file', None):
       file_config = read_config_file(args.config_file)
       args = argparse.Namespace(**merge_configs(file_config, args))
 
-    logging_level = getattr(logging, args.log.upper(), logging.INFO)
+    logging_level = getattr(logging, getattr(args, 'log', 'INFO').upper(), logging.INFO)
 
-    configure_logging(level=logging_level, log_file=args.log_file)
-
+    configure_logging(level=logging_level, log_file=getattr(args, 'log_file', None))
 
     args.func(args)
 

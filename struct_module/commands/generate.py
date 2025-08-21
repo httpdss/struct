@@ -12,6 +12,7 @@ import subprocess
 class GenerateCommand(Command):
   def __init__(self, parser):
     super().__init__(parser)
+    parser.description = "Generate the project structure from a YAML configuration file"
     structure_arg = parser.add_argument('structure_definition', type=str, help='Path to the YAML configuration file')
     structure_arg.completer = structures_completer
     parser.add_argument('base_path', type=str, help='Base path where the structure will be created')
