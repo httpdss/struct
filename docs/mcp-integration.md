@@ -81,12 +81,23 @@ Validate a structure configuration YAML file.
 
 ## Usage
 
-### Starting the MCP Server
+### Starting the MCP Server (FastMCP stdio / http / sse)
 
-To start the MCP server for stdio communication:
+The MCP server uses FastMCP (v2.0+) and can run over stdio, http, or sse transports.
 
+- stdio (default):
 ```bash
-struct mcp --server
+struct mcp --server --transport stdio
+```
+
+- HTTP (StreamableHTTP):
+```bash
+struct mcp --server --transport http --host 127.0.0.1 --port 9000 --path /mcp
+```
+
+- SSE:
+```bash
+struct mcp --server --transport sse --host 0.0.0.0 --port 8080 --path /events
 ```
 
 ### Command Line Integration
@@ -140,10 +151,10 @@ For Cline (VS Code extension), add to your `.cline_mcp_settings.json`:
 
 ### Custom MCP Client Integration
 
-For any MCP-compatible client, use these connection parameters:
+For any MCP-compatible client, connect over stdio with your preferred SDK:
 
 ```javascript
-// Node.js example
+// Node.js example (MCP JS SDK)
 import { StdioClientTransport } from '@modelcontextprotocol/sdk/client/stdio.js';
 import { Client } from '@modelcontextprotocol/sdk/client/index.js';
 
@@ -166,7 +177,7 @@ await client.connect(transport);
 ```
 
 ```python
-# Python example
+# Python example (MCP Python SDK)
 import asyncio
 from mcp import ClientSession, StdioServerParameters
 from mcp.client.stdio import stdio_client
@@ -181,12 +192,11 @@ async def main():
         async with ClientSession(read, write) as session:
             await session.initialize()
 
-            # List available tools
             tools = await session.list_tools()
-            print(f"Available tools: {[tool.name for tool in tools.tools]}")
+            print([t.name for t in tools.tools])
 
-            # Call a tool
             result = await session.call_tool("list_structures", {})
+            # FastMCP tools return plain text content
             print(result.content[0].text)
 
 if __name__ == "__main__":
@@ -308,7 +318,8 @@ Then configure your MCP client:
 
 ### Step 1: Install struct with MCP support
 ```bash
-pip install struct[mcp]  # or pip install struct && pip install mcp
+pip install fastmcp>=2.0
+# (your MCP client may also require installing the MCP SDK, e.g., `pip install mcp`)
 ```
 
 ### Step 2: Test MCP server
