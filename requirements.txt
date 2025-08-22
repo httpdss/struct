@@ -11,4 +11,9 @@ google-cloud
 google-api-core
 cachetools
 pydantic-ai
-mcp
+mcp==1.10.1
+anyio==4.9.0
+httpx==0.28.1
+httpx-sse==0.4.0
+fastapi==0.116.1
+uvicorn==0.35.0

@@ -83,34 +83,80 @@ Validate a structure configuration YAML file.
 
 ### Starting the MCP Server
 
-To start the MCP server for stdio communication:
+The struct tool supports both stdio and HTTP transports for MCP:
 
+#### stdio Transport (Default)
 ```bash
 struct mcp --server
+# or explicitly
+struct mcp --server --transport stdio
 ```
 
-### Command Line Integration
-
-The existing `list` and `info` commands now support an optional `--mcp` flag:
-
+#### HTTP Transport (Recommended)
 ```bash
-# List structures with MCP support
-struct list --mcp
+# Start HTTP server on default port 8000
+struct mcp --server --transport http
 
-# Get structure info with MCP support
-struct info project/python --mcp
+# Start HTTP server on custom port
+struct mcp --server --transport http --port 8001
+
+# Start HTTP server on all interfaces
+struct mcp --server --transport http --host 0.0.0.0
 ```
+
+**HTTP Transport Benefits:**
+- ✅ More reliable connection handling
+- ✅ Better error reporting and debugging
+- ✅ Support for multiple concurrent clients
+- ✅ REST API endpoints for health checks
+- ✅ Swagger documentation at `/docs`
+
+### HTTP Endpoints (HTTP Transport)
+
+When using HTTP transport, the following endpoints are available:
+
+- **MCP Endpoint**: `http://localhost:8000/mcp` (JSON-RPC)
+- **API Documentation**: `http://localhost:8000/docs` (Swagger UI)
+- **Health Check**: `http://localhost:8000/health`
+- **Server Info**: `http://localhost:8000/`
 
 ## MCP Client Integration
 
+### HTTP Client Integration (Recommended)
+
+For HTTP transport, you can use any HTTP client to interact with the MCP server:
+
+```python
+# Python example using httpx
+import httpx
+import asyncio
+
+async def call_mcp_tool(tool_name, arguments):
+    async with httpx.AsyncClient() as client:
+        response = await client.post('http://localhost:8000/mcp', json={
+            'jsonrpc': '2.0',
+            'id': 1,
+            'method': 'tools/call',
+            'params': {
+                'name': tool_name,
+                'arguments': arguments
+            }
+        })
+        result = response.json()
+        if 'result' in result and 'content' in result['result']:
+            for content in result['result']['content']:
+                if content.get('type') == 'text':
+                    return content['text']
+        return str(result)
+
+# Example usage
+result = asyncio.run(call_mcp_tool('list_structures', {}))
+print(result)
+```
+
 ### Claude Desktop Integration
 
-Add the following to your Claude Desktop configuration file:
-
-**macOS**: `~/Library/Application Support/Claude/claude_desktop_config.json`
-**Windows**: `%APPDATA%\Claude\claude_desktop_config.json`
-**Linux**: `~/.config/claude/claude_desktop_config.json`
-
+**stdio Transport Configuration:**
 ```json
 {
   "mcpServers": {
@@ -123,10 +169,21 @@ Add the following to your Claude Desktop configuration file:
 }
 ```
 
+**HTTP Transport Configuration** (if your MCP client supports HTTP):
+```json
+{
+  "mcpServers": {
+    "struct": {
+      "url": "http://localhost:8000/mcp",
+      "transport": "http"
+    }
+  }
+}
+```
+
 ### Cline/Continue Integration
 
-For Cline (VS Code extension), add to your `.cline_mcp_settings.json`:
-
+**stdio Transport:**
 ```json
 {
   "mcpServers": {
@@ -138,12 +195,74 @@ For Cline (VS Code extension), add to your `.cline_mcp_settings.json`:
 }
 ```
 
+**HTTP Transport:**
+```json
+{
+  "mcpServers": {
+    "struct": {
+      "command": "struct",
+      "args": ["mcp", "--server", "--transport", "http", "--port", "8000"]
+    }
+  }
+}
+```
+
 ### Custom MCP Client Integration
 
-For any MCP-compatible client, use these connection parameters:
+#### HTTP Transport (Recommended)
+
+```python
+# Python HTTP client example
+import asyncio
+import httpx
+
+class StructMCPClient:
+    def __init__(self, base_url="http://localhost:8000"):
+        self.base_url = base_url
+        self.client = httpx.AsyncClient()
+
+    async def call_tool(self, tool_name, arguments):
+        response = await self.client.post(f"{self.base_url}/mcp", json={
+            'jsonrpc': '2.0',
+            'id': 1,
+            'method': 'tools/call',
+            'params': {'name': tool_name, 'arguments': arguments}
+        })
+        return response.json()
+
+    async def list_tools(self):
+        response = await self.client.post(f"{self.base_url}/mcp", json={
+            'jsonrpc': '2.0',
+            'id': 1,
+            'method': 'tools/list',
+            'params': {}
+        })
+        return response.json()
+
+    async def close(self):
+        await self.client.aclose()
+
+# Example usage
+async def main():
+    client = StructMCPClient()
+    try:
+        # List available tools
+        tools = await client.list_tools()
+        print(f"Available tools: {tools}")
+
+        # Call a tool
+        result = await client.call_tool("list_structures", {})
+        print(result)
+    finally:
+        await client.close()
+
+asyncio.run(main())
+```
+
+#### stdio Transport
 
 ```javascript
-// Node.js example
+// Node.js stdio example
 import { StdioClientTransport } from '@modelcontextprotocol/sdk/client/stdio.js';
 import { Client } from '@modelcontextprotocol/sdk/client/index.js';
 
@@ -166,7 +285,7 @@ await client.connect(transport);
 ```
 
 ```python
-# Python example
+# Python stdio example
 import asyncio
 from mcp import ClientSession, StdioServerParameters
 from mcp.client.stdio import stdio_client
@@ -308,28 +427,68 @@ Then configure your MCP client:
 
 ### Step 1: Install struct with MCP support
 ```bash
-pip install struct[mcp]  # or pip install struct && pip install mcp
+pip install struct
+# MCP dependencies are included in requirements.txt
 ```
 
 ### Step 2: Test MCP server
+
+**HTTP Transport (Recommended):**
 ```bash
-# Test that MCP server starts correctly
-struct mcp --server
-# Should show: Starting MCP server...
+# Test HTTP server
+struct mcp --server --transport http
+# Should show: 🚀 Starting Struct HTTP MCP Server on http://localhost:8000
+# Open http://localhost:8000/docs in browser to see API documentation
 # Press Ctrl+C to stop
 ```
 
-### Step 3: Configure your MCP client
+**stdio Transport:**
+```bash
+# Test stdio server
+struct mcp --server
+# Should show: Starting MCP server with stdio transport
+# Press Ctrl+C to stop
+```
+
+### Step 3: Test MCP tools
+
+**Using HTTP client:**
+```bash
+# In another terminal, test with curl
+curl -X POST http://localhost:8000/mcp \
+  -H "Content-Type: application/json" \
+  -d '{
+    "jsonrpc": "2.0",
+    "id": 1,
+    "method": "tools/list",
+    "params": {}
+  }'
+```
+
+### Step 4: Configure your MCP client
 Add the configuration to your MCP client (see examples above).
 
-### Step 4: Start using MCP tools
-Once connected, you can use these tools:
-- `list_structures` - Get all available structures
-- `get_structure_info` - Get details about a specific structure
-- `generate_structure` - Generate project structures
-- `validate_structure` - Validate YAML configuration files
+### Step 5: Available MCP tools
+Once connected, you can use these **fully functional** tools:
+- ✅ `list_structures` - Get all available structures
+- ✅ `get_structure_info` - Get details about a specific structure
+- ✅ `generate_structure` - Generate project structures (**Fixed: ArgumentParser issues resolved**)
+- ✅ `validate_structure` - Validate YAML configuration files (**Fixed: ArgumentParser issues resolved**)
 
 ## Troubleshooting
+
+### Transport Comparison
+
+| Feature | stdio Transport | HTTP Transport |
+|---------|----------------|----------------|
+| Connection Reliability | ⚠️ Can have issues | ✅ Very reliable |
+| Multiple Clients | ❌ Single client only | ✅ Multiple concurrent |
+| Debugging | ⚠️ Limited | ✅ Easy with browser/curl |
+| Health Checks | ❌ Not available | ✅ `/health` endpoint |
+| API Documentation | ❌ Not available | ✅ `/docs` endpoint |
+| Error Reporting | ⚠️ Basic | ✅ Detailed HTTP responses |
+
+**Recommendation:** Use HTTP transport for production and development.
 
 ### Common Issues
 
@@ -338,23 +497,78 @@ Once connected, you can use these tools:
    - Alternative: Use full path to Python executable
 
 2. **MCP server won't start**
-   - Check if `mcp` package is installed: `pip show mcp`
-   - Try running with verbose logging: `struct mcp --server --log DEBUG`
+   - Check if dependencies are installed: `pip show mcp fastapi uvicorn`
+   - Try HTTP transport: `struct mcp --server --transport http`
+   - Check for port conflicts: `lsof -i :8000`
 
-3. **Client can't connect**
+3. **Client can't connect (stdio)**
    - Verify the command and args in your client configuration
    - Test MCP server manually first
    - Check working directory and environment variables
+   - **Solution:** Switch to HTTP transport for better reliability
 
-4. **Structures not found**
+4. **Client can't connect (HTTP)**
+   - Check if server is running: `curl http://localhost:8000/health`
+   - Verify port number in client configuration
+   - Check firewall settings if accessing remotely
+
+5. **Structures not found**
    - Set `STRUCT_STRUCTURES_PATH` environment variable
    - Use absolute paths in configuration
    - Verify structure files exist and are readable
 
+6. **ArgumentParser errors (Fixed in latest version)**
+   - Update to the latest version of struct
+   - These errors with `generate_structure` and `validate_structure` have been resolved
+
 ### Debug Mode
+
+**HTTP Transport:**
+```bash
+# Run with debug logging
+struct mcp --server --transport http --log-level DEBUG
+
+# Check server health
+curl http://localhost:8000/health
+
+# View API documentation
+open http://localhost:8000/docs
+```
+
+**stdio Transport:**
 ```bash
 # Run with debug logging
 STRUCT_LOG_LEVEL=DEBUG struct mcp --server
+```
+
+### Testing MCP Tools
+
+**Test all tools with HTTP:**
+```bash
+# Start server
+struct mcp --server --transport http &
+SERVER_PID=$!
+
+# Test list_structures
+curl -X POST http://localhost:8000/mcp -H "Content-Type: application/json" -d '{
+  "jsonrpc": "2.0", "id": 1, "method": "tools/call",
+  "params": {"name": "list_structures", "arguments": {}}
+}'
+
+# Test get_structure_info
+curl -X POST http://localhost:8000/mcp -H "Content-Type: application/json" -d '{
+  "jsonrpc": "2.0", "id": 2, "method": "tools/call",
+  "params": {"name": "get_structure_info", "arguments": {"structure_name": "project/python"}}
+}'
+
+# Test validate_structure
+curl -X POST http://localhost:8000/mcp -H "Content-Type: application/json" -d '{
+  "jsonrpc": "2.0", "id": 3, "method": "tools/call",
+  "params": {"name": "validate_structure", "arguments": {"yaml_file": "/path/to/structure.yaml"}}
+}'
+
+# Clean up
+kill $SERVER_PID
 ```
 
 ## Benefits

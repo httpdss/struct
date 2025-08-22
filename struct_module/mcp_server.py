@@ -341,7 +341,27 @@ class StructMCPServer:
                     ]
                 )
 
-            # Mock an ArgumentParser-like object
+            # Import and use GenerateCommand directly without creating it
+            from struct_module.commands.generate import GenerateCommand
+            import argparse
+
+            # Create a mock parser for GenerateCommand
+            class MockParser:
+                def __init__(self):
+                    self.description = ""
+                    self.defaults = {}
+
+                def add_argument(self, *args, **kwargs):
+                    # Mock the add_argument method
+                    class MockArgument:
+                        def __init__(self):
+                            self.completer = None
+                    return MockArgument()
+
+                def set_defaults(self, **kwargs):
+                    self.defaults.update(kwargs)
+
+            # Mock an ArgumentParser-like object for arguments
             class MockArgs:
                 def __init__(self):
                     self.structure_definition = structure_definition
@@ -349,11 +369,25 @@ class StructMCPServer:
                     self.output = output_mode
                     self.dry_run = dry_run
                     self.structures_path = structures_path
-                    self.mappings = mappings if mappings else None
+                    self.mappings_file = None  # MCP doesn't use this
+                    self.vars = None  # Convert mappings to vars format if needed
                     self.log = "INFO"
                     self.config_file = None
                     self.log_file = None
+                    self.input_store = '/tmp/struct/input.json'
+                    self.diff = False
+                    self.backup = None
+                    self.file_strategy = 'overwrite'
+                    self.global_system_prompt = None
+                    self.non_interactive = True
 
+                    # Convert mappings to vars format for GenerateCommand
+                    if mappings:
+                        self.vars = ','.join([f"{k}={v}" for k, v in mappings.items()])
+
+            # Create GenerateCommand with mock parser
+            mock_parser = MockParser()
+            generate_cmd = GenerateCommand(mock_parser)
             args = MockArgs()
 
             # Capture stdout for console output mode
@@ -364,10 +398,7 @@ class StructMCPServer:
                 sys.stdout = captured_output
 
                 try:
-                    # Use the GenerateCommand to generate the structure
-                    generate_cmd = GenerateCommand(None)
                     generate_cmd.execute(args)
-
                     result_text = captured_output.getvalue()
                     if not result_text.strip():
                         result_text = "Structure generation completed successfully"
@@ -376,7 +407,6 @@ class StructMCPServer:
                     sys.stdout = old_stdout
             else:
                 # Generate files normally
-                generate_cmd = GenerateCommand(None)
                 generate_cmd.execute(args)
 
                 if dry_run:
@@ -418,7 +448,23 @@ class StructMCPServer:
                     ]
                 )
 
-            # Mock an ArgumentParser-like object
+            # Import and use ValidateCommand directly
+            from struct_module.commands.validate import ValidateCommand
+
+            # Create a mock parser for ValidateCommand
+            class MockParser:
+                def __init__(self):
+                    self.description = ""
+                    self.defaults = {}
+
+                def add_argument(self, *args, **kwargs):
+                    # Mock the add_argument method - return self to allow chaining
+                    return self
+
+                def set_defaults(self, **kwargs):
+                    self.defaults.update(kwargs)
+
+            # Mock an ArgumentParser-like object for arguments
             class MockArgs:
                 def __init__(self):
                     self.yaml_file = yaml_file
@@ -426,6 +472,9 @@ class StructMCPServer:
                     self.config_file = None
                     self.log_file = None
 
+            # Create ValidateCommand with mock parser
+            mock_parser = MockParser()
+            validate_cmd = ValidateCommand(mock_parser)
             args = MockArgs()
 
             # Capture stdout for validation output
@@ -435,10 +484,7 @@ class StructMCPServer:
             sys.stdout = captured_output
 
             try:
-                # Use the ValidateCommand to validate
-                validate_cmd = ValidateCommand(None)
                 validate_cmd.execute(args)
-
                 result_text = captured_output.getvalue()
                 if not result_text.strip():
                     result_text = f"✅ YAML file '{yaml_file}' is valid"
@@ -481,6 +527,17 @@ class StructMCPServer:
 
 async def main():
     """Main entry point for the MCP server."""
+    # On Windows, using stdio with asyncio typically requires the Selector event loop
+    # policy to avoid 'The system cannot find the path specified.' errors when
+    # attaching to standard streams.
+    try:
+        if os.name == "nt":
+            # Prefer Selector policy for compatibility with stdio pipes
+            asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
+    except Exception:
+        # Best-effort: if policy setting fails, continue with defaults
+        pass
+
     logging.basicConfig(level=logging.INFO)
     server = StructMCPServer()
     await server.run()
