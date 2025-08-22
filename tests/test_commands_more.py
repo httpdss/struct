@@ -159,12 +159,12 @@ def test_mcp_command_server_flag(parser):
     command = MCPCommand(parser)
     args = parser.parse_args(['--server'])
 
-    async def fake_start():
+    async def fake_start(args):
         return None
 
     with patch.object(command, '_start_mcp_server', side_effect=fake_start) as mock_start:
         command.execute(args)
-        mock_start.assert_called_once()
+        mock_start.assert_called_once_with(args)
 
 
 # ValidateCommand error-path tests on helpers
