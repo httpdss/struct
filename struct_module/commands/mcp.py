@@ -23,6 +23,10 @@ class MCPCommand(Command):
                           help='Use stateless HTTP mode (HTTP transport only)')
         parser.add_argument('--no-banner', dest='show_banner', action='store_false', default=True,
                           help='Disable FastMCP startup banner')
+        # Debugging options
+        parser.add_argument('--debug', action='store_true', help='Enable debug mode (sets struct and FastMCP loggers to DEBUG by default)')
+        parser.add_argument('--fastmcp-log-level', dest='fastmcp_log_level', type=str, default=None,
+                          help='Log level for FastMCP internals (e.g., DEBUG, INFO). Overrides --debug for FastMCP if provided')
         parser.set_defaults(func=self.execute)
 
     def execute(self, args):
@@ -41,15 +45,17 @@ class MCPCommand(Command):
             print("  --path /PATH             Endpoint path for HTTP/SSE (default: /mcp)")
             print("  --stateless-http         Enable stateless HTTP mode (HTTP only)")
             print("  --no-banner              Disable FastMCP banner")
+            print("  --debug                  Enable debug mode (struct + FastMCP DEBUG; uvicorn=debug)")
+            print("  --fastmcp-log-level LVL  Set FastMCP logger level (overrides --debug for FastMCP)")
             print("\nMCP tools available:")
             print("  - list_structures: List all available structure definitions")
             print("  - get_structure_info: Get detailed information about a structure")
             print("  - generate_structure: Generate structures with various options")
             print("  - validate_structure: Validate structure configuration files")
             print("\nExamples:")
-            print("  struct mcp --server --transport stdio")
-            print("  struct mcp --server --transport http --host 127.0.0.1 --port 9000 --path /mcp")
-            print("  struct mcp --server --transport sse --host 0.0.0.0 --port 8080 --path /events")
+            print("  struct mcp --server --transport stdio --debug")
+            print("  struct mcp --server --transport http --host 127.0.0.1 --port 9000 --path /mcp --uvicorn-log-level debug")
+            print("  struct mcp --server --transport sse --host 0.0.0.0 --port 8080 --path /events --fastmcp-log-level DEBUG")
 
     async def _start_mcp_server(self, args=None):
         """Start the MCP server using the selected transport."""
@@ -61,12 +67,30 @@ class MCPCommand(Command):
                 "transport": transport,
                 "show_banner": getattr(args, 'show_banner', True) if args else True,
             }
+            # Determine FastMCP logger level
+            fastmcp_log_level = None
+            if args:
+                fastmcp_log_level = getattr(args, 'fastmcp_log_level', None)
+                if not fastmcp_log_level and getattr(args, 'debug', False):
+                    fastmcp_log_level = 'DEBUG'
+            if fastmcp_log_level:
+                run_kwargs["fastmcp_log_level"] = fastmcp_log_level
+
             if transport in {"http", "sse"}:
+                # uvicorn expects lowercase levels like "info"/"debug"
+                uvicorn_level = None
+                if args:
+                    uvicorn_level = getattr(args, 'uvicorn_log_level', None)
+                    if not uvicorn_level and getattr(args, 'debug', False):
+                        uvicorn_level = 'debug'
+                    if not uvicorn_level:
+                        # Default to args.log if provided, else None
+                        uvicorn_level = getattr(args, 'log', None)
                 run_kwargs.update({
                     "host": getattr(args, 'host', None),
                     "port": getattr(args, 'port', None),
                     "path": getattr(args, 'path', None),
-                    "log_level": getattr(args, 'uvicorn_log_level', None) or getattr(args, 'log', None),
+                    "log_level": (uvicorn_level.lower() if isinstance(uvicorn_level, str) else uvicorn_level),
                 })
                 if transport == "http":
                     run_kwargs["stateless_http"] = getattr(args, 'stateless_http', None)

@@ -188,11 +188,21 @@ class StructMCPServer:
     def _register_tools(self):
         @self.app.tool(name="list_structures", description="List all available structure definitions")
         async def list_structures(structures_path: Optional[str] = None) -> str:
-            return self._list_structures_logic(structures_path)
+            self.logger.debug(f"MCP request: list_structures args={{'structures_path': {structures_path!r}}}")
+            result = self._list_structures_logic(structures_path)
+            preview = result if len(result) <= 1000 else result[:1000] + f"... [truncated {len(result)-1000} chars]"
+            self.logger.debug(f"MCP response: list_structures len={len(result)} preview=\n{preview}")
+            return result
 
         @self.app.tool(name="get_structure_info", description="Get detailed information about a specific structure")
         async def get_structure_info(structure_name: str, structures_path: Optional[str] = None) -> str:
-            return self._get_structure_info_logic(structure_name, structures_path)
+            self.logger.debug(
+                f"MCP request: get_structure_info args={{'structure_name': {structure_name!r}, 'structures_path': {structures_path!r}}}"
+            )
+            result = self._get_structure_info_logic(structure_name, structures_path)
+            preview = result if len(result) <= 1000 else result[:1000] + f"... [truncated {len(result)-1000} chars]"
+            self.logger.debug(f"MCP response: get_structure_info len={len(result)} preview=\n{preview}")
+            return result
 
         @self.app.tool(name="generate_structure", description="Generate a project structure using specified definition and options")
         async def generate_structure(
@@ -203,7 +213,18 @@ class StructMCPServer:
             mappings: Optional[Dict[str, str]] = None,
             structures_path: Optional[str] = None,
         ) -> str:
-            return self._generate_structure_logic(
+            self.logger.debug(
+                "MCP request: generate_structure args=%s",
+                {
+                    "structure_definition": structure_definition,
+                    "base_path": base_path,
+                    "output": output,
+                    "dry_run": dry_run,
+                    "mappings": mappings,
+                    "structures_path": structures_path,
+                },
+            )
+            result = self._generate_structure_logic(
                 structure_definition,
                 base_path,
                 output,
@@ -211,10 +232,17 @@ class StructMCPServer:
                 mappings,
                 structures_path,
             )
+            preview = result if len(result) <= 1000 else result[:1000] + f"... [truncated {len(result)-1000} chars]"
+            self.logger.debug(f"MCP response: generate_structure len={len(result)} preview=\n{preview}")
+            return result
 
         @self.app.tool(name="validate_structure", description="Validate a structure configuration YAML file")
         async def validate_structure(yaml_file: str) -> str:
-            return self._validate_structure_logic(yaml_file)
+            self.logger.debug(f"MCP request: validate_structure args={{'yaml_file': {yaml_file!r}}}")
+            result = self._validate_structure_logic(yaml_file)
+            preview = result if len(result) <= 1000 else result[:1000] + f"... [truncated {len(result)-1000} chars]"
+            self.logger.debug(f"MCP response: validate_structure len={len(result)} preview=\n{preview}")
+            return result
 
     async def run(
         self,
@@ -226,6 +254,7 @@ class StructMCPServer:
         path: str | None = None,
         log_level: str | None = None,
         stateless_http: bool | None = None,
+        fastmcp_log_level: str | None = None,
     ):
         """Run the FastMCP server with the specified transport.
 
@@ -240,9 +269,16 @@ class StructMCPServer:
             path: Endpoint path for HTTP/SSE transports
             log_level: Log level for the HTTP server (uvicorn)
             stateless_http: Whether to use stateless HTTP mode (HTTP only)
+            fastmcp_log_level: Log level for FastMCP internals (e.g., DEBUG, INFO)
         """
         loop = asyncio.get_running_loop()
         def _run():
+            # Apply FastMCP-specific logger level if provided
+            if fastmcp_log_level:
+                try:
+                    logging.getLogger('fastmcp').setLevel(getattr(logging, fastmcp_log_level.upper()))
+                except Exception:
+                    logging.getLogger('fastmcp').setLevel(logging.DEBUG if str(fastmcp_log_level).upper() == 'DEBUG' else logging.INFO)
             kwargs = {"show_banner": show_banner}
             if transport in {"http", "sse"}:
                 if host is not None:
@@ -255,6 +291,16 @@ class StructMCPServer:
                     kwargs["log_level"] = log_level
                 if stateless_http is not None and transport == "http":
                     kwargs["stateless_http"] = stateless_http
+                logging.getLogger(__name__).info(
+                    "Starting FastMCP %s server on http://%s:%s%s (uvicorn log_level=%s)",
+                    transport,
+                    kwargs.get("host", "127.0.0.1"),
+                    kwargs.get("port", 8000),
+                    kwargs.get("path", "/mcp"),
+                    kwargs.get("log_level", None),
+                )
+            else:
+                logging.getLogger(__name__).info("Starting FastMCP stdio server")
             self.app.run(transport, **kwargs)
         await loop.run_in_executor(None, _run)
 
