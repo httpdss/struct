@@ -148,13 +148,19 @@ class StructMCPServer:
             old = sys.stdout
             sys.stdout = buf
             try:
-                GenerateCommand(None).execute(args)
+                # Create a dummy parser for GenerateCommand
+                import argparse
+                dummy_parser = argparse.ArgumentParser()
+                GenerateCommand(dummy_parser).execute(args)
                 text = buf.getvalue()
                 return text.strip() or "Structure generation completed successfully"
             finally:
                 sys.stdout = old
         else:
-            GenerateCommand(None).execute(args)
+            # Create a dummy parser for GenerateCommand
+            import argparse
+            dummy_parser = argparse.ArgumentParser()
+            GenerateCommand(dummy_parser).execute(args)
             if dry_run:
                 return f"Dry run completed for structure '{structure_definition}' at '{base_path}'"
             return f"Structure '{structure_definition}' generated successfully at '{base_path}'"
@@ -176,7 +182,10 @@ class StructMCPServer:
         old = sys.stdout
         sys.stdout = buf
         try:
-            ValidateCommand(None).execute(args)
+            # Create a dummy parser for ValidateCommand
+            import argparse
+            dummy_parser = argparse.ArgumentParser()
+            ValidateCommand(dummy_parser).execute(args)
             text = buf.getvalue()
             return text.strip() or f"✅ YAML file '{yaml_file}' is valid"
         finally:
@@ -303,6 +312,27 @@ class StructMCPServer:
                 logging.getLogger(__name__).info("Starting FastMCP stdio server")
             self.app.run(transport, **kwargs)
         await loop.run_in_executor(None, _run)
+
+    # =====================
+    # Compatibility methods for testing (simulates MCP result structure)
+    # =====================
+    async def _handle_get_structure_info(self, params: Dict[str, Any]):
+        """Compatibility method for tests that expect MCP-style responses."""
+        structure_name = params.get('structure_name')
+        structures_path = params.get('structures_path')
+
+        result_text = self._get_structure_info_logic(structure_name, structures_path)
+
+        # Mock MCP response structure
+        class MockContent:
+            def __init__(self, text):
+                self.text = text
+
+        class MockResult:
+            def __init__(self, content):
+                self.content = content
+
+        return MockResult([MockContent(result_text)])
 
 
 async def main():
