@@ -11,4 +11,4 @@ google-cloud
 google-api-core
 cachetools
 pydantic-ai
-mcp
+fastmcp>=2.0

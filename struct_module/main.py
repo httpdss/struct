@@ -1,5 +1,6 @@
 import argparse
 import logging
+import os
 from dotenv import load_dotenv
 from struct_module.utils import read_config_file, merge_configs
 from struct_module.commands.generate import GenerateCommand
@@ -65,7 +66,16 @@ def main():
       file_config = read_config_file(args.config_file)
       args = argparse.Namespace(**merge_configs(file_config, args))
 
-    logging_level = getattr(logging, getattr(args, 'log', 'INFO').upper(), logging.INFO)
+    # Resolve logging level precedence: STRUCT_LOG_LEVEL env > --debug (if present) > --log
+    env_level = os.getenv('STRUCT_LOG_LEVEL')
+    if env_level:
+        logging_level = getattr(logging, env_level.upper(), logging.INFO)
+    else:
+        # Some commands (like mcp) may add a --debug flag; respect it
+        if getattr(args, 'debug', False):
+            logging_level = logging.DEBUG
+        else:
+            logging_level = getattr(logging, getattr(args, 'log', 'INFO').upper(), logging.INFO)
 
     configure_logging(level=logging_level, log_file=getattr(args, 'log_file', None))
 
