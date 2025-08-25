@@ -33,6 +33,14 @@ struct generate <Tab>
 # Shows all available structures
 ```
 
+### Using Defaults
+
+If you have a .struct.yaml in the current directory and want to generate into the current directory, you can simply run:
+
+```sh
+struct generate
+```
+
 ### Simple Example
 
 ```sh
@@ -47,6 +55,12 @@ For local YAML configuration files, the `file://` protocol is automatically adde
 # Both of these work identically
 struct generate my-config.yaml ./output
 struct generate file://my-config.yaml ./output
+```
+
+Tip: If your config file is named `.struct.yaml` in the current directory and you want to generate into the current directory, you can simply run:
+
+```sh
+struct generate
 ```
 
 ### Diff Preview Example
