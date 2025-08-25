@@ -43,7 +43,7 @@ vim structure.yaml # copy the content from the example folder
 struct generate structure.yaml .
 ```
 
-> **Note**: The `file://` protocol is automatically added for `.yaml` files, so `structure.yaml` and `file://structure.yaml` work identically.
+> Note: The `file://` protocol is automatically added for `.yaml` files, so `structure.yaml` and `file://structure.yaml` work identically. Additionally, if your file is named `.struct.yaml` in the current directory and you want to generate into the current directory, you can just run `struct generate`.
 
 ## Discovering Available Structures
 

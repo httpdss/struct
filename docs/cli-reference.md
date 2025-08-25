@@ -59,13 +59,22 @@ Generate the project structure.
 **Usage:**
 
 ```sh
-struct generate [-h] [-l LOG] [-c CONFIG_FILE] [-i LOG_FILE] [-s STRUCTURES_PATH] [-n INPUT_STORE] [-d] [--diff] [-v VARS] [-b BACKUP] [-f {overwrite,skip,append,rename,backup}] [-p GLOBAL_SYSTEM_PROMPT] [--non-interactive] [--mappings-file MAPPINGS_FILE] [-o {console,file}] structure_definition base_path
+struct generate [-h] [-l LOG] [-c CONFIG_FILE] [-i LOG_FILE] [-s STRUCTURES_PATH] [-n INPUT_STORE] [-d] [--diff] [-v VARS] [-b BACKUP] [-f {overwrite,skip,append,rename,backup}] [-p GLOBAL_SYSTEM_PROMPT] [--non-interactive] [--mappings-file MAPPINGS_FILE] [-o {console,file}] [structure_definition] [base_path]
+```
+
+Defaults when omitted:
+- structure_definition -> .struct.yaml
+- base_path -> .
+
+Example:
+```sh
+struct generate
 ```
 
 **Arguments:**
 
-- `structure_definition`: Path to the YAML configuration file.
-- `base_path`: Base path where the structure will be created.
+- `structure_definition` (optional): Path to the YAML configuration file (default: `.struct.yaml`).
+- `base_path` (optional): Base path where the structure will be created (default: `.`).
 - `-s STRUCTURES_PATH, --structures-path STRUCTURES_PATH`: Path to structure definitions.
 - `-n INPUT_STORE, --input-store INPUT_STORE`: Path to the input store.
 - `-d, --dry-run`: Perform a dry run without creating any files or directories.
@@ -138,6 +147,14 @@ struct init [path]
 - Non-destructive: if .struct.yaml already exists, it is not overwritten and a message is printed.
 
 ## Examples
+
+### Using Defaults
+
+Generate with default structure (.struct.yaml) into current directory:
+
+```sh
+struct generate
+```
 
 ### Basic Structure Generation
 
