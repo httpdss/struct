@@ -13,9 +13,9 @@ class GenerateCommand(Command):
   def __init__(self, parser):
     super().__init__(parser)
     parser.description = "Generate the project structure from a YAML configuration file"
-    structure_arg = parser.add_argument('structure_definition', type=str, help='Path to the YAML configuration file')
+    structure_arg = parser.add_argument('structure_definition', nargs='?', default='.struct.yaml', type=str, help='Path to the YAML configuration file (default: .struct.yaml)')
     structure_arg.completer = structures_completer
-    parser.add_argument('base_path', type=str, help='Base path where the structure will be created')
+    parser.add_argument('base_path', nargs='?', default='.', type=str, help='Base path where the structure will be created (default: current directory)')
     parser.add_argument('-s', '--structures-path', type=str, help='Path to structure definitions')
     parser.add_argument('-n', '--input-store', type=str, help='Path to the input store', default='/tmp/struct/input.json')
     parser.add_argument('-d', '--dry-run', action='store_true', help='Perform a dry run without creating any files or directories')
