@@ -6,6 +6,8 @@ repo_name: httpdss/struct
 
 theme:
   name: material
+  logo: assets/logo.png
+  favicon: assets/favicon.png
   palette:
     # Palette toggle for dark mode (default)
     - media: "(prefers-color-scheme: dark)"
@@ -43,6 +45,8 @@ theme:
 
 docs_dir: docs
 site_dir: site/docs
+
+
 
 # Navigation structure based on existing docs
 nav:
@@ -94,3 +98,6 @@ plugins:
 
 extra_css:
   - stylesheets/extra.css
+
+extra:
+  homepage: https://httpdss.github.io/struct/
