@@ -1,3 +1,10 @@
+---
+tags:
+  - quickstart
+  - docker
+  - mcp
+---
+
 # Quick Start
 
 ## Quick Start Using Docker

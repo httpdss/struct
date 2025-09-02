@@ -1,3 +1,8 @@
+---
+tags:
+  - mcp
+---
+
 # MCP (Model Context Protocol) Integration
 
 The struct tool now supports MCP (Model Context Protocol) integration, providing a programmable interface to interact with structure definitions. This enables automation and integration with other tools, particularly AI-assisted development workflows.

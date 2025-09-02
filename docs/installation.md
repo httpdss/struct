@@ -1,3 +1,8 @@
+---
+tags:
+  - installation
+---
+
 # Installation Guide
 
 ## Using pip
