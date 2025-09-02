@@ -51,6 +51,8 @@ site_dir: site/docs
 # Navigation structure based on existing docs
 nav:
   - Home: index.md
+  - Blog: blog/index.md
+  - Tags: tags.md
   - Getting Started:
     - Installation: installation.md
     - Quick Start: quickstart.md
@@ -93,6 +95,10 @@ markdown_extensions:
 
 plugins:
   - search
+  - social
+  - blog
+  - tags:
+      tags_file: tags.md
   - git-revision-date-localized:
       enable_creation_date: true
 
