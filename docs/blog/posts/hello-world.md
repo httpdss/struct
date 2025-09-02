@@ -4,7 +4,7 @@ date: 2025-09-01
 tags:
   - getting-started
 authors:
-  - Kenny
+  - httpdss
 ---
 
 Welcome to the blog! This is your first post.
