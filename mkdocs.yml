@@ -97,8 +97,7 @@ plugins:
   - search
   - social
   - blog
-  - tags:
-      tags_file: tags.md
+  - tags
   - git-revision-date-localized:
       enable_creation_date: true
 
