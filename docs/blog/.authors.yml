@@ -1,3 +1,4 @@
-httpdss:
-  name: Kenneth Belitzky
-  description: Admin
+authors:
+  httpdss:
+    name: Kenneth Belitzky
+    description: Admin
