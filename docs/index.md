@@ -33,7 +33,7 @@ Welcome to the comprehensive documentation for STRUCT - the Automated Project St
 
 - [CLI Reference](cli-reference.md) - Complete command documentation
 - [Schema Reference](schema.md) - YAML validation and IDE support
-- [Examples](examples/) - Practical examples and use cases
+- [Examples](examples/index.md) - Practical examples and use cases
 
 ## 🔗 External Resources
 
@@ -44,5 +44,5 @@ Welcome to the comprehensive documentation for STRUCT - the Automated Project St
 ## 🤝 Community
 
 - [Contributing Guidelines](contributing.md)
-- [License](../LICENSE)
+- [License](https://github.com/httpdss/struct/blob/main/LICENSE)
 - [Funding](funding.md)
