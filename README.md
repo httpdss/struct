@@ -1,6 +1,7 @@
 # 🚀 STRUCT: Automated Project Structure Generator
 
-<img width="1138" height="334" alt="image" src="https://github.com/user-attachments/assets/98df7e78-3db1-465c-85e4-2fcf86dc1ca1" />
+<img width="754" height="173" alt="struct-logo" src="https://github.com/user-attachments/assets/a83f8f04-529f-454e-bca7-bba90e76559c" />
+
 
 **STRUCT** is a powerful, flexible tool for automating project structure creation through YAML configurations. Generate consistent project layouts, boilerplate code, and configurations with template variables, remote content fetching, and intelligent file handling.
 
