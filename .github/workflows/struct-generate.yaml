@@ -7,7 +7,7 @@ on:
         description: 'Path to the STRUCT file'
         type: string
         required: false
-        default: 'file://.struct.yaml'
+        default: '.struct.yaml'
       output_dir:
         description: 'Path to the output directory'
         type: string
@@ -63,7 +63,7 @@ jobs:
     runs-on: ${{ inputs.runs_on }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -77,7 +77,7 @@ jobs:
 
       - name: Install custom structures
         if: ${{ inputs.custom_structure_repository != '' }}
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           repository: ${{ inputs.custom_structure_repository }}
           token: ${{ secrets.token }}
