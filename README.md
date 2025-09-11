@@ -1,6 +1,6 @@
 # 🚀 STRUCT: Automated Project Structure Generator
 
-![STRUCT Logo](https://github.com/user-attachments/assets/fd3a99bd-9a77-48bf-86b0-3d1080fa58bb)
+![STRUCT Logo](./docs/assets/github-hero.gif)
 
 [![codecov](https://codecov.io/github/httpdss/struct/graph/badge.svg?token=JL5WIO1C9T)](https://codecov.io/github/httpdss/struct)
 ![GitHub issues](https://img.shields.io/github/issues/httpdss/struct)
