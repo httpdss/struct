@@ -1,7 +1,11 @@
 # 🚀 STRUCT: Automated Project Structure Generator
 
-<img width="1280" height="294" alt="struct-logo" src="https://github.com/user-attachments/assets/fd3a99bd-9a77-48bf-86b0-3d1080fa58bb" />
+![STRUCT Logo](https://github.com/user-attachments/assets/fd3a99bd-9a77-48bf-86b0-3d1080fa58bb)
 
+[![codecov](https://codecov.io/github/httpdss/struct/graph/badge.svg?token=JL5WIO1C9T)](https://codecov.io/github/httpdss/struct)
+![GitHub issues](https://img.shields.io/github/issues/httpdss/struct)
+![GitHub pull requests](https://img.shields.io/github/issues-pr/httpdss/struct)
+![GitHub stars](https://img.shields.io/github/stars/httpdss/struct?style=social)
 
 **STRUCT** is a powerful, flexible tool for automating project structure creation through YAML configurations. Generate consistent project layouts, boilerplate code, and configurations with template variables, remote content fetching, and intelligent file handling.
 
