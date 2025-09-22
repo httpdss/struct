@@ -167,16 +167,20 @@ class TemplateRenderer:
             # Get contextual icon
             icon = self._get_variable_icon(var, var_type)
 
+            # ANSI color codes for formatting
+            BOLD = '\033[1m'
+            RESET = '\033[0m'
+
             if enum:
               # Build options list string like "(1) dev, (2) staging, (3) prod"
               options = ", ".join([f"({i+1}) {val}" for i, val in enumerate(enum)])
 
               if description:
-                print(f"{icon} {var}: {description}")
+                print(f"{icon} {BOLD}{var}{RESET}: {description}")
                 print(f"   Options: {options}")
                 raw = input(f"   Enter value [{default}]: ") or default
               else:
-                raw = input(f"{icon} {var} [{default}] {options}: ") or default
+                raw = input(f"{icon} {BOLD}{var}{RESET} [{default}] {options}: ") or default
 
               raw = raw.strip()
               if raw == "":
@@ -190,10 +194,10 @@ class TemplateRenderer:
                 raise ValueError(f"Variable '{var}' must be one of {enum}, got: {raw}")
             else:
               if description:
-                print(f"{icon} {var}: {description}")
+                print(f"{icon} {BOLD}{var}{RESET}: {description}")
                 user_input = input(f"   Enter value [{default}]: ") or default
               else:
-                user_input = input(f"{icon} {var} [{default}]: ") or default
+                user_input = input(f"{icon} {BOLD}{var}{RESET} [{default}]: ") or default
           # Coerce and validate according to schema
           coerced = self._coerce_and_validate(var, user_input, conf)
           self.input_store.set_value(var, coerced)

@@ -84,7 +84,7 @@ variables:
       default: 8080
 ```
 
-When prompted interactively, variables with descriptions will display with contextual icons and clean formatting:
+When prompted interactively, variables with descriptions will display with contextual icons, **bold variable names**, and clean formatting:
 
 ```
 🚀 project_name: The name of your project
@@ -101,6 +101,8 @@ For variables without descriptions, a more compact format is used:
 🔧 author_name []:
 ⚡ enable_logging [true]:
 ```
+
+**Note**: Variable names appear in **bold** in actual terminal output for better readability.
 
 **Contextual Icons**: STRUCT automatically selects appropriate icons based on variable names and types:
 - 🚀 Project/app names

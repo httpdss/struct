@@ -145,9 +145,9 @@ def test_prompt_with_description_display():
         result_vars1 = renderer.prompt_for_missing_vars(content1, vars1)
         assert result_vars1["project_name"] == "TestProject"
 
-        # Check that the new format was printed (icon + var: description)
+        # Check that the new format was printed (icon + bold var: description)
         print_calls = [call.args[0] for call in mock_print.call_args_list]
-        assert any("🚀 project_name: The name of your project" in call for call in print_calls)
+        assert any("🚀 \033[1mproject_name\033[0m: The name of your project" in call for call in print_calls)
 
     # Test 2: Enum variable with description (should show icon + description + options)
     content2 = "{{@ environment @}}"
@@ -157,9 +157,9 @@ def test_prompt_with_description_display():
         result_vars2 = renderer.prompt_for_missing_vars(content2, vars2)
         assert result_vars2["environment"] == "prod"
 
-        # Check that description and options were printed in new format
+        # Check that description and options were printed in new format with bold
         print_calls = [call.args[0] for call in mock_print.call_args_list]
-        assert any("🌍 environment: Target deployment environment" in call for call in print_calls)
+        assert any("🌍 \033[1menvironment\033[0m: Target deployment environment" in call for call in print_calls)
         assert any("Options: (1) dev, (2) staging, (3) prod" in call for call in print_calls)
 
     # Test 3: Variable with 'help' field (backward compatibility)
@@ -170,9 +170,9 @@ def test_prompt_with_description_display():
         result_vars3 = renderer.prompt_for_missing_vars(content3, vars3)
         assert result_vars3["old_style_help"] == "help_test"
 
-        # Check that help was printed in new format
+        # Check that help was printed in new format with bold
         print_calls = [call.args[0] for call in mock_print.call_args_list]
-        assert any("🔧 old_style_help: This uses the old 'help' field" in call for call in print_calls)
+        assert any("🔧 \033[1mold_style_help\033[0m: This uses the old 'help' field" in call for call in print_calls)
 
     # Test 4: Variable without description (should use compact format with icon)
     content4 = "{{@ no_description @}}"
