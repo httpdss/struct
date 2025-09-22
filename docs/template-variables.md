@@ -66,7 +66,7 @@ STRUCT provides these built-in variables:
 
 ## Interactive Variables
 
-Define variables that prompt users for input:
+Define variables that prompt users for input. When running in interactive mode, STRUCT will display the variable's description to help users understand what value is expected:
 
 ```yaml
 variables:
@@ -83,6 +83,17 @@ variables:
       type: integer
       default: 8080
 ```
+
+When prompted interactively, variables with descriptions will display like this:
+
+```
+❓ Enter value for project_name [MyProject]:
+   Description: The name of your project
+❓ Enter value for author_name []:
+   Description: Your name
+```
+
+**Note**: The `description` field is displayed in interactive mode only. You can also use the legacy `help` field which works the same way.
 
 ### Variable Types
 

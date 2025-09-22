@@ -127,10 +127,23 @@ class TemplateRenderer:
           else:
             # Interactive prompt with enum support (choose by value or index)
             enum = conf.get('enum')
+
+            # Get description if available (support both 'description' and 'help' fields)
+            description = conf.get('description') or conf.get('help')
+
             if enum:
               # Build options list string like "(1) dev, (2) prod)"
               options = ", ".join([f"({i+1}) {val}" for i, val in enumerate(enum)])
-              raw = input(f"❓ Enter value for {var} [{default}] {options}: ")
+              prompt = f"❓ Enter value for {var} [{default}] {options}: "
+
+              # Display description on a new line if available
+              if description:
+                print(prompt.rstrip())
+                print(f"   Description: {description}")
+                raw = input("   ") or default
+              else:
+                raw = input(prompt) or default
+
               raw = raw.strip()
               if raw == "":
                 user_input = default
@@ -142,7 +155,15 @@ class TemplateRenderer:
                 # For invalid enum input, raise immediately instead of re-prompting
                 raise ValueError(f"Variable '{var}' must be one of {enum}, got: {raw}")
             else:
-              user_input = input(f"❓ Enter value for {var} [{default}]: ") or default
+              prompt = f"❓ Enter value for {var} [{default}]: "
+
+              # Display description on a new line if available
+              if description:
+                print(prompt.rstrip())
+                print(f"   Description: {description}")
+                user_input = input("   ") or default
+              else:
+                user_input = input(prompt) or default
           # Coerce and validate according to schema
           coerced = self._coerce_and_validate(var, user_input, conf)
           self.input_store.set_value(var, coerced)
