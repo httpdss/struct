@@ -84,14 +84,34 @@ variables:
       default: 8080
 ```
 
-When prompted interactively, variables with descriptions will display like this:
+When prompted interactively, variables with descriptions will display with contextual icons and clean formatting:
 
 ```
-❓ Enter value for project_name [MyProject]:
-   Description: The name of your project
-❓ Enter value for author_name []:
-   Description: Your name
+🚀 project_name: The name of your project
+   Enter value [MyProject]:
+
+🌍 environment: Target deployment environment
+   Options: (1) dev, (2) staging, (3) prod
+   Enter value [dev]:
 ```
+
+For variables without descriptions, a more compact format is used:
+
+```
+🔧 author_name []:
+⚡ enable_logging [true]:
+```
+
+**Contextual Icons**: STRUCT automatically selects appropriate icons based on variable names and types:
+- 🚀 Project/app names
+- 🌍 Environment/deployment variables
+- 🔌 Ports/network settings
+- 🗄️ Database configurations
+- ⚡ Boolean/toggle options
+- 🔐 Authentication/secrets
+- 🏷️ Versions/tags
+- 📁 Paths/directories
+- 🔧 General variables
 
 **Note**: The `description` field is displayed in interactive mode only. You can also use the legacy `help` field which works the same way.
 
