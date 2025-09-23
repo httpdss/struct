@@ -99,6 +99,38 @@ class TemplateRenderer:
       template = self.env.from_string(content)
       return template.render(vars)
 
+    def _get_variable_icon(self, var_name, var_type):
+      """Get contextual icon for variable based on name and type"""
+      var_lower = var_name.lower()
+
+      # Project/name related
+      if any(keyword in var_lower for keyword in ['project', 'name', 'app', 'title']):
+        return '🚀'
+      # Environment related
+      elif any(keyword in var_lower for keyword in ['env', 'environment', 'stage', 'deploy']):
+        return '🌍'
+      # Database related (check before URL to prioritize database_url)
+      elif any(keyword in var_lower for keyword in ['db', 'database', 'sql']):
+        return '🗄️'
+      # Port/network related
+      elif any(keyword in var_lower for keyword in ['port', 'url', 'host', 'endpoint']):
+        return '🔌'
+      # Boolean/toggle related
+      elif var_type == 'boolean' or any(keyword in var_lower for keyword in ['enable', 'disable', 'toggle', 'flag']):
+        return '⚡'
+      # Authentication/security
+      elif any(keyword in var_lower for keyword in ['token', 'key', 'secret', 'password', 'auth']):
+        return '🔐'
+      # Version/tag related
+      elif any(keyword in var_lower for keyword in ['version', 'tag', 'release']):
+        return '🏷️'
+      # Path/directory related
+      elif any(keyword in var_lower for keyword in ['path', 'dir', 'folder']):
+        return '📁'
+      # Default
+      else:
+        return '🔧'
+
     def prompt_for_missing_vars(self, content, vars):
       parsed_content = self.env.parse(content)
       undeclared_variables = meta.find_undeclared_variables(parsed_content)
@@ -127,10 +159,29 @@ class TemplateRenderer:
           else:
             # Interactive prompt with enum support (choose by value or index)
             enum = conf.get('enum')
+            var_type = conf.get('type', 'string')
+
+            # Get description if available (support both 'description' and 'help' fields)
+            description = conf.get('description') or conf.get('help')
+
+            # Get contextual icon
+            icon = self._get_variable_icon(var, var_type)
+
+            # ANSI color codes for formatting
+            BOLD = '\033[1m'
+            RESET = '\033[0m'
+
             if enum:
-              # Build options list string like "(1) dev, (2) prod)"
+              # Build options list string like "(1) dev, (2) staging, (3) prod"
               options = ", ".join([f"({i+1}) {val}" for i, val in enumerate(enum)])
-              raw = input(f"❓ Enter value for {var} [{default}] {options}: ")
+
+              if description:
+                print(f"{icon} {BOLD}{var}{RESET}: {description}")
+                print(f"   Options: {options}")
+                raw = input(f"   Enter value [{default}]: ") or default
+              else:
+                raw = input(f"{icon} {BOLD}{var}{RESET} [{default}] {options}: ") or default
+
               raw = raw.strip()
               if raw == "":
                 user_input = default
@@ -142,7 +193,11 @@ class TemplateRenderer:
                 # For invalid enum input, raise immediately instead of re-prompting
                 raise ValueError(f"Variable '{var}' must be one of {enum}, got: {raw}")
             else:
-              user_input = input(f"❓ Enter value for {var} [{default}]: ") or default
+              if description:
+                print(f"{icon} {BOLD}{var}{RESET}: {description}")
+                user_input = input(f"   Enter value [{default}]: ") or default
+              else:
+                user_input = input(f"{icon} {BOLD}{var}{RESET} [{default}]: ") or default
           # Coerce and validate according to schema
           coerced = self._coerce_and_validate(var, user_input, conf)
           self.input_store.set_value(var, coerced)

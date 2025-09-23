@@ -66,7 +66,7 @@ STRUCT provides these built-in variables:
 
 ## Interactive Variables
 
-Define variables that prompt users for input:
+Define variables that prompt users for input. When running in interactive mode, STRUCT will display the variable's description to help users understand what value is expected:
 
 ```yaml
 variables:
@@ -83,6 +83,39 @@ variables:
       type: integer
       default: 8080
 ```
+
+When prompted interactively, variables with descriptions will display with contextual icons, **bold variable names**, and clean formatting:
+
+```
+🚀 project_name: The name of your project
+   Enter value [MyProject]:
+
+🌍 environment: Target deployment environment
+   Options: (1) dev, (2) staging, (3) prod
+   Enter value [dev]:
+```
+
+For variables without descriptions, a more compact format is used:
+
+```
+🔧 author_name []:
+⚡ enable_logging [true]:
+```
+
+**Note**: Variable names appear in **bold** in actual terminal output for better readability.
+
+**Contextual Icons**: STRUCT automatically selects appropriate icons based on variable names and types:
+- 🚀 Project/app names
+- 🌍 Environment/deployment variables
+- 🔌 Ports/network settings
+- 🗄️ Database configurations
+- ⚡ Boolean/toggle options
+- 🔐 Authentication/secrets
+- 🏷️ Versions/tags
+- 📁 Paths/directories
+- 🔧 General variables
+
+**Note**: The `description` field is displayed in interactive mode only. You can also use the legacy `help` field which works the same way.
 
 ### Variable Types
 
