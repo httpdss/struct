@@ -41,7 +41,7 @@ files:
             name: Move major tag
             runs-on: ubuntu-latest
             steps:
-              - uses: actions/checkout@v{{@ "actions/checkout" | latest_release @}}
+              - uses: actions/checkout@{{@ "actions/checkout" | latest_release @}}
               - uses: phwt/major-tagging-action@v1
 
   - .github/release-drafter.yml:
