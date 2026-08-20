@@ -29,7 +29,7 @@ files:
 For control structures, use block notation:
 
 - Start block: `{%@`
-- End block: `%@}`
+- End block: `@%}`
 
 ```yaml
 files:
@@ -188,6 +188,12 @@ files:
         generated_at: {{@ now() @}}
 ```
 
+!!! warning "`uuid()` and `now()` are non-deterministic"
+    A file containing either produces different content on every run, so it always
+    appears in `structkit generate --dry-run --diff` output. That removes the diff's
+    value as a drift check. Confine them to files marked `skip_if_exists: true`, or
+    avoid them in anything you regenerate.
+
 ### `env(name, default="")` (global)
 
 Read an environment variable with an optional default.
@@ -210,6 +216,19 @@ files:
         {{@ read_file("INTRO.md") @}}
 ```
 
+### `current_repo()` (global)
+
+Return `owner/repo` for the Git repository in the current working directory, read from
+`remote.origin.url`. Both HTTPS and SSH remotes are supported; a non-GitHub remote
+returns an error string.
+
+```yaml
+files:
+  - README.md:
+      content: |
+        [![CI](https://github.com/{{@ current_repo() @}}/actions/workflows/ci.yml/badge.svg)](https://github.com/{{@ current_repo() @}}/actions)
+```
+
 ### `to_yaml` / `from_yaml` (filters)
 
 Serialize and parse YAML.
@@ -228,13 +247,13 @@ files:
 
 ### `to_json` / `from_json` (filters)
 
-Serialize and parse JSON.
+Serialize and parse JSON. to_json accepts an optional indent argument.
 
 ```yaml
 files:
   - data.json:
       content: |
-        {{@ some_dict | to_json @}}
+        {{@ some_dict | to_json(indent=2) @}}
 ```
 
 ```yaml
@@ -282,7 +301,15 @@ files:
         server_name {{@ project_name | slugify @}};
 ```
 
-**Options**: Optional separator character (default: `-`)
+**Options**: None. The value is lowercased, runs of whitespace become a single hyphen, and any character that is not `a-z`, `0-9`, or `-` is removed.
+
+Note that underscores are removed rather than converted, so `My_Project` becomes `myproject`. To produce a different separator, chain Jinja2's built-in `replace` filter:
+
+```yaml
+files:
+  - src/{{@ project_name | slugify | replace("-", "_") @}}/__init__.py:
+      content: ""
+```
 
 ### `default_branch`
 
@@ -294,7 +321,7 @@ files:
       content: |
         on:
           push:
-            branches: [ {{@ "httpdss/struct" | default_branch @}} ]
+            branches: [ {{@ "httpdss/structkit" | default_branch @}} ]
 ```
 
 ## The `with` Clause
