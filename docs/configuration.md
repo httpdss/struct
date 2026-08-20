@@ -101,21 +101,43 @@ as you can see, the `author_name` variable is defined on the `variables` section
 
 ##### `latest_release`
 
-This filter fetches the latest release version of a GitHub repository. It takes the repository name as an argument.
+This filter selects the latest GitHub release for a repository. Its signature is:
+
+```python
+latest_release(repo_name: str, strip_v: bool = False, return_sha: bool = False) -> str
+```
+
+| Parameter | Type | Default | Behavior |
+| --- | --- | --- | --- |
+| `repo_name` | `str` | required | GitHub repository in `owner/name` form. |
+| `strip_v` | `bool` | `false` | In version mode, remove exactly one leading lowercase `v` from the release tag. Tags without that prefix, including an uppercase `V`, are unchanged. |
+| `return_sha` | `bool` | `false` | Return the commit SHA identified by the release tag instead of the tag name. |
+
+Both options are optional, so existing calls keep their original behavior. For a latest release tagged `v3.2.1`, these examples produce:
 
 ```yaml
 files:
-  - README.md:
+  - release.txt:
       content: |
-        # MyProject
-        Latest release: {{@ "httpdss/struct" | latest_release @}}
+        # v3.2.1 (unchanged default output)
+        {{@ "httpdss/structkit" | latest_release @}}
+
+        # 3.2.1 (strip one leading lowercase "v")
+        {{@ "httpdss/structkit" | latest_release(strip_v=true) @}}
+
+        # 0123456789abcdef0123456789abcdef01234567 (release commit)
+        {{@ "httpdss/structkit" | latest_release(return_sha=true) @}}
 ```
 
-This uses PyGithub to fetch the latest release of the repository so setting the `GITHUB_TOKEN` environment variable will give you access to private repositories.
+`return_sha=true` takes precedence when both options are enabled. In that case the filter returns the same commit SHA as `return_sha=true` alone; `strip_v` has no effect on a SHA.
 
-If there is an error in the process, the filter will return `LATEST_RELEASE_ERROR`.
+The SHA is resolved from the Git tag reference. Lightweight tags resolve directly, while annotated tags are peeled until a commit is reached. Resolution examines at most 10 Git objects, so no more than nine annotated-tag hops may precede the final commit. The returned object ID must be a full 40-character SHA-1 or 64-character SHA-256 hexadecimal value. If a release was selected but its tag is missing, malformed, too deeply nested, cyclic, or does not resolve to a commit, the filter returns `LATEST_RELEASE_ERROR` rather than a tag-object SHA or an unrelated branch SHA.
 
-NOTE: you can use this filter to get the latest release for a terraform provider. For example, to get the latest release of the `aws` provider, you can use `{{@ "hashicorp/terraform-provider-aws" | latest_release @}}` or datadog provider `{{@ "DataDog/terraform-provider-datadog" | latest_release @}}`.
+If repository lookup succeeds but latest-release lookup fails, the established fallback remains the repository's default branch name. In SHA mode, the fallback is instead that branch's head commit SHA. `strip_v` is not applied to a fallback branch name. If repository lookup or fallback resolution fails, the result is `LATEST_RELEASE_ERROR`.
+
+This filter uses PyGithub. Set the `GITHUB_TOKEN` environment variable to access private repositories and to receive authenticated API rate limits.
+
+You can also use it with Terraform provider repositories, for example `{{@ "hashicorp/terraform-provider-aws" | latest_release(strip_v=true) @}}` or `{{@ "DataDog/terraform-provider-datadog" | latest_release(return_sha=true) @}}`.
 
 ##### `slugify`
 
