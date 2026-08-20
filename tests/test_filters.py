@@ -4,6 +4,7 @@ from structkit.filters import get_latest_release, slugify
 @patch('structkit.filters.Github')
 @patch('structkit.filters.os.getenv')
 def test_get_latest_release(mock_getenv, mock_github):
+    get_latest_release.cache_clear()
     # Mock the environment variable
     mock_getenv.return_value = 'fake_token'
 
