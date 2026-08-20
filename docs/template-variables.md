@@ -244,16 +244,32 @@ files:
 
 ### `latest_release`
 
-Fetch the latest release version from GitHub:
+Select the latest GitHub release with the following filter signature:
+
+```python
+latest_release(repo_name: str, strip_v: bool = False, return_sha: bool = False) -> str
+```
+
+- `strip_v` removes exactly one leading lowercase `v` from a release tag. It defaults to `false`; uppercase `V` and tags without `v` are unchanged.
+- `return_sha` returns the commit SHA identified by the release tag instead of its name. It defaults to `false`.
+- When both are `true`, `return_sha` takes precedence and `strip_v` has no effect.
+
+For a release tagged `v22.0.0`:
 
 ```yaml
 files:
-  - Dockerfile:
+  - release-info.txt:
       content: |
-        FROM node:{{@ "nodejs/node" | latest_release @}}
+        Version: {{@ "nodejs/node" | latest_release @}}                       # v22.0.0
+        Version without v: {{@ "nodejs/node" | latest_release(strip_v=true) @}} # 22.0.0
+        Commit: {{@ "nodejs/node" | latest_release(return_sha=true) @}}        # full commit SHA
 ```
 
-**Requirements**: Set `GITHUB_TOKEN` environment variable for private repos.
+Calls that omit the new options remain unchanged. If repository lookup succeeds but latest-release lookup fails, version mode returns the default branch name and SHA mode returns that branch's head commit SHA; `strip_v` does not alter a fallback branch name. Repository lookup, fallback-resolution, or selected-release SHA-resolution failures return `LATEST_RELEASE_ERROR`.
+
+SHA mode supports lightweight and annotated tags. Resolution examines at most 10 Git objects, so no more than nine annotated-tag hops may precede the final commit. A tag must ultimately resolve to a commit with a full 40-character SHA-1 or 64-character SHA-256 hexadecimal object ID. A malformed, cyclic, over-nested, missing, or non-commit tag target returns `LATEST_RELEASE_ERROR`; it does not fall back to a different revision after a release has already been selected.
+
+**Requirements**: Set the `GITHUB_TOKEN` environment variable for private repositories and authenticated API rate limits.
 
 ### `slugify`
 
