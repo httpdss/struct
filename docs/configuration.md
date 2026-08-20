@@ -72,7 +72,7 @@ These properties allow you to customize the behavior and content of the files an
 
 You can use template variables in your configuration file by enclosing them in `{{@` and `@}}`. For example, `{{@ project_name @}}` will be replaced with the value of the `project_name` variable at runtime. If this are not set when running the script, it will prompt you to enter the value interactively.
 
-If you need to define blocks you can use starting block notation `{%@` and end block notation `%@}`.
+If you need to define blocks you can use starting block notation `{%@` and end block notation `@%}`.
 
 To define comments you can use the comment start notation `{#@` and end comment notation `@#}`.
 
@@ -141,7 +141,7 @@ You can also use it with Terraform provider repositories, for example `{{@ "hash
 
 ##### `slugify`
 
-This filter converts a string into a slug. It takes an optional argument to specify the separator character (default is `-`).
+This filter converts a string into a slug. It takes no arguments: the value is lowercased, runs of whitespace become a single hyphen, and any character that is not `a-z`, `0-9`, or `-` is removed.
 
 ```yaml
 files:
@@ -150,6 +150,14 @@ files:
         # {{@ project_name @}}
         This is a template repository.
         slugify project_name: {{@ project_name | slugify @}}
+```
+
+Note that underscores are removed rather than converted, so `My_Project` becomes `myproject`. To produce a different separator, chain Jinja2's built-in `replace` filter:
+
+```yaml
+files:
+  - src/{{@ project_name | slugify | replace("-", "_") @}}/__init__.py:
+      content: ""
 ```
 
 ##### `default_branch`
@@ -161,5 +169,5 @@ files:
   - README.md:
       content: |
         # MyProject
-        Default branch: {{@ "httpdss/struct" | default_branch @}}
+        Default branch: {{@ "httpdss/structkit" | default_branch @}}
 ```
