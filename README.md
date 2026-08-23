@@ -1,17 +1,17 @@
-# 🚀 StructKit: YAML-first scaffolding for teams and AI agents
+# StructKit
 
-> Define project structures once in YAML, then generate consistent repos, CI files, docs, Terraform modules, and app layouts locally, in CI, or through an AI assistant via MCP.
+YAML scaffolding your AI assistant can actually run.
+
+Define a repo once (files, CI, Terraform, app layout). Generate it from the CLI, from CI, or through an assistant over MCP. When the org template on GitHub changes, the next generate picks it up. No golden repo. No separate Cookiecutter tree.
 
 [![codecov](https://codecov.io/github/httpdss/structkit/graph/badge.svg?token=JL5WIO1C9T)](https://codecov.io/github/httpdss/structkit)
 ![GitHub issues](https://img.shields.io/github/issues/httpdss/structkit)
 ![GitHub pull requests](https://img.shields.io/github/issues-pr/httpdss/structkit)
 ![GitHub stars](https://img.shields.io/github/stars/httpdss/structkit?style=social)
 
-**StructKit** replaces copy-pasted boilerplate and aging "golden repos" with reusable YAML structures. It can render template variables, fetch canonical files from remote sources, preview changes before writing, and expose your scaffolds to AI assistants through the Model Context Protocol.
+> 🚀 **[Quick Start](docs/quickstart.md)** | 📚 **[Docs](docs/index.md)** | 🤖 **[MCP / AI Agent Guide](docs/mcp-integration.md)** | 💬 **[Discussions](https://github.com/httpdss/structkit/discussions)**
 
-> 🚀 **[Quick Start](docs/quickstart.md)** | 📚 **[Docs](docs/index.md)** | 🧩 **[Examples](examples/)** | 🤖 **[MCP / AI Agent Guide](docs/mcp-integration.md)** | 🧠 **[Agent Skills](docs/agent-skills.md)** | 💬 **[Discussions](https://github.com/httpdss/structkit/discussions)**
-
-## ⚡ Try it in 60 seconds
+## Try it in 60 seconds
 
 ```bash
 # Install the CLI
@@ -22,6 +22,9 @@ structkit list
 
 # Generate a ready-made Terraform module scaffold
 structkit generate --vars module_name=my-terraform-module terraform/modules/generic ./my-terraform-module
+
+# Start MCP server for AI integration
+structkit mcp --server
 ```
 
 Prefer Docker?
