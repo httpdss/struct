@@ -1,0 +1,48 @@
+name: "structkit"
+arch: "${ARCH}"
+platform: "linux"
+version: "${VERSION}"
+section: "devel"
+priority: "optional"
+maintainer: "httpdss <https://github.com/httpdss>"
+description: |
+  YAML-first project scaffolding tool with remote content fetching,
+  AI/MCP integration, and DevOps automation.
+  .
+  structkit is a powerful CLI tool for generating project structures
+  from YAML templates, with support for remote content fetching,
+  AI-powered generation, and Model Context Protocol integration.
+vendor: "httpdss"
+homepage: "https://structkit.app/"
+license: "MIT"
+
+# Runtime dependencies (minimal - we vendor Python and dependencies)
+depends:
+  - ca-certificates
+
+# Recommended packages
+recommends:
+  - git
+
+contents:
+  # Vendored Python environment with all dependencies
+  - src: ./dist/venv
+    dst: /usr/lib/structkit/venv
+
+  # CLI shim script
+  - src: ./packaging/structkit-shim.sh
+    dst: /usr/bin/structkit
+    file_info:
+      mode: 0755
+
+  # Documentation
+  - src: ./README.md
+    dst: /usr/share/doc/structkit/README.md
+    file_info:
+      mode: 0644
+
+  - src: ./LICENSE
+    dst: /usr/share/doc/structkit/LICENSE
+    file_info:
+      mode: 0644
+    packager: deb
