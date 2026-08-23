@@ -1,0 +1,28 @@
+# Example user config file for ~/.config/struct/config.yaml
+#
+# This file contains personal defaults that apply to all your structkit projects.
+# Copy this to ~/.config/struct/config.yaml and customize as needed.
+
+# Default file handling strategy
+# Options: overwrite, skip, append, rename, backup
+file_strategy: backup
+
+# Where to store user input history
+input_store: ~/.cache/structkit/input.json
+
+# Default logging level
+# Options: DEBUG, INFO, WARNING, ERROR, CRITICAL
+log: WARNING
+
+# Path to custom structure definitions
+# structures_path: ~/my-structures
+
+# Run in non-interactive mode by default
+# non_interactive: false
+
+# Default output mode
+# Options: file, console
+# output: file
+
+# Default backup directory
+# backup: ~/structkit-backups

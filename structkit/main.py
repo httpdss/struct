@@ -4,6 +4,7 @@ import os
 import shlex
 from dotenv import load_dotenv
 from structkit.utils import read_config_file, merge_configs
+from structkit.config import load_layered_config, apply_config_to_args
 from structkit.commands.generate import GenerateCommand
 from structkit.commands.info import InfoCommand
 from structkit.commands.vars import VarsCommand
@@ -16,6 +17,7 @@ from structkit.commands.graph import GraphCommand
 from structkit.commands.generate_schema import GenerateSchemaCommand
 from structkit.commands.mcp import MCPCommand
 from structkit.commands.sources import SourcesCommand
+from structkit.commands.config import ConfigCommand
 from structkit.logging_config import configure_logging
 
 # Optional dependency: shtab for static shell completion generation
@@ -137,6 +139,7 @@ def get_parser():
     GenerateSchemaCommand(subparsers.add_parser('generate-schema', help='Generate JSON schema for available structures'))
     MCPCommand(subparsers.add_parser('mcp', help='MCP (Model Context Protocol) support'))
     SourcesCommand(subparsers.add_parser('sources', help='Manage named custom structure sources'))
+    ConfigCommand(subparsers.add_parser('config', help='Display and manage structkit configuration'))
 
     # init to create a basic .struct.yaml
     from structkit.commands.init import InitCommand
@@ -168,9 +171,18 @@ def main():
       parser.print_help()
       parser.exit()
 
-    # Read config file if provided
-    if getattr(args, 'config_file', None):
-      file_config = read_config_file(args.config_file)
+    # Load layered configuration (built-in defaults, user config, project config)
+    # This loads from ~/.config/struct/config.yaml and any --config-file
+    project_config_path = getattr(args, 'config_file', None)
+    layered_config = load_layered_config(project_config_path)
+
+    # Apply config to args (only for values not set via CLI)
+    apply_config_to_args(layered_config, args)
+
+    # For backward compatibility, also support the old merge_configs approach
+    # if config_file was explicitly provided
+    if project_config_path:
+      file_config = read_config_file(project_config_path)
       args = argparse.Namespace(**merge_configs(file_config, args))
 
     # Resolve logging level precedence: STRUCTKIT_LOG_LEVEL env > --debug (if present) > --log
