@@ -1,6 +1,90 @@
-# YAML Configuration
+# Configuration
 
-## Configuration Properties
+## Config Layering
+
+Structkit supports a layered configuration system that allows you to set defaults at multiple levels. Configuration values are merged in the following order (from lowest to highest priority):
+
+1. **Built-in defaults** - Hard-coded defaults that are always present
+2. **User config** - Global defaults from `~/.config/struct/config.yaml`
+3. **Project config** - Project-specific config from `.struct.yaml` or `--config-file`
+4. **CLI arguments** - Command-line flags (highest priority)
+
+### User Config
+
+You can create a user-level config file at `~/.config/struct/config.yaml` to set your personal defaults. This is useful for setting preferences that apply across all your projects.
+
+Example `~/.config/struct/config.yaml`:
+
+```yaml
+structures_path: ~/my-custom-structures
+input_store: ~/.cache/structkit/input.json
+file_strategy: backup
+log: WARNING
+```
+
+### Project Config
+
+Project-specific settings can be defined in a `.struct.yaml` file or specified via the `--config-file` flag. These settings override user config and built-in defaults.
+
+### CLI Arguments
+
+Command-line arguments always take the highest priority and override all config file settings.
+
+### Supported Config Options
+
+The following options can be configured via config files:
+
+- `structures_path` - Path to custom structure definitions
+- `source` - Named source for structure definitions
+- `input_store` - Path to the input store file
+- `file_strategy` - Strategy for handling existing files (`overwrite`, `skip`, `append`, `rename`, `backup`)
+- `backup` - Path to backup folder
+- `global_system_prompt` - Global system prompt for OpenAI
+- `non_interactive` - Run in non-interactive mode (boolean)
+- `output` - Output mode (`file` or `console`)
+- `log` - Logging level (`DEBUG`, `INFO`, `WARNING`, `ERROR`, `CRITICAL`)
+- `log_file` - Path to log file
+
+### Viewing Effective Configuration
+
+To see the final merged configuration that structkit will use, run:
+
+```bash
+structkit config print
+```
+
+This displays the effective configuration after all layers have been merged. You can also output in JSON format:
+
+```bash
+structkit config print --format json
+```
+
+Example output:
+
+```yaml
+backup: null
+file_strategy: backup
+global_system_prompt: null
+input_store: /tmp/structkit/input.json
+log: INFO
+log_file: null
+non_interactive: false
+output: file
+source: null
+structures_path: /home/user/my-structures
+```
+
+The command also displays which configuration sources were used:
+
+```
+Configuration sources:
+  1. Built-in defaults: always loaded
+  2. User config: /home/user/.config/struct/config.yaml (exists)
+  3. Project config: .struct.yaml
+  4. CLI arguments: highest priority
+```
+
+## YAML Configuration Properties
 
 When defining your project structure in the YAML configuration file, you can use various properties to control the behavior of the script. Here are the available properties:
 
