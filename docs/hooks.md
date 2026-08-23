@@ -2,6 +2,15 @@
 
 You can define shell commands to run before and after structure generation using the `pre_hooks` and `post_hooks` keys in your YAML configuration. These are optional and allow you to automate setup or cleanup steps.
 
+## Safety Controls
+
+Hooks execute shell commands with `shell=True`, which can be powerful but also risky. StructKit provides several safety mechanisms:
+
+- **Interactive Confirmation**: When running interactively, StructKit prompts for confirmation before executing hooks
+- **Skip Hooks**: Use `--no-hooks` flag or `STRUCTKIT_NO_HOOKS=true` to disable all hooks
+- **Allowlist**: Create a `.struct-hooks-allowlist` file to restrict which commands can run
+- **MCP Safety**: MCP calls skip hooks by default (`no_hooks=true`)
+
 ## Hook Types
 
 - **pre_hooks**: List of shell commands to run before generation. If any command fails (non-zero exit), generation is aborted.
@@ -170,6 +179,94 @@ files:
         }
 ```
 
+## Safety Features
+
+### Disabling Hooks
+
+You can disable hooks entirely using the `--no-hooks` flag or environment variable:
+
+```bash
+# Using CLI flag
+structkit generate .struct.yaml --no-hooks
+
+# Using environment variable
+export STRUCTKIT_NO_HOOKS=true
+structkit generate .struct.yaml
+```
+
+This is recommended for:
+- CI/CD pipelines where hooks shouldn't run
+- MCP/automation contexts
+- Untrusted structure definitions
+
+### Interactive Confirmation
+
+By default, StructKit prompts for confirmation before running hooks in interactive mode:
+
+```bash
+$ structkit generate .struct.yaml
+
+⚠️  The following pre-hooks will be executed:
+  - echo "Preparing environment..."
+  - ./scripts/prep.sh
+
+Do you want to run these pre-hooks? [y/N]:
+```
+
+To skip the prompt:
+- Use `--non-interactive` flag
+- Set `STRUCTKIT_NON_INTERACTIVE=true`
+
+**Note**: Non-interactive mode without `--no-hooks` will execute hooks without confirmation.
+
+### Allowlist File
+
+Create a `.struct-hooks-allowlist` file in your project directory to restrict which commands can run:
+
+```text
+# .struct-hooks-allowlist
+# One command per line. Lines starting with # are comments.
+
+echo
+git
+npm
+python
+./scripts/prep.sh
+./scripts/cleanup.sh
+```
+
+When an allowlist exists:
+- Only commands in the allowlist can run
+- Both exact matches and base commands (first word) are checked
+- Blocked hooks cause generation to fail
+
+You can also specify a custom allowlist path:
+
+```bash
+structkit generate .struct.yaml --hooks-allowlist /path/to/allowlist.txt
+
+# Or via environment variable
+export STRUCTKIT_HOOKS_ALLOWLIST=/path/to/allowlist.txt
+structkit generate .struct.yaml
+```
+
+### MCP Integration Safety
+
+When using StructKit through MCP (Model Context Protocol), hooks are **disabled by default** for security:
+
+```json
+{
+  "name": "generate_structure",
+  "arguments": {
+    "structure_definition": "project/python",
+    "base_path": "/tmp/myproject",
+    "no_hooks": true  // Default for MCP calls
+  }
+}
+```
+
+To enable hooks in MCP calls (not recommended), explicitly set `no_hooks: false`.
+
 ## Best Practices
 
 1. **Keep hooks simple**: Use external scripts for complex operations
@@ -178,6 +275,8 @@ files:
 4. **Log important actions**: Use echo statements for user feedback
 5. **Test independently**: Ensure hook commands work outside StructKit
 6. **Consider dependencies**: Order hooks based on their requirements
+7. **Use allowlists**: For production environments, always use an allowlist
+8. **Disable in CI/CD**: Use `--no-hooks` in automated environments unless hooks are required and safe
 
 ## Error Handling
 
@@ -198,6 +297,37 @@ post_hooks:
   - git add . || echo "Warning: git add failed"
   - echo "Setup complete (some warnings may have occurred)"
 ```
+
+### Safe Hook Example with Allowlist
+
+```yaml
+# .struct.yaml
+pre_hooks:
+  - echo "Preparing environment..."
+  - python -c "import sys; print(sys.version)"
+
+post_hooks:
+  - echo "Generation complete!"
+  - git --version
+
+files:
+  - README.md:
+      content: |
+        # My Project
+```
+
+```text
+# .struct-hooks-allowlist
+echo
+python
+git
+```
+
+With this setup:
+- Only `echo`, `python`, and `git` commands can run
+- Interactive users will be prompted for confirmation
+- Use `--no-hooks` to skip entirely
+- Use `--non-interactive` to run without prompts (requires allowlist or trust)
 
 ## Variables in Hooks
 

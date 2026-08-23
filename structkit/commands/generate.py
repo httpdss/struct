@@ -50,6 +50,8 @@ class GenerateCommand(Command):
                         help='Path to a YAML file containing mappings to be used in templates (can be specified multiple times)')
     parser.add_argument('-o', '--output', type=str,
                         choices=['console', 'file'], default=os.getenv('STRUCTKIT_OUTPUT_MODE', 'file'), help='Output mode (env: STRUCTKIT_OUTPUT_MODE)')
+    parser.add_argument('--no-hooks', action='store_true', help='Skip all pre/post hooks (env: STRUCTKIT_NO_HOOKS)', default=os.getenv('STRUCTKIT_NO_HOOKS', '').lower() in ('true', '1', 'yes'))
+    parser.add_argument('--hooks-allowlist', type=str, help='Path to hooks allowlist file (env: STRUCTKIT_HOOKS_ALLOWLIST)', default=os.getenv('STRUCTKIT_HOOKS_ALLOWLIST', None))
     parser.set_defaults(func=self.execute)
 
   def _parse_template_vars(self, vars_str):
@@ -91,9 +93,108 @@ class GenerateCommand(Command):
         result[key] = value
     return result
 
-  def _run_hooks(self, hooks, hook_type="pre"):  # helper for running hooks
+  def _load_hooks_allowlist(self, allowlist_path):
+    """Load the hooks allowlist from a file.
+    Returns a set of allowed commands or None if file doesn't exist.
+    """
+    if not allowlist_path:
+      return None
+
+    allowlist_file = None
+    if os.path.isabs(allowlist_path):
+      allowlist_file = allowlist_path
+    else:
+      allowlist_file = os.path.join(os.getcwd(), allowlist_path)
+
+    if not os.path.exists(allowlist_file):
+      # Also check for .struct-hooks-allowlist in current directory if no explicit path given
+      default_allowlist = os.path.join(os.getcwd(), '.struct-hooks-allowlist')
+      if allowlist_path == default_allowlist and not os.path.exists(default_allowlist):
+        return None
+      self.logger.warning(f"Hooks allowlist file not found: {allowlist_file}")
+      return None
+
+    try:
+      with open(allowlist_file, 'r') as f:
+        lines = f.readlines()
+      # Parse allowlist: ignore empty lines and comments (lines starting with #)
+      allowlist = set()
+      for line in lines:
+        line = line.strip()
+        if line and not line.startswith('#'):
+          allowlist.add(line)
+      return allowlist
+    except Exception as e:
+      self.logger.error(f"Failed to read hooks allowlist: {e}")
+      return None
+
+  def _check_hook_allowed(self, cmd, allowlist):
+    """Check if a command is allowed by the allowlist.
+    If allowlist is None, all commands are allowed.
+    If allowlist is a set, only commands in the set are allowed.
+    """
+    if allowlist is None:
+      return True
+
+    # Check exact match first
+    if cmd in allowlist:
+      return True
+
+    # Check if the base command (first word) is allowed
+    base_cmd = cmd.split()[0] if cmd.split() else cmd
+    if base_cmd in allowlist:
+      return True
+
+    return False
+
+  def _confirm_hooks(self, hooks, hook_type="pre"):
+    """Ask user to confirm hook execution.
+    Returns True if user confirms, False otherwise.
+    """
     if not hooks:
       return True
+
+    print(f"\n⚠️  The following {hook_type}-hooks will be executed:")
+    for cmd in hooks:
+      print(f"  - {cmd}")
+
+    response = input(f"\nDo you want to run these {hook_type}-hooks? [y/N]: ").strip().lower()
+    return response in ('y', 'yes')
+
+  def _run_hooks(self, hooks, hook_type="pre", skip_hooks=False, non_interactive=False, allowlist=None):
+    """Run pre/post hooks with safety controls.
+
+    Args:
+      hooks: List of shell commands to run
+      hook_type: Type of hooks ("pre" or "post")
+      skip_hooks: If True, skip all hooks
+      non_interactive: If True, skip confirmation prompt
+      allowlist: Set of allowed commands or None to allow all
+
+    Returns:
+      True if all hooks succeeded or were skipped, False if any failed
+    """
+    if not hooks or skip_hooks:
+      if skip_hooks and hooks:
+        self.logger.info(f"Skipping {hook_type}-hooks (--no-hooks enabled)")
+      return True
+
+    # Check if any hooks are blocked by allowlist
+    if allowlist is not None:
+      blocked_hooks = [cmd for cmd in hooks if not self._check_hook_allowed(cmd, allowlist)]
+      if blocked_hooks:
+        self.logger.error(f"The following {hook_type}-hooks are not in the allowlist:")
+        for cmd in blocked_hooks:
+          self.logger.error(f"  - {cmd}")
+        self.logger.error("Hook execution blocked. Update allowlist or use --no-hooks to skip.")
+        return False
+
+    # Ask for confirmation in interactive mode
+    if not non_interactive:
+      if not self._confirm_hooks(hooks, hook_type):
+        self.logger.info(f"User declined to run {hook_type}-hooks. Aborting.")
+        return False
+
     for cmd in hooks:
       self.logger.info(f"Running {hook_type}-hook: {cmd}")
       try:
@@ -201,8 +302,23 @@ class GenerateCommand(Command):
     pre_hooks = config.get('pre_hooks', [])
     post_hooks = config.get('post_hooks', [])
 
+    skip_hooks = getattr(args, 'no_hooks', False)
+    non_interactive = getattr(args, 'non_interactive', False)
+
+    # Load hooks allowlist if provided (only if hooks are enabled)
+    allowlist = None
+    if not skip_hooks:
+      allowlist_path = getattr(args, 'hooks_allowlist', None)
+      if not allowlist_path:
+        # Check for default .struct-hooks-allowlist in current directory
+        default_allowlist = os.path.join(os.getcwd(), '.struct-hooks-allowlist')
+        if os.path.exists(default_allowlist):
+          allowlist_path = default_allowlist
+
+      allowlist = self._load_hooks_allowlist(allowlist_path) if allowlist_path else None
+
     # Run pre-hooks
-    if not self._run_hooks(pre_hooks, hook_type="pre"):
+    if not self._run_hooks(pre_hooks, hook_type="pre", skip_hooks=skip_hooks, non_interactive=non_interactive, allowlist=allowlist):
       self.logger.error("Aborting generation due to pre-hook failure.")
       return
 
@@ -214,7 +330,7 @@ class GenerateCommand(Command):
       raise SystemExit(1) from None
 
     # Run post-hooks
-    if not self._run_hooks(post_hooks, hook_type="post"):
+    if not self._run_hooks(post_hooks, hook_type="post", skip_hooks=skip_hooks, non_interactive=non_interactive, allowlist=allowlist):
       self.logger.error("Post-hook failed.")
       return
 

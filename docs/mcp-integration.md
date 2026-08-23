@@ -70,6 +70,7 @@ Generate a project structure using specified definition and options.
 - `mappings` (optional): Variable mappings for template substitution
 - `structures_path` (optional): Custom path to structure definitions
 - `source` (optional): Named source configured with `manage_sources`. The structure definition can also use a `<source>/<structure>` prefix.
+- `no_hooks` (optional): Skip all pre/post hooks for safety (default: **true** for MCP calls)
 
 ### 4. get_structure_vars
 Inspect variables declared by a specific structure without generating files.
@@ -296,6 +297,36 @@ if __name__ == "__main__":
 
 The MCP integration is particularly powerful for AI-assisted development workflows:
 
+### Hook Safety in MCP
+
+**Important**: For security, MCP calls to `generate_structure` skip hooks by default (`no_hooks: true`). This prevents arbitrary shell command execution when structures are generated via automation or AI tools.
+
+```json
+{
+  "name": "generate_structure",
+  "arguments": {
+    "structure_definition": "project/python",
+    "base_path": "/tmp/myproject",
+    "no_hooks": true  // Default for MCP - hooks are skipped
+  }
+}
+```
+
+To enable hooks in MCP calls (not recommended unless you trust the structure source):
+
+```json
+{
+  "name": "generate_structure",
+  "arguments": {
+    "structure_definition": "project/python",
+    "base_path": "/tmp/myproject",
+    "no_hooks": false  // Explicitly enable hooks (use with caution)
+  }
+}
+```
+
+See the [Hooks documentation](hooks.md) for more information about hook safety controls.
+
 ### Console Output Mode
 Using `output: "console"` with `generate_structure` allows piping structure content to stdout for subsequent AI prompts:
 
@@ -434,7 +465,8 @@ without writing files:
     "dry_run": true,
     "mappings": {
       "module_name": "network-observability"
-    }
+    },
+    "no_hooks": true
   }
 }
 ```
@@ -465,7 +497,8 @@ After approval, call the same structure with `output: "files"` and
     "dry_run": false,
     "mappings": {
       "module_name": "network-observability"
-    }
+    },
+    "no_hooks": true
   }
 }
 ```

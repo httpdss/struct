@@ -486,7 +486,10 @@ def test_multiple_mappings_files():
             mappings_file=['mappings1.yaml', 'mappings2.yaml'],
             backup=None,
             output='file',
-            structures_path=None
+            structures_path=None,
+            no_hooks=True,
+            hooks_allowlist=None,
+            non_interactive=True
         )
 
         # Mock config loading

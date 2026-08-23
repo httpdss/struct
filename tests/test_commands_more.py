@@ -93,7 +93,7 @@ def test_generate_dry_run_diff_shows_unified_diff(parser, tmp_path):
 
 def test_generate_pre_hook_failure_aborts(parser, tmp_path):
     command = GenerateCommand(parser)
-    args = parser.parse_args(['struct-x', str(tmp_path)])
+    args = parser.parse_args(['struct-x', str(tmp_path), '--non-interactive'])
 
     config = {'pre_hooks': ['exit 1'], 'files': []}
 

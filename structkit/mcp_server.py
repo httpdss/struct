@@ -136,6 +136,7 @@ class StructMCPServer:
         mappings: Optional[Dict[str, str]] = None,
         structures_path: Optional[str] = None,
         source: Optional[str] = None,
+        no_hooks: bool = True,
     ) -> str:
         try:
             structures_path, structure_definition = resolve_structures_path(structures_path, source, structure_definition)
@@ -161,6 +162,8 @@ class StructMCPServer:
         args.log = "INFO"
         args.config_file = None
         args.log_file = None
+        args.no_hooks = no_hooks
+        args.hooks_allowlist = None
 
         # If mappings provided, convert to vars string consumed by GenerateCommand
         if mappings:
@@ -452,7 +455,7 @@ class StructMCPServer:
             self.logger.debug(f"MCP response: explain_structure len={len(result)} preview=\n{preview}")
             return result
 
-        @self.app.tool(name="generate_structure", description="Generate a project structure using specified definition and options")
+        @self.app.tool(name="generate_structure", description="Generate a project structure using specified definition and options. MCP calls skip hooks by default for safety; set no_hooks=false to enable them.")
         async def generate_structure(
             structure_definition: str,
             base_path: str,
@@ -461,6 +464,7 @@ class StructMCPServer:
             mappings: Optional[Dict[str, str]] = None,
             structures_path: Optional[str] = None,
             source: Optional[str] = None,
+            no_hooks: bool = True,
         ) -> str:
             self.logger.debug(
                 "MCP request: generate_structure args=%s",
@@ -472,6 +476,7 @@ class StructMCPServer:
                     "mappings": mappings,
                     "structures_path": structures_path,
                     "source": source,
+                    "no_hooks": no_hooks,
                 },
             )
             result = self._generate_structure_logic(
@@ -482,6 +487,7 @@ class StructMCPServer:
                 mappings,
                 structures_path,
                 source,
+                no_hooks,
             )
             preview = result if len(result) <= 1000 else result[:1000] + f"... [truncated {len(result)-1000} chars]"
             self.logger.debug(f"MCP response: generate_structure len={len(result)} preview=\n{preview}")
