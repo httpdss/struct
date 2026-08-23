@@ -9,7 +9,7 @@ The `structkit` CLI allows you to generate project structures from YAML configur
 **Basic Usage:**
 
 ```sh
-structkit {info,validate,generate,explain,vars,graph,list,sources,generate-schema,mcp,completion,init} ...
+structkit {info,validate,generate,explain,vars,graph,list,sources,generate-schema,mcp,config,completion,init} ...
 ```
 
 ## Global Options
@@ -307,6 +307,60 @@ structkit completion install [bash|zsh|fish]
 
 - If no shell is provided, the command attempts to auto-detect your current shell and prints the exact commands to generate and install static completion files via shtab.
 - This does not modify your shell configuration; it only prints the commands you can copy-paste.
+
+### `config`
+
+Display and manage structkit configuration.
+
+**Usage:**
+
+```sh
+structkit config print [--format {yaml,json}] [-c CONFIG_FILE]
+```
+
+**Subcommands:**
+
+- `print`: Display the effective configuration after all layers are merged.
+
+**Arguments:**
+
+- `--format {yaml,json}`: Output format (default: yaml).
+- `-c CONFIG_FILE, --config-file CONFIG_FILE`: Path to a project configuration file.
+
+**Description:**
+
+The `config print` command shows the final merged configuration from all layers:
+
+1. Built-in defaults (lowest priority)
+2. User config (`~/.config/struct/config.yaml`)
+3. Project config (`.struct.yaml` or `--config-file`)
+4. CLI arguments (highest priority)
+
+The command also displays which configuration sources were loaded.
+
+**Examples:**
+
+View effective configuration:
+```sh
+structkit config print
+```
+
+View with project config:
+```sh
+structkit config print -c my-project-config.yaml
+```
+
+Output in JSON format:
+```sh
+structkit config print --format json
+```
+
+Override with CLI arguments:
+```sh
+structkit config print --log DEBUG -c config.yaml
+```
+
+See the [Configuration](configuration.md) documentation for more details on config layering.
 
 ### `init`
 
