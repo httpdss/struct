@@ -210,7 +210,7 @@ $ structkit generate .struct.yaml
   - echo "Preparing environment..."
   - ./scripts/prep.sh
 
-Do you want to run these pre-hooks? [y/N]: 
+Do you want to run these pre-hooks? [y/N]:
 ```
 
 To skip the prompt:
