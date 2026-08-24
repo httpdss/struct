@@ -34,6 +34,18 @@ docker run --rm -v "$(pwd):/workdir" ghcr.io/httpdss/structkit:main \
   generate --vars module_name=my-terraform-module terraform/modules/generic ./my-terraform-module
 ```
 
+## Ecosystem
+
+These are install paths for [StructKit](https://github.com/httpdss/structkit), not separate products. Star this repo.
+
+- [GitHub Action](https://github.com/httpdss/structkit-action) — validate, generate, or drift-check in CI
+- [VS Code / Cursor](https://github.com/httpdss/vscode-structkit) — schema and autocomplete for `.struct.yaml`
+- [Agent skills](https://github.com/httpdss/structkit-skills) — inspect, preview, generate, validate from an assistant
+- [pre-commit](https://github.com/httpdss/structkit-pre-commit) — validate structures before they land
+- [Homebrew](https://github.com/httpdss/homebrew-structkit) — `brew tap httpdss/structkit && brew install structkit`
+- [Backstage](https://github.com/httpdss/backstage-plugin-structkit) — scaffolder actions for platform teams
+- [Hermes plugin](https://github.com/httpdss/hermes-plugin-structkit) — safe StructKit tools inside Hermes
+
 ## 👤 Who StructKit is for
 
 - **Platform / DevEx teams** standardizing service layouts, CI baselines, and engineering conventions across many repos.
